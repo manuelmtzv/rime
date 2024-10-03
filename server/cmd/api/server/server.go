@@ -4,12 +4,16 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"rime-server/internal/database"
 	"strconv"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Server struct {
 	port int
+	db   *gorm.DB
 }
 
 func NewServer() *http.Server {
@@ -21,6 +25,7 @@ func NewServer() *http.Server {
 
 	newServer := &Server{
 		port: port,
+		db:   database.New(),
 	}
 
 	server := &http.Server{
