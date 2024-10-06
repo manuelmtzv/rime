@@ -1,11 +1,13 @@
 package database
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"os"
+	"time"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	_ "github.com/lib/pq"
 )
 
 var (
@@ -17,15 +19,22 @@ var (
 	sslmode  = os.Getenv("DB_SSLMODE")
 )
 
-func New() *gorm.DB {
+func New() (*sql.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", host, user, password, dbname, port, sslmode)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-
+	db, err := sql.Open("postgres", dsn)
 	if err != nil {
-		panic(fmt.Sprintf("Failed to connect to database: %v", err))
+		return nil, err
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err = db.PingContext(ctx)
+	if err != nil {
+		return nil, err
 	}
 
 	fmt.Println("Connected to database")
 
-	return db
+	return db, nil
 }

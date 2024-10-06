@@ -1,19 +1,18 @@
 package server
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 	"os"
 	"rime-server/internal/database"
 	"strconv"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Server struct {
 	port int
-	db   *gorm.DB
+	db   *sql.DB
 }
 
 func NewServer() *http.Server {
@@ -23,9 +22,15 @@ func NewServer() *http.Server {
 		panic(fmt.Sprintf("Invalid PORT: %v", err))
 	}
 
+	db, err := database.New()
+
+	if err != nil {
+		panic(fmt.Sprintf("Failed to connect to database: %v", err))
+	}
+
 	newServer := &Server{
 		port: port,
-		db:   database.New(),
+		db:   db,
 	}
 
 	server := &http.Server{
