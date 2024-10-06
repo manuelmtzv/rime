@@ -34,7 +34,5 @@ func New() (*sql.DB, error) {
 		return nil, err
 	}
 
-	fmt.Println("Connected to database")
-
 	return db, nil
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func (s *Server) RegisterRouter() http.Handler {
+func RegisterRouter() http.Handler {
 	r := chi.NewRouter()
 
 	routes.RegisterPoemRoutes(r)

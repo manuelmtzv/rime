@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os/signal"
@@ -37,11 +36,4 @@ func main() {
 
 	go gracefulShutdown(server)
 
-	fmt.Print("Server started")
-
-	err := server.ListenAndServe()
-
-	if err != nil && err != http.ErrServerClosed {
-		panic(fmt.Sprintf("http server error: %s", err))
-	}
 }
