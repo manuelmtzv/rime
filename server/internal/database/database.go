@@ -25,5 +25,7 @@ func New() *gorm.DB {
 		panic(fmt.Sprintf("Failed to connect to database: %v", err))
 	}
 
+	fmt.Println("Connected to database")
+
 	return db
 }
