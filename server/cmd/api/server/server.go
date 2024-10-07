@@ -1,19 +1,23 @@
 package server
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"rime-server/internal/database"
+	"rime-server/internal/models"
 	"rime-server/internal/utils"
 	"time"
 )
 
+type Application struct {
+	Logger *log.Logger
+	Models models.Models
+}
+
 type server struct {
 	port int
-	db   *sql.DB
 }
 
 func NewServer() *http.Server {
@@ -29,16 +33,20 @@ func NewServer() *http.Server {
 
 	logger.Printf("Connected to database")
 
+	app := &Application{
+		Logger: logger,
+		Models: models.NewModels(db),
+	}
+
 	newServer := &server{
 		port: port,
-		db:   db,
 	}
 
 	logger.Printf("Starting %s server on %s", "API", fmt.Sprintf(":%d", newServer.port))
 
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", newServer.port),
-		Handler:      RegisterRouter(),
+		Handler:      app.RegisterRouter(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
