@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"rime-server/internal/utils"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -17,6 +18,10 @@ var (
 	dbname   = os.Getenv("DB_NAME")
 	password = os.Getenv("DB_PASSWORD")
 	sslmode  = os.Getenv("DB_SSLMODE")
+
+	maxOpenConns = utils.GetEnvAsIntOrThrow("DB_MAX_OPEN_CONNS")
+	maxIdleConns = utils.GetEnvAsIntOrThrow("DB_MAX_IDLE_CONNS")
+	maxIdleTime  = os.Getenv("DB_MAX_IDLE_TIME")
 )
 
 func New() (*sql.DB, error) {
@@ -25,6 +30,15 @@ func New() (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	db.SetMaxOpenConns(maxOpenConns)
+	db.SetMaxIdleConns(maxIdleConns)
+
+	duration, err := time.ParseDuration(maxIdleTime)
+	if err != nil {
+		return nil, err
+	}
+	db.SetConnMaxIdleTime(duration)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
