@@ -35,7 +35,15 @@ func (u UserModel) Get(id string) (*User, error) {
 }
 
 func (u UserModel) Insert(user *User) error {
-	return nil
+	query := `
+		INSERT INTO users (name, last_name, username, email, hashed_password)
+		VALUES ($1, $2, $3, $4, $5)
+		RETURNING id, created_at, updated_at
+	`
+
+	args := []interface{}{user.Name, user.LastName, user.Username, user.Email, user.HashedPassword}
+
+	return u.DB.QueryRow(query, args...).Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt)
 }
 
 func (u UserModel) Update(user *User) error {
