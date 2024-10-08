@@ -31,7 +31,21 @@ type UserModel struct {
 }
 
 func (u UserModel) Get(id string) (*User, error) {
-	return nil, nil
+	query := `
+		SELECT id, name, last_name, username, email, created_at, updated_at
+		FROM users
+		WHERE id = $1
+	`
+
+	user := &User{}
+
+	err := u.DB.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (u UserModel) Insert(user *User) error {
@@ -47,9 +61,26 @@ func (u UserModel) Insert(user *User) error {
 }
 
 func (u UserModel) Update(user *User) error {
-	return nil
+	query := `
+		UPDATE users 
+		SET name = $1, last_name = $2, username = $3, email = $4, updated_at = NOW()
+		WHERE id = $5;
+	`
+
+	args := []interface{}{user.Name, user.LastName, user.Username, user.Email, user.ID}
+
+	_, err := u.DB.Exec(query, args...)
+
+	return err
 }
 
 func (u UserModel) Delete(id string) error {
-	return nil
+	query := `
+		DELETE FROM users
+		WHERE id = $1
+	`
+
+	_, err := u.DB.Exec(query, id)
+
+	return err
 }
