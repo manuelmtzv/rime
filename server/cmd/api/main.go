@@ -8,8 +8,6 @@ import (
 	"syscall"
 	"time"
 
-	"rime-server/cmd/api/server"
-
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -32,7 +30,7 @@ func gracefulShutdown(apiServer *http.Server) {
 
 func main() {
 
-	server := server.NewServer()
+	server := NewServer()
 
 	go gracefulShutdown(server)
 

@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"fmt"
@@ -11,9 +11,15 @@ import (
 	"time"
 )
 
-type Application struct {
-	Logger *log.Logger
-	Models models.Models
+type config struct {
+	port int
+	env  string
+}
+
+type application struct {
+	logger *log.Logger
+	models models.Models
+	config config
 }
 
 type server struct {
@@ -33,9 +39,9 @@ func NewServer() *http.Server {
 
 	logger.Printf("Connected to database")
 
-	app := &Application{
-		Logger: logger,
-		Models: models.NewModels(db),
+	app := &application{
+		logger: logger,
+		models: models.NewModels(db),
 	}
 
 	newServer := &server{
