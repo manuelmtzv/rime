@@ -13,14 +13,14 @@ func init() {
 	Validate = validator.New(validator.WithRequiredStructEnabled())
 }
 
-func writeJSON(w http.ResponseWriter, status int, data any) error {
+func writeJSON(w http.ResponseWriter, status int, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	return json.NewEncoder(w).Encode(data)
 }
 
-func readJSON(w http.ResponseWriter, r *http.Request, data any) error {
-	maxBytes := 1_048_578 // 1mb
+func readJSON(w http.ResponseWriter, r *http.Request, data interface{}) error {
+	maxBytes := 1_048_578
 	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))
 
 	decoder := json.NewDecoder(r.Body)
@@ -37,7 +37,7 @@ func writeJSONError(w http.ResponseWriter, status int, message string) error {
 	return writeJSON(w, status, &envelope{Error: message})
 }
 
-func (app *application) jsonResponse(w http.ResponseWriter, status int, data any) error {
+func (app *application) jsonResponse(w http.ResponseWriter, status int, data interface{}) error {
 	type envelope struct {
 		Data any `json:"data"`
 	}

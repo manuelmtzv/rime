@@ -11,9 +11,12 @@ type UserStore struct {
 }
 
 func (s UserStore) Create(ctx context.Context, user *models.User) error {
-	query := `INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, created_at`
+	query := `
+		INSERT INTO users (name, last_name, username, email, password) 
+		VALUES ($1, $2, $3, $4, $5) 
+		RETURNING id, created_at`
 
-	return s.db.QueryRowContext(ctx, query, user.Username, user.Email, user.Password).Scan(&user.ID, &user.CreatedAt)
+	return s.db.QueryRowContext(ctx, query, user.Name, user.LastName, user.Username, user.Email, user.Password).Scan(&user.ID, &user.CreatedAt)
 }
 
 func (s UserStore) FindAll(ctx context.Context) ([]*models.User, error) {
@@ -26,8 +29,6 @@ func (s UserStore) FindAll(ctx context.Context) ([]*models.User, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	defer rows.Close()
 
 	users := []*models.User{}
 
@@ -55,6 +56,24 @@ func (s UserStore) FindOne(ctx context.Context, id string) (*models.User, error)
 	user := &models.User{}
 
 	err := s.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s UserStore) FindByEmail(ctx context.Context, email string) (*models.User, error) {
+	query := `
+		SELECT id, name, last_name, username, email, created_at, updated_at
+		FROM users
+		WHERE email = $1
+	`
+
+	user := &models.User{}
+
+	err := s.db.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		return nil, err
