@@ -2,6 +2,8 @@ package validator
 
 import (
 	"regexp"
+
+	"github.com/google/uuid"
 )
 
 var EmailRX = regexp.MustCompile(`^[a-zA-Z0-9.!#$%&'*+/=?^_` + "`" + `{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$`)
@@ -49,4 +51,9 @@ func Unique(values []string) bool {
 		uniqueValues[value] = true
 	}
 	return len(values) == len(uniqueValues)
+}
+
+func IsValidUUID(u string) bool {
+	_, err := uuid.Parse(u)
+	return err == nil
 }
