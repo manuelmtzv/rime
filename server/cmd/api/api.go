@@ -41,10 +41,14 @@ func (app *application) mount() *chi.Mux {
 	r.Route("/v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
 
+		r.Route("/auth", func(r chi.Router) {
+			r.Post("/register", app.register)
+			r.Post("/login", app.login)
+		})
+
 		r.Route("/users", func(r chi.Router) {
 			r.Get("/", app.findUsers)
 			r.Get("/{id}", app.findOneUser)
-			r.Post("/", app.createUser)
 		})
 
 		r.Route("/writtings", func(r chi.Router) {

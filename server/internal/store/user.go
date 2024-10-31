@@ -12,16 +12,16 @@ type UserStore struct {
 
 func (s UserStore) Create(ctx context.Context, user *models.User) error {
 	query := `
-		INSERT INTO users (name, last_name, username, email, password) 
+		INSERT INTO users (name, lastname, username, email, password) 
 		VALUES ($1, $2, $3, $4, $5) 
 		RETURNING id, created_at`
 
-	return s.db.QueryRowContext(ctx, query, user.Name, user.LastName, user.Username, user.Email, user.Password).Scan(&user.ID, &user.CreatedAt)
+	return s.db.QueryRowContext(ctx, query, user.Name, user.Lastname, user.Username, user.Email, user.Password).Scan(&user.ID, &user.CreatedAt)
 }
 
 func (s UserStore) FindAll(ctx context.Context) ([]*models.User, error) {
 	query := `
-		SELECT id, name, last_name, username, email, created_at, updated_at
+		SELECT id, name, lastname, username, email, created_at, updated_at
 		FROM users
 	`
 
@@ -35,7 +35,7 @@ func (s UserStore) FindAll(ctx context.Context) ([]*models.User, error) {
 	for rows.Next() {
 		user := &models.User{}
 
-		err := rows.Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+		err := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -48,14 +48,14 @@ func (s UserStore) FindAll(ctx context.Context) ([]*models.User, error) {
 
 func (s UserStore) FindOne(ctx context.Context, id string) (*models.User, error) {
 	query := `
-		SELECT id, name, last_name, username, email, created_at, updated_at
+		SELECT id, name, lastname, username, email, created_at, updated_at
 		FROM users
 		WHERE id = $1
 	`
 
 	user := &models.User{}
 
-	err := s.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	err := s.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.Name, &user.Lastname, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		return nil, err
@@ -66,14 +66,14 @@ func (s UserStore) FindOne(ctx context.Context, id string) (*models.User, error)
 
 func (s UserStore) FindByIdentifier(ctx context.Context, identifier string) (*models.User, error) {
 	query := `
-		SELECT id, name, last_name, username, email, created_at, updated_at
+		SELECT id, name, lastname, username, email, created_at, updated_at
 		FROM users
 		WHERE email = $1 OR username = $1
 	`
 
 	user := &models.User{}
 
-	err := s.db.QueryRowContext(ctx, query, identifier).Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	err := s.db.QueryRowContext(ctx, query, identifier).Scan(&user.ID, &user.Name, &user.Lastname, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		return nil, err
@@ -85,11 +85,11 @@ func (s UserStore) FindByIdentifier(ctx context.Context, identifier string) (*mo
 func (s UserStore) Update(ctx context.Context, user *models.User) error {
 	query := `
 		UPDATE users 
-		SET name = $1, last_name = $2, username = $3, email = $4, updated_at = NOW()
+		SET name = $1, lastname = $2, username = $3, email = $4, updated_at = NOW()
 		WHERE id = $5;
 	`
 
-	args := []interface{}{user.Name, user.LastName, user.Username, user.Email, user.ID}
+	args := []interface{}{user.Name, user.Lastname, user.Username, user.Email, user.ID}
 
 	_, err := s.db.ExecContext(ctx, query, args...)
 
