@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"rime-api/internal/db"
 	"rime-api/internal/env"
 	"rime-api/internal/store"
@@ -29,7 +28,7 @@ func main() {
 		cfg.db.maxIdleTime,
 	)
 	if err != nil {
-		log.Panic(err)
+		logger.Panic(err)
 	}
 
 	defer db.Close()
@@ -45,5 +44,5 @@ func main() {
 
 	mux := app.mount()
 
-	log.Fatal(app.run(mux))
+	logger.Fatal(app.run(mux))
 }
