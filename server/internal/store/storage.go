@@ -11,7 +11,7 @@ type Storage struct {
 		Create(context.Context, *models.User) error
 		FindAll(context.Context) ([]*models.User, error)
 		FindOne(context.Context, string) (*models.User, error)
-		FindByEmail(context.Context, string) (*models.User, error)
+		FindByIdentifier(context.Context, string) (*models.User, error)
 		Update(context.Context, *models.User) error
 		Delete(context.Context, string) error
 	}

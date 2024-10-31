@@ -64,16 +64,16 @@ func (s UserStore) FindOne(ctx context.Context, id string) (*models.User, error)
 	return user, nil
 }
 
-func (s UserStore) FindByEmail(ctx context.Context, email string) (*models.User, error) {
+func (s UserStore) FindByIdentifier(ctx context.Context, identifier string) (*models.User, error) {
 	query := `
 		SELECT id, name, last_name, username, email, created_at, updated_at
 		FROM users
-		WHERE email = $1
+		WHERE email = $1 OR username = $1
 	`
 
 	user := &models.User{}
 
-	err := s.db.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	err := s.db.QueryRowContext(ctx, query, identifier).Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		return nil, err

@@ -12,7 +12,7 @@ import (
 
 type CreateUserPayload struct {
 	Name     string `json:"name" validate:"required,max=100"`
-	LastName string `json:"last_name" validate:"required,max=100"`
+	LastName string `json:"lastName" validate:"required,max=100"`
 	Username string `json:"username" validate:"required,max=100"`
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required,min=8"`
@@ -31,7 +31,7 @@ func (app *application) createUser(w http.ResponseWriter, r *http.Request) {
 	var payload CreateUserPayload
 
 	if err := readJSON(w, r, &payload); err != nil {
-		app.badRequestResponse(w, r, errors.New("the provided JSON payload is invalid"))
+		app.badRequestResponse(w, r, errors.New("the provided JSON payload is not valid"))
 		return
 	}
 
@@ -40,7 +40,7 @@ func (app *application) createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user, err := app.store.Users.FindByEmail(r.Context(), payload.Email); err == nil && user != nil {
+	if user, err := app.store.Users.FindByIdentifier(r.Context(), payload.Email); err == nil && user != nil {
 		app.badRequestResponse(w, r, errors.New("email already exists"))
 		return
 	}
