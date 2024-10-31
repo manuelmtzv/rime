@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"rime-api/internal/store"
 	"time"
@@ -67,7 +66,7 @@ func (app *application) run(mux http.Handler) error {
 		IdleTimeout:  time.Minute,
 	}
 
-	log.Printf("server has started at %s", app.config.addr)
+	app.logger.Infof("server has started at %s", app.config.addr)
 
 	return server.ListenAndServe()
 }

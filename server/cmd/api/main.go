@@ -10,6 +10,8 @@ import (
 )
 
 func main() {
+	logger := zap.Must(zap.NewProduction()).Sugar()
+
 	cfg := config{
 		addr: env.GetString("ADDR", ":8080"),
 		db: dbConfig{
@@ -31,14 +33,14 @@ func main() {
 	}
 
 	defer db.Close()
-	log.Println("Database connection established")
+	logger.Infow("Database connection established")
 
 	store := store.NewStorage(db)
 
 	app := &application{
 		config: cfg,
 		store:  store,
-		logger: zap.Must(zap.NewProduction()).Sugar(),
+		logger: logger,
 	}
 
 	mux := app.mount()
