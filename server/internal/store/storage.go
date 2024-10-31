@@ -8,7 +8,11 @@ import (
 
 type Storage struct {
 	Users interface {
+		FindAll(context.Context) ([]*models.User, error)
 		Create(context.Context, *models.User) error
+		FindOne(context.Context, string) (*models.User, error)
+		Update(context.Context, *models.User) error
+		Delete(context.Context, string) error
 	}
 }
 

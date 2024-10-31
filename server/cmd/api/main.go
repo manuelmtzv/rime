@@ -5,6 +5,8 @@ import (
 	"rime-api/internal/db"
 	"rime-api/internal/env"
 	"rime-api/internal/store"
+
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -36,6 +38,7 @@ func main() {
 	app := &application{
 		config: cfg,
 		store:  store,
+		logger: zap.Must(zap.NewProduction()).Sugar(),
 	}
 
 	mux := app.mount()

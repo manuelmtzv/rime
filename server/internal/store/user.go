@@ -16,6 +16,35 @@ func (s UserStore) Create(ctx context.Context, user *models.User) error {
 	return s.db.QueryRowContext(ctx, query, user.Username, user.Email, user.Password).Scan(&user.ID, &user.CreatedAt)
 }
 
+func (s UserStore) FindAll(ctx context.Context) ([]*models.User, error) {
+	query := `
+		SELECT id, name, last_name, username, email, created_at, updated_at
+		FROM users
+	`
+
+	rows, err := s.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	users := []*models.User{}
+
+	for rows.Next() {
+		user := &models.User{}
+
+		err := rows.Scan(&user.ID, &user.Name, &user.LastName, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
+}
+
 func (s UserStore) FindOne(ctx context.Context, id string) (*models.User, error) {
 	query := `
 		SELECT id, name, last_name, username, email, created_at, updated_at
