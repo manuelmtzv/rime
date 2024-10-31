@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"rime-api/internal/models"
 
@@ -60,6 +61,11 @@ func (app *application) findOneWritting(w http.ResponseWriter, r *http.Request) 
 	writting, err := app.store.Writtings.FindOne(r.Context(), id)
 	if err != nil {
 		app.internalServerError(w, r, err)
+		return
+	}
+
+	if writting == nil {
+		app.notFoundResponse(w, r, errors.New("writting not found"))
 		return
 	}
 

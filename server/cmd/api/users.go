@@ -101,7 +101,6 @@ func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := app.store.Users.FindOne(r.Context(), id)
-
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
@@ -110,5 +109,9 @@ func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 	if user == nil {
 		app.notFoundResponse(w, r, errors.New("user not found"))
 		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, user); err != nil {
+		app.internalServerError(w, r, err)
 	}
 }
