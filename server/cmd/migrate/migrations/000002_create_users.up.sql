@@ -8,10 +8,6 @@ CREATE TABLE
         username VARCHAR(100) NOT NULL,
         email citext UNIQUE NOT NULL,
         password bytea NOT NULL,
-        created_at timestamp
-        with
-            time zone DEFAULT now (),
-            updated_at timestamp
-        with
-            time zone DEFAULT now ()
+        created_at timestamp NOT NULL DEFAULT now (),
+        updated_at timestamp NOT NULL DEFAULT now ()
     )

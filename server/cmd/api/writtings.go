@@ -10,10 +10,8 @@ import (
 
 type CreateWrittingPayload struct {
 	Type    string `json:"type" validate:"oneof=poem"`
+	Title   string `json:"title" validate:"required"`
 	Content string `json:"content" validate:"required"`
-}
-
-type WrittingResponse struct {
 }
 
 func (app *application) createWritting(w http.ResponseWriter, r *http.Request) {
@@ -31,6 +29,7 @@ func (app *application) createWritting(w http.ResponseWriter, r *http.Request) {
 
 	writting := &models.Writting{
 		Type:    payload.Type,
+		Title:   payload.Title,
 		Content: payload.Content,
 	}
 

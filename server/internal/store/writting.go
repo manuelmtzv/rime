@@ -12,16 +12,16 @@ type WrittingStore struct {
 
 func (s WrittingStore) Create(ctx context.Context, writting *models.Writting) error {
 	query := `
-		INSERT INTO writtings (type, content, author_id) 
-		VALUES ($1, $2, $3) 
+		INSERT INTO writtings (type, title, content, author_id) 
+		VALUES ($1, $2, $3, $4) 
 		RETURNING id, created_at`
 
-	return s.db.QueryRowContext(ctx, query, writting.Type, writting.Content, writting.AuthorID).Scan(&writting.ID, &writting.CreatedAt)
+	return s.db.QueryRowContext(ctx, query, writting.Type, writting.Title, writting.Content, writting.AuthorID).Scan(&writting.ID, &writting.CreatedAt)
 }
 
 func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) {
 	query := `
-		SELECT id, type, content, author_id, created_at, updated_at
+		SELECT id, type, title, content, author_id, created_at, updated_at
 		FROM writtings
 	`
 
@@ -48,7 +48,7 @@ func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) 
 
 func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting, error) {
 	query := `
-		SELECT id, type, content, author_id, created_at, updated_at FROM writtings
+		SELECT id, type, title, content, author_id, created_at, updated_at FROM writtings
 	`
 
 	row, err := s.db.QueryContext(ctx, query)
@@ -58,7 +58,7 @@ func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting
 
 	writting := &models.Writting{}
 
-	if err = row.Scan(&writting.ID, &writting.Type, &writting.Content, &writting.AuthorID, &writting.CreatedAt, &writting.UpdatedAt); err != nil {
+	if err = row.Scan(&writting.ID, &writting.Title, &writting.Type, &writting.Content, &writting.AuthorID, &writting.CreatedAt, &writting.UpdatedAt); err != nil {
 		return nil, err
 	}
 
@@ -68,11 +68,11 @@ func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting
 func (s WrittingStore) Update(ctx context.Context, writting *models.Writting) error {
 	query := `
 		UPDATE writtings 
-		SET type = $1, content = $2, updated_at = NOW()
-		WHERE id = $3;
+		SET type = $1, title = $2, content = $3, updated_at = NOW()
+		WHERE id = $4;
 	`
 
-	args := []interface{}{writting.Type, writting.Content, writting.ID}
+	args := []interface{}{writting.Type, writting.Title, writting.Content, writting.ID}
 
 	_, err := s.db.ExecContext(ctx, query, args...)
 
