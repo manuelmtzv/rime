@@ -4,8 +4,8 @@ export $(shell sed 's/=.*//' .env)
 MIGRATIONS_PATH = ./cmd/migrate/migrations
 MIGRATE_COMMAND = migrate -path "$(MIGRATIONS_PATH)" -database "$(DB_ADDR)"
 
-.PHONY: migrate-create
-migrate-create:
+.PHONY: create-migration
+create-migration:
 	@echo "Creating new migration"
 	@migrate create -ext sql -dir $(MIGRATIONS_PATH) -seq $(filter-out $@,$(MAKECMDGOALS))
 
