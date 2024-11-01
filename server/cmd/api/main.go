@@ -3,6 +3,7 @@ package main
 import (
 	"rime-api/internal/db"
 	"rime-api/internal/env"
+	"rime-api/internal/mailer"
 	"rime-api/internal/store"
 
 	"go.uber.org/zap"
@@ -19,7 +20,15 @@ func main() {
 			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 25),
 			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "15m"),
 		},
+		mail: mailConfig{
+			config: brevoConfig{
+				apiKey:     env.GetString("BREVO_API_KEY", ""),
+				partnerKey: env.GetString("BREVO_PARTNER_KEY", ""),
+			},
+		},
 	}
+
+	mailer := mailer.NewBrevo(cfg.mail.config.apiKey, cfg.mail.config.partnerKey)
 
 	db, err := db.New(
 		cfg.db.addr,
@@ -40,6 +49,7 @@ func main() {
 		config: cfg,
 		store:  store,
 		logger: logger,
+		mailer: mailer,
 	}
 
 	mux := app.mount()
