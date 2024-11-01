@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"rime-api/internal/auth"
 	"rime-api/internal/mailer"
 	"rime-api/internal/store"
 	"time"
@@ -12,32 +13,11 @@ import (
 )
 
 type application struct {
-	config config
-	store  store.Storage
-	logger *zap.SugaredLogger
-	mailer mailer.Client
-}
-
-type config struct {
-	addr string
-	db   dbConfig
-	mail mailConfig
-}
-
-type dbConfig struct {
-	addr         string
-	maxOpenConns int
-	maxIdleConns int
-	maxIdleTime  string
-}
-
-type mailConfig struct {
-	config brevoConfig
-}
-
-type brevoConfig struct {
-	apiKey     string
-	partnerKey string
+	config        config
+	store         store.Storage
+	logger        *zap.SugaredLogger
+	mailer        mailer.Client
+	authenticator auth.Authenticator
 }
 
 func (app *application) mount() *chi.Mux {

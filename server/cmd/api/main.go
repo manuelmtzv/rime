@@ -1,10 +1,12 @@
 package main
 
 import (
+	"rime-api/internal/auth"
 	"rime-api/internal/db"
 	"rime-api/internal/env"
 	"rime-api/internal/mailer"
 	"rime-api/internal/store"
+	"time"
 
 	"go.uber.org/zap"
 )
@@ -26,7 +28,16 @@ func main() {
 				partnerKey: env.GetString("BREVO_PARTNER_KEY", ""),
 			},
 		},
+		auth: authConfig{
+			jwt: jwtConfig{
+				secret:  env.GetString("JWT_SECRET", "secret"),
+				expires: env.GetDuration("JWT_EXPIRES", time.Hour),
+				issuer:  env.GetString("JWT_ISSUER", "rime-api"),
+			},
+		},
 	}
+
+	authenticator := auth.NewJWTAuthenticator(cfg.auth.jwt.secret, cfg.auth.jwt.issuer, cfg.auth.jwt.issuer)
 
 	mailer := mailer.NewBrevo(cfg.mail.config.apiKey, cfg.mail.config.partnerKey)
 
@@ -46,10 +57,11 @@ func main() {
 	store := store.NewStorage(db)
 
 	app := &application{
-		config: cfg,
-		store:  store,
-		logger: logger,
-		mailer: mailer,
+		config:        cfg,
+		store:         store,
+		logger:        logger,
+		mailer:        mailer,
+		authenticator: authenticator,
 	}
 
 	mux := app.mount()
