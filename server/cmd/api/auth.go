@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"rime-api/internal/hash"
 	"rime-api/internal/models"
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type RegisterPayload struct {
@@ -16,8 +19,8 @@ type RegisterPayload struct {
 }
 
 type LoginPayload struct {
-	Identifier string `json:"identifier" validator:"required"`
-	Password   string `json:"password" validator:"required"`
+	Username string `json:"username" validate:"required"`
+	Password string `json:"password" validate:"required"`
 }
 
 func (app *application) register(w http.ResponseWriter, r *http.Request) {
@@ -72,5 +75,50 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) login(w http.ResponseWriter, r *http.Request) {
+	var payload LoginPayload
 
+	if err := readJSON(w, r, &payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	if err := Validate.Struct(payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	user, err := app.store.Users.FindByIdentifier(r.Context(), payload.Username)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if user == nil {
+		app.notFoundResponse(w, r, errors.New("user not found"))
+		return
+	}
+
+	if valid, _ := hash.VerifyPassword(payload.Password, user.Password); !valid {
+		app.badRequestResponse(w, r, errors.New("invalid password"))
+		return
+	}
+
+	claims := &jwt.MapClaims{
+		"sub": user.ID,
+		"exp": time.Now().Add(app.config.auth.jwt.expires).Unix(),
+		"iat": time.Now().Unix(),
+		"nbf": time.Now().Unix(),
+		"iss": app.config.auth.jwt.issuer,
+		"aud": app.config.auth.jwt.issuer,
+	}
+
+	token, err := app.authenticator.GenerateToken(claims)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, map[string]string{"token": token}); err != nil {
+		app.internalServerError(w, r, err)
+	}
 }

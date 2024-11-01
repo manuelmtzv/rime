@@ -4,6 +4,8 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
+	"fmt"
 
 	"golang.org/x/crypto/argon2"
 )
@@ -31,6 +33,12 @@ func VerifyPassword(password, encodedHash string) (bool, error) {
 	saltHash, err := base64.RawStdEncoding.DecodeString(encodedHash)
 	if err != nil {
 		return false, err
+	}
+
+	fmt.Println(password, encodedHash)
+
+	if len(saltHash) < 16 {
+		return false, errors.New("decoded hash too short")
 	}
 
 	salt, hash := saltHash[:16], saltHash[16:]

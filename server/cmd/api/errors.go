@@ -29,9 +29,13 @@ func (app *application) conflictResponse(w http.ResponseWriter, r *http.Request,
 }
 
 func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request, err error) {
-	app.logger.Warnf("not found error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
+	msg := "not found"
+	if err != nil {
+		msg = err.Error()
+	}
 
-	writeJSONError(w, http.StatusNotFound, "not found")
+	app.logger.Warnf("Not Found: %s %s - %s", r.Method, r.URL.Path, msg)
+	writeJSONError(w, http.StatusNotFound, msg)
 }
 
 func (app *application) unauthorizedErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
