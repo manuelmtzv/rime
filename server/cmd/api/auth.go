@@ -28,7 +28,7 @@ func (app *application) validate(w http.ResponseWriter, r *http.Request) {
 	user := app.getUserFromContext(r)
 
 	if user == nil {
-		app.internalServerError(w, r, errors.New("your session can not be validated. Try again later"))
+		app.unauthorizedErrorResponse(w, r, errors.New("your session could not be validated"))
 		return
 	}
 
@@ -76,7 +76,7 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	var payload RegisterPayload
 
 	if err := readJSON(w, r, &payload); err != nil {
-		app.badRequestResponse(w, r, err)
+		app.badRequestResponse(w, r, fmt.Errorf("error reading JSON in register: %w", err))
 		return
 	}
 
@@ -127,7 +127,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 	var payload LoginPayload
 
 	if err := readJSON(w, r, &payload); err != nil {
-		app.badRequestResponse(w, r, err)
+		app.badRequestResponse(w, r, fmt.Errorf("error reading JSON in login: %w", err))
 		return
 	}
 
