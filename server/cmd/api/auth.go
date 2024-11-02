@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"rime-api/internal/hash"
 	"rime-api/internal/models"
@@ -21,6 +22,54 @@ type RegisterPayload struct {
 type LoginPayload struct {
 	Username string `json:"username" validate:"required"`
 	Password string `json:"password" validate:"required"`
+}
+
+func (app *application) validate(w http.ResponseWriter, r *http.Request) {
+	user := app.getUserFromContext(r)
+
+	if user == nil {
+		app.internalServerError(w, r, errors.New("your session can not be validated. Try again later"))
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, user); err != nil {
+		app.internalServerError(w, r, err)
+	}
+}
+
+func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
+	token, err := app.getAuthTokenFromHeader(r)
+	if err != nil {
+		app.unauthorizedErrorResponse(w, r, err)
+		return
+	}
+
+	refreshToken, err := app.authenticator.ValidateToken(token, "refresh")
+
+	if err != nil {
+		app.unauthorizedErrorResponse(w, r, err)
+		return
+	}
+
+	claims, _ := refreshToken.Claims.(jwt.MapClaims)
+	userID := fmt.Sprintf("%s", claims["sub"])
+
+	user, err := app.getUser(r.Context(), userID)
+
+	if err != nil {
+		app.unauthorizedErrorResponse(w, r, err)
+		return
+	}
+
+	accessToken, err := app.composeToken(user.ID, "access")
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, map[string]string{"token": accessToken, "refreshToken": refreshToken.Raw}); err != nil {
+		app.internalServerError(w, r, err)
+	}
 }
 
 func (app *application) register(w http.ResponseWriter, r *http.Request) {
@@ -115,33 +164,38 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) composeTokens(userID string) (string, string, error) {
-	accessTokenClaims := &jwt.MapClaims{
-		"sub": userID,
-		"exp": time.Now().Add(app.config.auth.jwt.expires).Unix(),
-		"iat": time.Now().Unix(),
-		"nbf": time.Now().Unix(),
-		"iss": app.config.auth.jwt.issuer,
-		"aud": app.config.auth.jwt.issuer,
-	}
-
-	accessToken, err := app.authenticator.GenerateToken(accessTokenClaims, "access")
+	refreshToken, err := app.composeToken(userID, "refresh")
 	if err != nil {
 		return "", "", err
 	}
 
-	refreshTokenClaims := &jwt.MapClaims{
-		"sub": userID,
-		"exp": time.Now().Add(app.config.auth.jwt.refreshExpires).Unix(),
-		"iat": time.Now().Unix(),
-		"nbf": time.Now().Unix(),
-		"iss": app.config.auth.jwt.issuer,
-		"aud": app.config.auth.jwt.issuer,
-	}
-
-	refreshToken, err := app.authenticator.GenerateToken(refreshTokenClaims, "refresh")
+	accessToken, err := app.composeToken(userID, "access")
 	if err != nil {
 		return "", "", err
 	}
 
 	return accessToken, refreshToken, nil
+}
+
+func (app *application) composeToken(userID string, tokenType string) (string, error) {
+	expires := app.config.auth.jwt.expires
+	if tokenType == "refresh" {
+		expires = app.config.auth.jwt.refreshExpires
+	}
+
+	accessTokenClaims := &jwt.MapClaims{
+		"sub": userID,
+		"exp": time.Now().Add(expires).Unix(),
+		"iat": time.Now().Unix(),
+		"nbf": time.Now().Unix(),
+		"iss": app.config.auth.jwt.issuer,
+		"aud": app.config.auth.jwt.issuer,
+	}
+
+	accessToken, err := app.authenticator.GenerateToken(accessTokenClaims, tokenType)
+	if err != nil {
+		return "", err
+	}
+
+	return accessToken, nil
 }

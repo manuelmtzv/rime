@@ -35,6 +35,7 @@ func (app *application) mount() *chi.Mux {
 
 		r.Route("/auth", func(r chi.Router) {
 			r.With(app.AuthMiddleware).Get("/validate", app.validate)
+			r.Get("/refresh", app.refreshToken)
 			r.Post("/register", app.register)
 			r.Post("/login", app.login)
 		})

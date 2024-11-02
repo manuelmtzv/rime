@@ -12,19 +12,11 @@ import (
 
 func (app *application) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authorization := r.Header.Get("Authorization")
-		if authorization == "" {
-			app.unauthorizedErrorResponse(w, r, fmt.Errorf("authorization header is missing"))
+		token, err := app.getAuthTokenFromHeader(r)
+		if err != nil {
+			app.unauthorizedErrorResponse(w, r, err)
 			return
 		}
-
-		parts := strings.Split(authorization, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			app.unauthorizedErrorResponse(w, r, fmt.Errorf("authorization header is malformed"))
-			return
-		}
-
-		token := parts[1]
 
 		accessToken, err := app.authenticator.ValidateToken(token, "access")
 		if err != nil {
@@ -45,6 +37,20 @@ func (app *application) AuthMiddleware(next http.Handler) http.Handler {
 		ctx = context.WithValue(ctx, userCtx, user)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func (app *application) getAuthTokenFromHeader(r *http.Request) (string, error) {
+	authorization := r.Header.Get("Authorization")
+	if authorization == "" {
+		return "", fmt.Errorf("authorization header is missing")
+	}
+
+	parts := strings.Split(authorization, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		return "", fmt.Errorf("authorization header is malformed")
+	}
+
+	return parts[1], nil
 }
 
 func (app *application) getUser(ctx context.Context, userID string) (*models.User, error) {
