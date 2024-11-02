@@ -8,6 +8,21 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+  redis: 
+    image: redis:7.4.1
+    container_name: rime-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: rime-redis-commander
+    environment:
+      - REDIS_HOSTS=redis
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis  
 
 volumes: 
   db-data:
