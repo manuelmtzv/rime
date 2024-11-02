@@ -103,8 +103,20 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	accessToken, refreshToken, err := app.composeTokens(user.ID)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, map[string]string{"token": accessToken, "refreshToken": refreshToken}); err != nil {
+		app.internalServerError(w, r, err)
+	}
+}
+
+func (app *application) composeTokens(userID string) (string, string, error) {
 	accessTokenClaims := &jwt.MapClaims{
-		"sub": user.ID,
+		"sub": userID,
 		"exp": time.Now().Add(app.config.auth.jwt.expires).Unix(),
 		"iat": time.Now().Unix(),
 		"nbf": time.Now().Unix(),
@@ -114,12 +126,11 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 
 	accessToken, err := app.authenticator.GenerateToken(accessTokenClaims, "access")
 	if err != nil {
-		app.internalServerError(w, r, err)
-		return
+		return "", "", err
 	}
 
 	refreshTokenClaims := &jwt.MapClaims{
-		"sub": user.ID,
+		"sub": userID,
 		"exp": time.Now().Add(app.config.auth.jwt.refreshExpires).Unix(),
 		"iat": time.Now().Unix(),
 		"nbf": time.Now().Unix(),
@@ -129,11 +140,8 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 
 	refreshToken, err := app.authenticator.GenerateToken(refreshTokenClaims, "refresh")
 	if err != nil {
-		app.internalServerError(w, r, err)
-		return
+		return "", "", err
 	}
 
-	if err := app.jsonResponse(w, http.StatusOK, map[string]string{"token": accessToken, "refreshToken": refreshToken}); err != nil {
-		app.internalServerError(w, r, err)
-	}
+	return accessToken, refreshToken, nil
 }
