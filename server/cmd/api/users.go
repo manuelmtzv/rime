@@ -8,6 +8,10 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+type userKey string
+
+const userCtx userKey = "user"
+
 type UserResponse struct {
 	ID        string `json:"id"`
 	Name      string `json:"name"`
