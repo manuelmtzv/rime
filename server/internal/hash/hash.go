@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"errors"
-	"fmt"
 
 	"golang.org/x/crypto/argon2"
 )
@@ -34,8 +33,6 @@ func VerifyPassword(password, encodedHash string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-
-	fmt.Println(password, encodedHash)
 
 	if len(saltHash) < 16 {
 		return false, errors.New("decoded hash too short")
