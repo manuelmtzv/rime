@@ -163,15 +163,17 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) composeTokens(userID string) (string, string, error) {
-	refreshToken, err := app.composeToken(userID, "refresh")
-	if err != nil {
-		return "", "", err
+func (app *application) composeTokens(userID string) (accessToken string, refreshToken string, err error) {
+	tokens := map[string]*string{
+		"access":  &accessToken,
+		"refresh": &refreshToken,
 	}
 
-	accessToken, err := app.composeToken(userID, "access")
-	if err != nil {
-		return "", "", err
+	for tokenType, tokenRef := range tokens {
+		*tokenRef, err = app.composeToken(userID, tokenType)
+		if err != nil {
+			return "", "", err
+		}
 	}
 
 	return accessToken, refreshToken, nil
