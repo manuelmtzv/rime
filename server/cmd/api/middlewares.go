@@ -26,8 +26,6 @@ func (app *application) AuthMiddleware(next http.Handler) http.Handler {
 
 		token := parts[1]
 
-		app.logger.Info(token)
-
 		accessToken, err := app.authenticator.ValidateToken(token, "access")
 		if err != nil {
 			app.unauthorizedErrorResponse(w, r, err)
@@ -35,7 +33,7 @@ func (app *application) AuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		claims, _ := accessToken.Claims.(jwt.MapClaims)
-		userID := fmt.Sprintf("%.f", claims["sub"])
+		userID := fmt.Sprintf("%s", claims["sub"])
 		ctx := r.Context()
 
 		user, err := app.getUser(ctx, userID)
