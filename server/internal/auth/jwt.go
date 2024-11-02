@@ -22,7 +22,12 @@ func NewJWTAuthenticator(secret, refreshSecret, aud, issuer string) *JWTAuthenti
 	}
 }
 
-func (a *JWTAuthenticator) generateToken(claims jwt.Claims, secret string) (string, error) {
+func (a *JWTAuthenticator) GenerateToken(claims jwt.Claims, tokenType string) (string, error) {
+	secret := a.secret
+	if tokenType == "refresh" {
+		secret = a.refreshSecret
+	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	tokenString, err := token.SignedString([]byte(secret))
@@ -33,21 +38,18 @@ func (a *JWTAuthenticator) generateToken(claims jwt.Claims, secret string) (stri
 	return tokenString, nil
 }
 
-func (a *JWTAuthenticator) GenerateAccessToken(claims jwt.Claims) (string, error) {
-	return a.generateToken(claims, a.secret)
-}
+func (a *JWTAuthenticator) ValidateToken(token, tokenType string) (*jwt.Token, error) {
+	secret := a.secret
+	if tokenType == "refresh" {
+		secret = a.refreshSecret
+	}
 
-func (a *JWTAuthenticator) GenerateRefreshToken(claims jwt.Claims) (string, error) {
-	return a.generateToken(claims, a.refreshSecret)
-}
-
-func (a *JWTAuthenticator) ValidateToken(token string) (*jwt.Token, error) {
 	return jwt.Parse(token, func(t *jwt.Token) (any, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method %v", t.Header["alg"])
 		}
 
-		return []byte(a.secret), nil
+		return []byte(secret), nil
 	},
 		jwt.WithExpirationRequired(),
 		jwt.WithAudience(a.issuer),

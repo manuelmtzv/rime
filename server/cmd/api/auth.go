@@ -112,7 +112,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		"aud": app.config.auth.jwt.issuer,
 	}
 
-	accessToken, err := app.authenticator.GenerateAccessToken(accessTokenClaims)
+	accessToken, err := app.authenticator.GenerateToken(accessTokenClaims, "access")
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
@@ -127,7 +127,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		"aud": app.config.auth.jwt.issuer,
 	}
 
-	refreshToken, err := app.authenticator.GenerateRefreshToken(refreshTokenClaims)
+	refreshToken, err := app.authenticator.GenerateToken(refreshTokenClaims, "refresh")
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
