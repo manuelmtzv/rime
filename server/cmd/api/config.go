@@ -21,9 +21,11 @@ type authConfig struct {
 }
 
 type jwtConfig struct {
-	secret  string
-	expires time.Duration
-	issuer  string
+	secret         string
+	expires        time.Duration
+	refreshSecret  string
+	refreshExpires time.Duration
+	issuer         string
 }
 
 type mailConfig struct {

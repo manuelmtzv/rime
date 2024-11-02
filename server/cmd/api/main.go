@@ -30,14 +30,16 @@ func main() {
 		},
 		auth: authConfig{
 			jwt: jwtConfig{
-				secret:  env.GetString("JWT_SECRET", "secret"),
-				expires: env.GetDuration("JWT_EXPIRES", time.Hour),
-				issuer:  env.GetString("JWT_ISSUER", "rime-api"),
+				secret:         env.GetString("JWT_SECRET", "secret"),
+				expires:        env.GetDuration("JWT_EXPIRES", time.Hour),
+				refreshSecret:  env.GetString("JWT_REFRESH_SECRET", ""),
+				refreshExpires: env.GetDuration("JWT_REFRESH_EXPIRES", time.Hour*24*7),
+				issuer:         env.GetString("JWT_ISSUER", "rime-api"),
 			},
 		},
 	}
 
-	authenticator := auth.NewJWTAuthenticator(cfg.auth.jwt.secret, cfg.auth.jwt.issuer, cfg.auth.jwt.issuer)
+	authenticator := auth.NewJWTAuthenticator(cfg.auth.jwt.secret, cfg.auth.jwt.refreshSecret, cfg.auth.jwt.issuer, cfg.auth.jwt.issuer)
 
 	mailer := mailer.NewBrevo(cfg.mail.config.apiKey, cfg.mail.config.partnerKey)
 
