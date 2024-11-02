@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"rime-api/internal/models"
 	"rime-api/internal/validations"
 
 	"github.com/go-chi/chi/v5"
@@ -57,4 +58,22 @@ func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 	if err := app.jsonResponse(w, http.StatusOK, user); err != nil {
 		app.internalServerError(w, r, err)
 	}
+}
+
+func (app *application) validate(w http.ResponseWriter, r *http.Request) {
+	user := app.getUserFromContext(r)
+
+	if user == nil {
+		app.internalServerError(w, r, errors.New("your session can not be validated. Try again later"))
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, user); err != nil {
+		app.internalServerError(w, r, err)
+	}
+}
+
+func (app *application) getUserFromContext(r *http.Request) *models.User {
+	user, _ := r.Context().Value(userCtx).(*models.User)
+	return user
 }

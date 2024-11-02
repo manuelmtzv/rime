@@ -34,6 +34,7 @@ func (app *application) mount() *chi.Mux {
 		r.Get("/health", app.healthCheckHandler)
 
 		r.Route("/auth", func(r chi.Router) {
+			r.With(app.AuthMiddleware).Get("/validate", app.validate)
 			r.Post("/register", app.register)
 			r.Post("/login", app.login)
 		})
