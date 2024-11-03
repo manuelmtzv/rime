@@ -1,0 +1,3 @@
+defineAppConfig({
+  ui: {},
+});
