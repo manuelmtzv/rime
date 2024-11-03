@@ -1,3 +1,3 @@
-defineAppConfig({
+export default defineAppConfig({
   ui: {},
 });
