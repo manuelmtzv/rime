@@ -4,11 +4,16 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/joho/godotenv"
 )
+
+func Load() error {
+	return godotenv.Load()
+}
 
 func GetString(key, fallback string) string {
 	val, ok := os.LookupEnv(key)
-
 	if !ok {
 		return fallback
 	}
@@ -28,6 +33,20 @@ func GetInt(key string, fallback int) int {
 	}
 
 	return number
+}
+
+func GetBool(key string, fallback bool) bool {
+	val, ok := os.LookupEnv(key)
+	if !ok {
+		return fallback
+	}
+
+	result, err := strconv.ParseBool(val)
+	if err != nil {
+		return fallback
+	}
+
+	return result
 }
 
 func GetDuration(key string, fallback time.Duration) time.Duration {
