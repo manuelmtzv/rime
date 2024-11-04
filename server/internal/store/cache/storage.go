@@ -9,9 +9,9 @@ import (
 
 type Storage struct {
 	Users interface {
-		Get(context.Context, int64) (*models.User, error)
+		Get(context.Context, string) (*models.User, error)
 		Set(context.Context, *models.User) error
-		Delete(context.Context, int64)
+		Delete(context.Context, string)
 	}
 }
 
