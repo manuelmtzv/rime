@@ -5,6 +5,7 @@ import (
 	"rime-api/internal/auth"
 	"rime-api/internal/mailer"
 	"rime-api/internal/store"
+	"rime-api/internal/store/cache"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -15,6 +16,7 @@ import (
 type application struct {
 	config        config
 	store         store.Storage
+	cacheStore    cache.Storage
 	logger        *zap.SugaredLogger
 	mailer        mailer.Client
 	authenticator auth.Authenticator

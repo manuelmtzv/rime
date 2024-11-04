@@ -6,13 +6,20 @@ import (
 	"rime-api/internal/env"
 	"rime-api/internal/mailer"
 	"rime-api/internal/store"
+	"rime-api/internal/store/cache"
 	"time"
 
+	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
 )
 
 func main() {
 	logger := zap.Must(zap.NewProduction()).Sugar()
+
+	err := env.Load()
+	if err != nil {
+		logger.Panic(err)
+	}
 
 	cfg := config{
 		addr: env.GetString("ADDR", ":8080"),
@@ -21,6 +28,12 @@ func main() {
 			maxOpenConns: env.GetInt("DB_MAX_OPEN_CONNS", 25),
 			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 25),
 			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "15m"),
+		},
+		redisdbCfg: redisConfig{
+			addr:    env.GetString("REDIS_ADDR", "localhost:6379"),
+			pw:      env.GetString("REDIS_PW", ""),
+			db:      env.GetInt("REDIS_DB", 0),
+			enabled: env.GetBool("REDIS_ENABLED", false),
 		},
 		mail: mailConfig{
 			config: brevoConfig{
@@ -57,10 +70,20 @@ func main() {
 	logger.Infow("Database connection established")
 
 	store := store.NewStorage(db)
+	var rdb *redis.Client
+	if cfg.redisdbCfg.enabled {
+		rdb = cache.NewRedisClient(cfg.redisdbCfg.addr, cfg.redisdbCfg.pw, cfg.redisdbCfg.db)
+
+		defer rdb.Close()
+		logger.Infow("Redis connection established")
+	}
+
+	cacheStorage := cache.NewRedisStorage(rdb)
 
 	app := &application{
 		config:        cfg,
 		store:         store,
+		cacheStore:    cacheStorage,
 		logger:        logger,
 		mailer:        mailer,
 		authenticator: authenticator,
