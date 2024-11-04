@@ -1,15 +1,15 @@
 <template>
   <nav>
-    <ul class="flex gap-4">
+    <ul class="flex gap-2">
       <li>
-        <NuxtLink to="/about">About</NuxtLink>
+        <AppLink to="/about">About</AppLink>
       </li>
 
       <li>
-        <NuxtLink to="/auth/login">Login</NuxtLink>
+        <AppLink to="/auth/login">Login</AppLink>
       </li>
       <li>
-        <NuxtLink to="/auth/register">Register</NuxtLink>
+        <AppLink to="/auth/register">Register</AppLink>
       </li>
     </ul>
   </nav>
