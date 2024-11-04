@@ -54,5 +54,24 @@ func (app *application) getAuthTokenFromHeader(r *http.Request) (string, error) 
 }
 
 func (app *application) getUser(ctx context.Context, userID string) (*models.User, error) {
-	return app.store.Users.FindOne(ctx, userID)
+	if !app.config.redisdbCfg.enabled {
+		return app.store.Users.FindOne(ctx, userID)
+	}
+
+	user, err := app.cacheStore.Users.Get(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	if user == nil {
+		user, err = app.store.Users.FindOne(ctx, userID)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := app.cacheStore.Users.Set(ctx, user); err != nil {
+			return nil, err
+		}
+	}
+	return user, nil
 }
