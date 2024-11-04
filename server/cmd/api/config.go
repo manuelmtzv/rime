@@ -3,10 +3,11 @@ package main
 import "time"
 
 type config struct {
-	addr string
-	db   dbConfig
-	mail mailConfig
-	auth authConfig
+	addr       string
+	db         dbConfig
+	mail       mailConfig
+	auth       authConfig
+	redisdbCfg redisConfig
 }
 
 type dbConfig struct {
@@ -35,4 +36,11 @@ type mailConfig struct {
 type brevoConfig struct {
 	apiKey     string
 	partnerKey string
+}
+
+type redisConfig struct {
+	addr    string
+	pw      string
+	db      int
+	enabled bool
 }
