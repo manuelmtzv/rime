@@ -16,4 +16,7 @@ export default defineNuxtConfig({
   icon: {
     size: "24",
   },
+  app: {
+    pageTransition: { name: "page", mode: "out-in" },
+  },
 });

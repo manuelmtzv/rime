@@ -8,7 +8,7 @@ function handleSubmit() {
   <Page class="">
     <form class="auth-form" @submit.prevent="handleSubmit">
       <div class="text-center space-y-2 mb-2">
-        <h2 class="font-semibold text-lg">Welcome back!</h2>
+        <h2 class="font-semibold text-lg font-poetry">Welcome back!</h2>
         <p>Enter your credentials to access your writings</p>
       </div>
 

@@ -22,7 +22,7 @@ function togglePasswordVisibility() {
   <Page class="">
     <form class="auth-form" @submit.prevent="handleSubmit">
       <div class="text-center space-y-2 mb-2">
-        <h2 class="font-semibold text-lg">Join the community!</h2>
+        <h2 class="font-semibold text-lg font-poetry">Join the community!</h2>
         <p>Create an account to start writing</p>
       </div>
       <UInput size="md" placeholder="Name" v-model="form.name" />
