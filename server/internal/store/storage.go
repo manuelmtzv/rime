@@ -19,6 +19,7 @@ type Storage struct {
 		Create(context.Context, *models.Writting) error
 		FindAll(context.Context) ([]*models.Writting, error)
 		FindOne(context.Context, string) (*models.Writting, error)
+		ComposeFeed(context.Context, *string) ([]*models.Writting, error)
 		Update(context.Context, *models.Writting) error
 		Delete(context.Context, string) error
 	}

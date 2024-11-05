@@ -65,6 +65,14 @@ func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting
 	return writting, nil
 }
 
+func (s WrittingStore) ComposeFeed(ctx context.Context, userID *string) ([]*models.Writting, error) {
+	if userID == nil {
+
+	}
+
+	return make([]*models.Writting, 0), nil
+}
+
 func (s WrittingStore) Update(ctx context.Context, writting *models.Writting) error {
 	query := `
 		UPDATE writtings 
