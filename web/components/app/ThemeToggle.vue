@@ -11,7 +11,7 @@ const toggleColorMode = () => {
 </script>
 
 <template>
-  <ColorScheme placeholder="..." tag="span" class="w-8 h-8">
+  <ClientOnly>
     <button
       @click="toggleColorMode"
       class="flex hover:bg-gray-100 dark:hover:bg-gray-900 p-1.5 rounded-md"
@@ -27,5 +27,9 @@ const toggleColorMode = () => {
         size="20"
       />
     </button>
-  </ColorScheme>
+
+    <template #fallback>
+      <div class="min-w-8 max-w-8 min-h-8 max-h-8 overflow-hidden"></div>
+    </template>
+  </ClientOnly>
 </template>
