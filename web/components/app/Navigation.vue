@@ -2,7 +2,7 @@
   <nav>
     <ul class="flex gap-2">
       <li>
-        <AppLink to="/about">About</AppLink>
+        <AppLink to="/feed">Feed</AppLink>
       </li>
 
       <li>
