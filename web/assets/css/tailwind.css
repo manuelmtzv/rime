@@ -7,7 +7,7 @@
     @apply mx-auto px-4;
   }
   .auth-form {
-    @apply border rounded-xl p-6 max-w-lg mx-auto flex flex-col gap-4 shadow-sm;
+    @apply border rounded-xl p-6 xl:p-8 max-w-lg mx-auto flex flex-col gap-4 shadow-sm mt-10 xl:mt-20 mb-10;
   }
 }
 

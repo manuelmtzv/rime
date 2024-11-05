@@ -6,7 +6,7 @@ function handleSubmit() {
 
 <template>
   <Page class="">
-    <form class="auth-form mt-20 mb-10" @submit.prevent="handleSubmit">
+    <form class="auth-form" @submit.prevent="handleSubmit">
       <div class="text-center space-y-2 mb-2">
         <h2 class="font-semibold text-lg">Welcome back!</h2>
         <p>Enter your credentials to access your writings</p>
@@ -16,12 +16,12 @@ function handleSubmit() {
 
       <UInput size="md" placeholder="Your password" />
 
-      <div class="flex justify-between items-center">
-        <ULink href="/auth/register" class="text-sm"
-          >Don't have an account?</ULink
-        >
+      <div class="flex justify-between items-center my-1">
+        <span class="text-sm">Don't have an account?</span>
 
-        <ULink href="/auth/register" class="text-sm">Create an account</ULink>
+        <NuxtLink to="/auth/register" class="text-sm"
+          >Create an account</NuxtLink
+        >
       </div>
 
       <UButton type="submit" class="justify-center font-semibold" size="md"
