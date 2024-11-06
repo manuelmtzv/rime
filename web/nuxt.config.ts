@@ -2,7 +2,13 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/google-fonts", "@nuxt/icon", "@pinia/nuxt"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/google-fonts",
+    "@nuxt/icon",
+    "@pinia/nuxt",
+    "@nuxtjs/i18n",
+  ],
   googleFonts: {
     families: {
       Merriweather: true,
@@ -23,5 +29,26 @@ export default defineNuxtConfig({
     public: {
       serverUrl: process.env.SERVER_API,
     },
+  },
+  i18n: {
+    locales: [
+      {
+        code: "en",
+        iso: "en-US",
+        name: "English",
+      },
+      {
+        code: "es",
+        iso: "es-ES",
+        name: "Español",
+      },
+    ],
+    defaultLocale: "en",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+    },
+    vueI18n: "./i18n.config.ts",
   },
 });
