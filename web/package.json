@@ -14,12 +14,18 @@
     "@nuxt/ui": "^2.18.7",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@pinia/nuxt": "^0.7.0",
+    "@tiptap/extension-placeholder": "^2.9.1",
+    "@tiptap/extension-underline": "^2.9.1",
+    "@tiptap/pm": "^2.9.1",
+    "@tiptap/starter-kit": "^2.9.1",
+    "@tiptap/vue-3": "^2.9.1",
     "nuxt": "^3.13.2",
     "pinia": "^2.2.6",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "sass-embedded": "^1.80.6"
   }
 }
