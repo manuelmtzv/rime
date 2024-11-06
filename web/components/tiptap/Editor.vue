@@ -46,101 +46,65 @@ const editor = useEditor({
 
 <template>
   <ClientOnly>
-    <div
-      v-if="editor"
-      class="border border-gray-300 rounded-md focus:border-gray-500"
-    >
-      <nav class="border-b px-1.5 py-1 flex gap-2">
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('paragraph')"
-          @click.prevent="editor?.chain().focus().setParagraph().run()"
-        >
-          <Icon name="heroicons:pencil-solid" size="14" />
+    <div v-if="editor" class="border border-gray-300 rounded-md focus:border-gray-500">
+      <nav class="border-b px-2 py-1.5 flex gap-2">
+        <TiptapButtonWrapper :is-active="editor.isActive('paragraph')"
+          @click.prevent="editor?.chain().focus().setParagraph().run()">
+          <Icon name="heroicons:pencil-solid" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('bold')"
-          @click.prevent="editor?.chain().focus().toggleBold().run()"
-        >
-          <Icon name="heroicons:bold" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('bold')"
+          @click.prevent="editor?.chain().focus().toggleBold().run()">
+          <Icon name="heroicons:bold" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('italic')"
-          @click.prevent="editor?.chain().focus().toggleItalic().run()"
-        >
-          <Icon name="heroicons:italic" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('italic')"
+          @click.prevent="editor?.chain().focus().toggleItalic().run()">
+          <Icon name="heroicons:italic" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('underline')"
-          @click.prevent="editor?.chain().focus().toggleUnderline().run()"
-        >
-          <Icon name="heroicons:underline" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('underline')"
+          @click.prevent="editor?.chain().focus().toggleUnderline().run()">
+          <Icon name="heroicons:underline" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('strike')"
-          @click.prevent="editor?.chain().focus().toggleStrike().run()"
-        >
-          <Icon name="heroicons:strikethrough" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('strike')"
+          @click.prevent="editor?.chain().focus().toggleStrike().run()">
+          <Icon name="heroicons:strikethrough" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('heading', { level: 2 })"
-          @click.prevent="
-            editor?.chain().focus().toggleHeading({ level: 2 }).run()
-          "
-        >
-          <Icon name="heroicons:h2" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('heading', { level: 2 })" @click.prevent="
+          editor?.chain().focus().toggleHeading({ level: 2 }).run()
+          ">
+          <Icon name="heroicons:h2" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('heading', { level: 3 })"
-          @click.prevent="
-            editor?.chain().focus().toggleHeading({ level: 3 }).run()
-          "
-        >
-          <Icon name="heroicons:h3" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('heading', { level: 3 })" @click.prevent="
+          editor?.chain().focus().toggleHeading({ level: 3 }).run()
+          ">
+          <Icon name="heroicons:h3" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('bulletList')"
-          @click.prevent="editor?.chain().focus().toggleBulletList().run()"
-        >
-          <Icon name="heroicons:list-bullet" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('bulletList')"
+          @click.prevent="editor?.chain().focus().toggleBulletList().run()">
+          <Icon name="heroicons:list-bullet" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="editor.isActive('orderedList')"
-          @click.prevent="editor?.chain().focus().toggleOrderedList().run()"
-        >
-          <Icon name="heroicons:numbered-list" size="14" />
+        <TiptapButtonWrapper :is-active="editor.isActive('orderedList')"
+          @click.prevent="editor?.chain().focus().toggleOrderedList().run()">
+          <Icon name="heroicons:numbered-list" size="16" />
         </TiptapButtonWrapper>
 
-        <TiptapButtonWrapper
-          :is-active="showPreview"
-          @click.prevent="showPreview = !showPreview"
-          class="ml-auto rounded-lg px-2"
-        >
+        <TiptapButtonWrapper :is-active="showPreview" @click.prevent="showPreview = !showPreview"
+          class="ml-auto rounded-lg px-2">
           <span class="text-xs"> Preview </span>
         </TiptapButtonWrapper>
       </nav>
 
-      <EditorContent
-        v-if="!showPreview"
-        :editor="editor"
-        v-model="value"
-        class=""
-      />
+      <EditorContent v-if="!showPreview" :editor="editor" v-model="value" class="" />
 
-      <TiptapContent
-        v-else
-        :content="value"
-        :title="title"
-        class="p-4 gap-2"
-        content-class="block w-full rounded-md focus:outline-none text-sm  dark:bg-dark-900 dark:border-dark-700 rounded-t-none min-h-36 max-h-96"
-      />
+      <TiptapContent v-else :content="value" :title="title" class="p-4 gap-2"
+        content-class="block w-full rounded-md focus:outline-none text-sm  dark:bg-dark-900 dark:border-dark-700 rounded-t-none min-h-36 max-h-96" />
     </div>
   </ClientOnly>
 </template>
