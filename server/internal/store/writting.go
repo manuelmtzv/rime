@@ -12,7 +12,7 @@ type WrittingStore struct {
 
 func (s WrittingStore) Create(ctx context.Context, writting *models.Writting) error {
 	query := `
-		INSERT INTO writtings (type, title, content, author_id) 
+		INSERT INTO writings (type, title, content, author_id) 
 		VALUES ($1, $2, $3, $4) 
 		RETURNING id, created_at`
 
@@ -22,7 +22,7 @@ func (s WrittingStore) Create(ctx context.Context, writting *models.Writting) er
 func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) {
 	query := `
 		SELECT id, type, title, content, author_id, created_at, updated_at
-		FROM writtings
+		FROM writings
 	`
 
 	rows, err := s.db.QueryContext(ctx, query)
@@ -30,7 +30,7 @@ func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) 
 		return nil, err
 	}
 
-	writtings := []*models.Writting{}
+	writings := []*models.Writting{}
 
 	for rows.Next() {
 		writting := &models.Writting{}
@@ -40,15 +40,15 @@ func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) 
 			return nil, err
 		}
 
-		writtings = append(writtings, writting)
+		writings = append(writings, writting)
 	}
 
-	return writtings, nil
+	return writings, nil
 }
 
 func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting, error) {
 	query := `
-		SELECT id, type, title, content, author_id, created_at, updated_at FROM writtings
+		SELECT id, type, title, content, author_id, created_at, updated_at FROM writings
 	`
 
 	row, err := s.db.QueryContext(ctx, query)
@@ -75,7 +75,7 @@ func (s WrittingStore) ComposeFeed(ctx context.Context, userID *string) ([]*mode
 
 func (s WrittingStore) Update(ctx context.Context, writting *models.Writting) error {
 	query := `
-		UPDATE writtings 
+		UPDATE writings 
 		SET type = $1, title = $2, content = $3, updated_at = NOW()
 		WHERE id = $4;
 	`
@@ -89,7 +89,7 @@ func (s WrittingStore) Update(ctx context.Context, writting *models.Writting) er
 
 func (s WrittingStore) Delete(ctx context.Context, id string) error {
 	query := `
-		DELETE FROM writtings 
+		DELETE FROM writings 
 		WHERE id = $1
 	`
 

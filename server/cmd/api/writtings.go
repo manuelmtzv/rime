@@ -44,13 +44,13 @@ func (app *application) createWritting(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) findWrittings(w http.ResponseWriter, r *http.Request) {
-	writtings, err := app.store.Writtings.FindAll(r.Context())
+	writings, err := app.store.Writtings.FindAll(r.Context())
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
 
-	if err := app.jsonResponse(w, http.StatusOK, writtings); err != nil {
+	if err := app.jsonResponse(w, http.StatusOK, writings); err != nil {
 		app.internalServerError(w, r, err)
 	}
 }

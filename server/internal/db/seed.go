@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"math/rand"
 	"rime-api/internal/models"
 	"rime-api/internal/store"
 )
@@ -17,6 +18,16 @@ var usernames = [][]string{
 	{"ana.fernandez", "Ana", "Fernández"},
 }
 
+var writtingContents = []string{
+	"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+	"Vivamus auctor, nunc nec lacinia ultricies, nunc nunc.",
+	"Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
+	"Nullam nec nunc nec nunc.",
+	"Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
+	"Nullam nec nunc nec nunc.",
+	"Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
+}
+
 func Seed(store store.Storage, db *sql.DB) {
 	ctx := context.Background()
 
@@ -26,6 +37,15 @@ func Seed(store store.Storage, db *sql.DB) {
 	for _, u := range users {
 		if err := store.Users.Create(ctx, u); err != nil {
 			log.Println("Error creating user:", err)
+			return
+		}
+	}
+
+	writings := generateWrittings(6, users)
+
+	for _, w := range writings {
+		if err := store.Writtings.Create(ctx, w); err != nil {
+			log.Println("Error creating writting:", err)
 			return
 		}
 	}
@@ -46,4 +66,24 @@ func generateUsers(num int) []*models.User {
 		users[i] = u
 	}
 	return users
+}
+
+func generateWrittings(num int, users []*models.User) []*models.Writting {
+
+	writings := make([]*models.Writting, num)
+
+	for i := 0; i < num; i++ {
+		w := &models.Writting{
+			Title:    "Title",
+			Type:     "poetry",
+			Content:  writtingContents[i],
+			AuthorID: users[randomNumber(0, len(users))].ID,
+		}
+		writings[i] = w
+	}
+	return writings
+}
+
+func randomNumber(min, max int) int {
+	return min + rand.Intn(max-min)
 }

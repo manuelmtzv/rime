@@ -8,11 +8,11 @@ export const writingRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
 
   return {
     async getWriting(id: string): Promise<Writting> {
-      return fetch<Writting>(`/writtings/${id}`);
+      return fetch<Writting>(`/writings/${id}`);
     },
 
     async getWritings(): Promise<ListResponse<Writting>> {
-      return fetch<ListResponse<Writting>>("/writtings");
+      return fetch<ListResponse<Writting>>("/writings");
     },
   };
 };

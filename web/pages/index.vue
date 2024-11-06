@@ -2,7 +2,7 @@
 import { writingRepository } from "@/repositories/writing.repository";
 
 const { data, error } = await useAsyncData(
-  "writtings",
+  "writings",
   writingRepository().getWritings
 );
 
@@ -11,6 +11,12 @@ const value = ref("");
 
 <template>
   <Page>
-    <TiptapEditor v-model="value" />
+    <pre v-if="!error">
+      {{ data }}
+    </pre>
+
+    <pre v-else>
+      {{ error }}
+    </pre>
   </Page>
 </template>
