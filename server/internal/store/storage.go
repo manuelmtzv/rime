@@ -15,19 +15,19 @@ type Storage struct {
 		Update(context.Context, *models.User) error
 		Delete(context.Context, string) error
 	}
-	Writtings interface {
-		Create(context.Context, *models.Writting) error
-		FindAll(context.Context) ([]*models.Writting, error)
-		FindOne(context.Context, string) (*models.Writting, error)
-		ComposeFeed(context.Context, *string) ([]*models.Writting, error)
-		Update(context.Context, *models.Writting) error
+	Writings interface {
+		Create(context.Context, *models.Writing) error
+		FindAll(context.Context) ([]*models.Writing, error)
+		FindOne(context.Context, string) (*models.Writing, error)
+		ComposeFeed(context.Context, *string) ([]*models.Writing, error)
+		Update(context.Context, *models.Writing) error
 		Delete(context.Context, string) error
 	}
 }
 
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
-		Users:     &UserStore{db},
-		Writtings: &WrittingStore{db},
+		Users:    &UserStore{db},
+		Writings: &WritingStore{db},
 	}
 }

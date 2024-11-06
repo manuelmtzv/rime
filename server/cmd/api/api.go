@@ -48,9 +48,9 @@ func (app *application) mount() *chi.Mux {
 		})
 
 		r.Route("/writings", func(r chi.Router) {
-			r.Get("/", app.findWrittings)
-			r.Get("/{id}", app.findOneWritting)
-			r.With(app.AuthMiddleware).Post("/", app.createWritting)
+			r.Get("/", app.findWritings)
+			r.Get("/{id}", app.findOneWriting)
+			r.With(app.AuthMiddleware).Post("/", app.createWriting)
 		})
 	})
 

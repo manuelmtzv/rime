@@ -6,11 +6,11 @@ import (
 	"rime-api/internal/models"
 )
 
-type WrittingStore struct {
+type WritingStore struct {
 	db *sql.DB
 }
 
-func (s WrittingStore) Create(ctx context.Context, writting *models.Writting) error {
+func (s WritingStore) Create(ctx context.Context, writting *models.Writing) error {
 	query := `
 		INSERT INTO writings (type, title, content, author_id) 
 		VALUES ($1, $2, $3, $4) 
@@ -19,7 +19,7 @@ func (s WrittingStore) Create(ctx context.Context, writting *models.Writting) er
 	return s.db.QueryRowContext(ctx, query, writting.Type, writting.Title, writting.Content, writting.AuthorID).Scan(&writting.ID, &writting.CreatedAt)
 }
 
-func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) {
+func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 	query := `
 		SELECT id, type, title, content, author_id, created_at, updated_at
 		FROM writings
@@ -30,12 +30,12 @@ func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) 
 		return nil, err
 	}
 
-	writings := []*models.Writting{}
+	writings := []*models.Writing{}
 
 	for rows.Next() {
-		writting := &models.Writting{}
+		writting := &models.Writing{}
 
-		err := rows.Scan(&writting.ID, &writting.Type, &writting.Content, &writting.AuthorID, &writting.CreatedAt, &writting.UpdatedAt)
+		err := rows.Scan(&writting.ID, &writting.Type, &writting.Title, &writting.Content, &writting.AuthorID, &writting.CreatedAt, &writting.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -46,7 +46,7 @@ func (s WrittingStore) FindAll(ctx context.Context) ([]*models.Writting, error) 
 	return writings, nil
 }
 
-func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting, error) {
+func (s WritingStore) FindOne(ctx context.Context, id string) (*models.Writing, error) {
 	query := `
 		SELECT id, type, title, content, author_id, created_at, updated_at FROM writings
 	`
@@ -56,7 +56,7 @@ func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting
 		return nil, err
 	}
 
-	writting := &models.Writting{}
+	writting := &models.Writing{}
 
 	if err = row.Scan(&writting.ID, &writting.Title, &writting.Type, &writting.Content, &writting.AuthorID, &writting.CreatedAt, &writting.UpdatedAt); err != nil {
 		return nil, err
@@ -65,15 +65,15 @@ func (s WrittingStore) FindOne(ctx context.Context, id string) (*models.Writting
 	return writting, nil
 }
 
-func (s WrittingStore) ComposeFeed(ctx context.Context, userID *string) ([]*models.Writting, error) {
+func (s WritingStore) ComposeFeed(ctx context.Context, userID *string) ([]*models.Writing, error) {
 	if userID == nil {
 
 	}
 
-	return make([]*models.Writting, 0), nil
+	return make([]*models.Writing, 0), nil
 }
 
-func (s WrittingStore) Update(ctx context.Context, writting *models.Writting) error {
+func (s WritingStore) Update(ctx context.Context, writting *models.Writing) error {
 	query := `
 		UPDATE writings 
 		SET type = $1, title = $2, content = $3, updated_at = NOW()
@@ -87,7 +87,7 @@ func (s WrittingStore) Update(ctx context.Context, writting *models.Writting) er
 	return err
 }
 
-func (s WrittingStore) Delete(ctx context.Context, id string) error {
+func (s WritingStore) Delete(ctx context.Context, id string) error {
 	query := `
 		DELETE FROM writings 
 		WHERE id = $1

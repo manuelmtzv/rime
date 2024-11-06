@@ -8,14 +8,14 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type CreateWrittingPayload struct {
+type CreateWritingPayload struct {
 	Type    string `json:"type" validate:"oneof=poem"`
 	Title   string `json:"title" validate:"required"`
 	Content string `json:"content" validate:"required"`
 }
 
-func (app *application) createWritting(w http.ResponseWriter, r *http.Request) {
-	var payload CreateWrittingPayload
+func (app *application) createWriting(w http.ResponseWriter, r *http.Request) {
+	var payload CreateWritingPayload
 
 	if err := readJSON(w, r, &payload); err != nil {
 		app.badRequestResponse(w, r, err)
@@ -27,13 +27,13 @@ func (app *application) createWritting(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writting := &models.Writting{
+	writting := &models.Writing{
 		Type:    payload.Type,
 		Title:   payload.Title,
 		Content: payload.Content,
 	}
 
-	if err := app.store.Writtings.Create(r.Context(), writting); err != nil {
+	if err := app.store.Writings.Create(r.Context(), writting); err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
@@ -43,8 +43,8 @@ func (app *application) createWritting(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) findWrittings(w http.ResponseWriter, r *http.Request) {
-	writings, err := app.store.Writtings.FindAll(r.Context())
+func (app *application) findWritings(w http.ResponseWriter, r *http.Request) {
+	writings, err := app.store.Writings.FindAll(r.Context())
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
@@ -55,9 +55,9 @@ func (app *application) findWrittings(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) findOneWritting(w http.ResponseWriter, r *http.Request) {
+func (app *application) findOneWriting(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	writting, err := app.store.Writtings.FindOne(r.Context(), id)
+	writting, err := app.store.Writings.FindOne(r.Context(), id)
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return

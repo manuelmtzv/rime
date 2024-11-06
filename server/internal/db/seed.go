@@ -41,10 +41,10 @@ func Seed(store store.Storage, db *sql.DB) {
 		}
 	}
 
-	writings := generateWrittings(6, users)
+	writings := generateWritings(6, users)
 
 	for _, w := range writings {
-		if err := store.Writtings.Create(ctx, w); err != nil {
+		if err := store.Writings.Create(ctx, w); err != nil {
 			log.Println("Error creating writting:", err)
 			return
 		}
@@ -68,12 +68,12 @@ func generateUsers(num int) []*models.User {
 	return users
 }
 
-func generateWrittings(num int, users []*models.User) []*models.Writting {
+func generateWritings(num int, users []*models.User) []*models.Writing {
 
-	writings := make([]*models.Writting, num)
+	writings := make([]*models.Writing, num)
 
 	for i := 0; i < num; i++ {
-		w := &models.Writting{
+		w := &models.Writing{
 			Title:    "Title",
 			Type:     "poetry",
 			Content:  writtingContents[i],

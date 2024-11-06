@@ -1,10 +1,10 @@
-export type Writting = {
+export type Writing = {
   id: string;
   title: string;
-  type: WrittingType;
+  type: WritingType;
   content: string;
   createdAt: string;
   updatedAt: string;
 };
 
-export type WrittingType = "poetry";
+export type WritingType = "poetry";
