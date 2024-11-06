@@ -19,4 +19,9 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: "page", mode: "out-in" },
   },
+  runtimeConfig: {
+    public: {
+      serverUrl: process.env.SERVER_API,
+    },
+  },
 });
