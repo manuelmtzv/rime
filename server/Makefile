@@ -29,3 +29,10 @@ migrate-reset:
 seed: 
 	@echo "Seeding database"
 	@go run cmd/migrate/seed/main.go
+
+.PHONY: seed-reset
+seed-reset:
+	@echo "Resetting database"
+	@$(MIGRATE_COMMAND) drop
+	@$(MIGRATE_COMMAND) up
+	@go run cmd/migrate/seed/main.go

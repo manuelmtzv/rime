@@ -19,13 +19,13 @@ var usernames = [][]string{
 }
 
 var writtingContents = []string{
-	"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-	"Vivamus auctor, nunc nec lacinia ultricies, nunc nunc.",
-	"Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
-	"Nullam nec nunc nec nunc.",
-	"Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
-	"Nullam nec nunc nec nunc.",
-	"Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
+	"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p><p>Vivamus luctus urna sed urna ultricies ac tempor dui sagittis.</p><p>In condimentum facilisis porta. Sed nec diam eu diam mattis viverra.</p><br/><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p><p>Vivamus luctus urna sed urna ultricies ac tempor dui sagittis.</p><p>In condimentum facilisis porta. Sed nec diam eu diam mattis viverra.</p><br/><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p><p>Vivamus luctus urna sed urna ultricies ac tempor dui sagittis.</p><p>In condimentum facilisis porta. Sed nec diam eu diam mattis viverra.</p>",
+	"<p>Cras sit amet libero eros. Fusce in fermentum velit.</p><p>Aliquam eget nisi scelerisque, placerat odio nec, condimentum erat.</p><p>Morbi eget posuere nisl. Vestibulum ante ipsum primis in faucibus orci luctus.</p>",
+	"<p>Etiam luctus dapibus tortor et consequat. Nullam id dui sapien.</p><p>Pellentesque habitant morbi tristique senectus et netus et malesuada.</p><p>Nunc non turpis in turpis feugiat euismod nec vel metus.</p>",
+	"<p>Integer placerat ipsum vel nibh tincidunt rhoncus.</p><p>Phasellus vel tincidunt lorem. Vestibulum at risus dolor.</p><p>Mauris sagittis tortor quis ultricies fermentum. Sed ac ante eget.</p>",
+	"<p>Proin pharetra, risus ut lobortis elementum, massa erat commodo.</p><p>Nam eget placerat lorem, sit amet egestas mauris.</p><p>Curabitur tempor diam lacus, nec aliquet nisi rhoncus eget.</p>",
+	"<p>Vivamus quis ultricies eros. Integer aliquet viverra nulla.</p><p>Aliquam erat volutpat. Pellentesque sed odio nibh.</p><p>Nulla malesuada lobortis nibh, ut tempus enim scelerisque id.</p>",
+	"<p>Donec consectetur felis at massa venenatis, et fringilla dui gravida.</p><p>Maecenas posuere odio nec fermentum fringilla.</p><p>Ut dignissim ornare felis. Curabitur et consequat sapien.</p>",
 }
 
 func Seed(store store.Storage, db *sql.DB) {

@@ -8,6 +8,11 @@ import (
 )
 
 func main() {
+	err := env.Load()
+	if err != nil {
+		log.Panic(err)
+	}
+
 	add := env.GetString("DB_ADDR", "postgres://postgres:password@localhost:5432/rime-db?sslmode=disable")
 	conn, err := db.New(add, 25, 25, "15m")
 	if err != nil {
