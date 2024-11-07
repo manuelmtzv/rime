@@ -1,3 +1,4 @@
+import { important } from '../../.nuxt/types/tailwind.config';
 <script setup lang="ts">
 // const { t } = useI18n();
 
@@ -20,7 +21,7 @@ const previewContent = computed(() =>
     <h1 v-if="title" class="font-medium text-lg">{{ title }}</h1>
 
     <div
-      :class="cn('tiptap tiptap-content', contentClass)"
+      :class="cn('tiptap tiptap-content space-y-2', contentClass)"
       v-html="previewContent"
     ></div>
   </div>
@@ -30,7 +31,7 @@ const previewContent = computed(() =>
 .tiptap-content {
   br {
     display: block;
-    margin: 0.75rem 0;
+    margin: 0.75rem 0 !important;
     content: "";
   }
 }

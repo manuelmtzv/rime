@@ -1,10 +1,13 @@
+import type { User } from "./user.type";
+
 export type Writing = {
   id: string;
   title: string;
+  text: string;
   type: WritingType;
-  content: string;
   createdAt: string;
   updatedAt: string;
+  author?: Partial<User>;
 };
 
 export type WritingType = "poetry";
