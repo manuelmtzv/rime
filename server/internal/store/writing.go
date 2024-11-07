@@ -21,8 +21,13 @@ func (s WritingStore) Create(ctx context.Context, writting *models.Writing) erro
 
 func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 	query := `
-		SELECT id, type, title, content, author_id, created_at, updated_at
+		SELECT 
+			writings.id, writings.type, writings.title, writings.content, 
+			writings.author_id, writings.created_at, writings.updated_at,
+			users.id, users.name, users.lastname, users.email
 		FROM writings
+		LEFT JOIN users ON writings.author_id = users.id
+		ORDER BY writings.created_at DESC
 	`
 
 	rows, err := s.db.QueryContext(ctx, query)
@@ -33,14 +38,32 @@ func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 	writings := []*models.Writing{}
 
 	for rows.Next() {
-		writting := &models.Writing{}
+		writing := &models.Writing{}
+		author := &models.User{}
 
-		err := rows.Scan(&writting.ID, &writting.Type, &writting.Title, &writting.Content, &writting.AuthorID, &writting.CreatedAt, &writting.UpdatedAt)
+		err := rows.Scan(
+			&writing.ID,
+			&writing.Type,
+			&writing.Title,
+			&writing.Content,
+			&writing.AuthorID,
+			&writing.CreatedAt,
+			&writing.UpdatedAt,
+			&author.ID,
+			&author.Name,
+			&author.Lastname,
+			&author.Email,
+		)
 		if err != nil {
 			return nil, err
 		}
 
-		writings = append(writings, writting)
+		writing.Author = author
+		writings = append(writings, writing)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return writings, nil
