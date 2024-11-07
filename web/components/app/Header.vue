@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <header class="pt-7 pb-5">
+  <header class="pt-7 pb-5 shadow-sm">
     <div class="container flex items-center justify-between">
       <NuxtLink to="/">
         <AppLogo />

@@ -11,7 +11,7 @@ const author = computed(() => props.writing.author);
 </script>
 
 <template>
-  <article class="max-w-xl mx-auto py-6 flex flex-col gap-4 border-b">
+  <article class="px-2 mx-auto py-6 flex flex-col gap-4 border-b">
     <NuxtLink :to="`/writings/${writing.id}`">
       <h2 class="text-2xl font-bold font-poetry mb-4">{{ writing.title }}</h2>
 
