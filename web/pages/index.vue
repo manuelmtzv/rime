@@ -20,27 +20,25 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
 
           <ul class="space-y-1">
             <li>
-              <a href="#" class="text-blue-500">#PoetryMonth</a>
+              <a href="#" class="text-blue-500 text-sm">#PoetryMonth</a>
             </li>
             <li>
-              <a href="#" class="text-blue-500">#Love</a>
+              <a href="#" class="text-blue-500 text-sm">#Love</a>
             </li>
             <li>
-              <a href="#" class="text-blue-500">#Life</a>
+              <a href="#" class="text-blue-500 text-sm">#Life</a>
             </li>
             <li>
-              <a href="#" class="text-blue-500">#Dreams</a>
+              <a href="#" class="text-blue-500 text-sm">#Dreams</a>
             </li>
             <li>
-              <a href="#" class="text-blue-500">#Haiku</a>
+              <a href="#" class="text-blue-500 text-sm">#Haiku</a>
             </li>
           </ul>
         </Card>
 
         <Card class="flex flex-col gap-2">
-          <div>
-            Popular Writers
-          </div>
+          <div>Popular Writers</div>
 
           <ul class="space-y-2">
             <li>
@@ -77,17 +75,17 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
         <template v-if="data">
           <WritingFeaturedEntry :writing="data.data[0]" />
 
-          <WritingEntry v-for="writing in data.data" :key="writing.id" :writing="writing" />
+          <WritingEntry
+            v-for="writing in data.data"
+            :key="writing.id"
+            :writing="writing"
+          />
         </template>
       </section>
 
       <aside class="space-y-4 h-fit w-full max-w-52">
-        <Card>
-          Hola
-        </Card>
-        <Card>
-          Hola
-        </Card>
+        <Card> Hola </Card>
+        <Card> Hola </Card>
       </aside>
     </div>
   </Page>
