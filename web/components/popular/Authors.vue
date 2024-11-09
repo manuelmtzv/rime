@@ -8,13 +8,15 @@ const { data } = await useAsyncData(
 </script>
 
 <template>
-  <Card v-if="data" class="flex flex-col gap-2">
-    <div>Popular Writers</div>
+  <Card class="flex flex-col gap-2">
+    <template v-if="data">
+      <div>Popular Writers</div>
 
-    <ul class="space-y-2">
-      <li v-for="user in data.data">
-        <UserInlineEntry :popular-user="user" />
-      </li>
-    </ul>
+      <ul class="space-y-2">
+        <li v-for="user in data.data">
+          <UserInlineEntry :popular-user="user" />
+        </li>
+      </ul>
+    </template>
   </Card>
 </template>

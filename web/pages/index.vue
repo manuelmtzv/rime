@@ -12,30 +12,7 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
   <Page class="mt-6 mb-12">
     <div class="flex gap-8 mx-auto w-full max-w-6xl">
       <aside class="space-y-8 h-fit w-full max-w-52">
-        <Card class="flex flex-col gap-2">
-          <div class="inline-flex gap-2 items-center">
-            <Icon name="heroicons:arrow-trending-up" />
-            <span>Trending Tags</span>
-          </div>
-
-          <ul class="space-y-1">
-            <li>
-              <a href="#" class="text-blue-500 text-sm">#PoetryMonth</a>
-            </li>
-            <li>
-              <a href="#" class="text-blue-500 text-sm">#Love</a>
-            </li>
-            <li>
-              <a href="#" class="text-blue-500 text-sm">#Life</a>
-            </li>
-            <li>
-              <a href="#" class="text-blue-500 text-sm">#Dreams</a>
-            </li>
-            <li>
-              <a href="#" class="text-blue-500 text-sm">#Haiku</a>
-            </li>
-          </ul>
-        </Card>
+        <PopularTags />
 
         <PopularAuthors />
       </aside>
