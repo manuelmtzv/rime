@@ -89,6 +89,9 @@ func (s UserStore) FindOne(ctx context.Context, id string) (*models.User, error)
 	err := s.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.Name, &user.Lastname, &user.Username, &user.Email, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 
