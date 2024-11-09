@@ -24,11 +24,16 @@ type Storage struct {
 		Update(context.Context, *models.Writing) error
 		Delete(context.Context, string) error
 	}
+	Tags interface {
+		Create(context.Context, *models.Tag) error
+		FindAll(context.Context) ([]*models.Tag, error)
+	}
 }
 
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
 		Users:    &UserStore{db},
 		Writings: &WritingStore{db},
+		Tags:     &TagStore{db},
 	}
 }
