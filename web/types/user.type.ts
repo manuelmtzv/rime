@@ -8,3 +8,7 @@ export type User = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type PopularUser = Omit<User, "createdAt" | "updatedAt"> & {
+  followers: number;
+};

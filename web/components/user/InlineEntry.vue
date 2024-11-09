@@ -1,12 +1,22 @@
-<template>
-    <div class="flex items-center gap-2">
-        <UAvatar size="sm" />
+<script setup lang="ts">
+import type { PopularUser } from "@/types";
 
-        <div>
-            <h3 class="font-medium text-sm">John Doe</h3>
-            <p class="text-xs">
-                4.2M followers
-            </p>
-        </div>
+type Props = {
+  popularUser: PopularUser;
+};
+
+const props = defineProps<Props>();
+
+const fullName = `${props.popularUser.name} ${props.popularUser.lastname}`;
+</script>
+
+<template>
+  <div class="flex items-center gap-2">
+    <UAvatar size="sm" :alt="fullName" />
+
+    <div>
+      <h3 class="font-medium text-sm">{{ fullName }}</h3>
+      <p class="text-xs">{{ popularUser.followers }} followers</p>
     </div>
+  </div>
 </template>

@@ -37,36 +37,7 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
           </ul>
         </Card>
 
-        <Card class="flex flex-col gap-2">
-          <div>Popular Writers</div>
-
-          <ul class="space-y-2">
-            <li>
-              <UserInlineEntry />
-            </li>
-            <li>
-              <UserInlineEntry />
-            </li>
-            <li>
-              <UserInlineEntry />
-            </li>
-            <li>
-              <UserInlineEntry />
-            </li>
-            <li>
-              <UserInlineEntry />
-            </li>
-            <li>
-              <UserInlineEntry />
-            </li>
-            <li>
-              <UserInlineEntry />
-            </li>
-            <li>
-              <UserInlineEntry />
-            </li>
-          </ul>
-        </Card>
+        <PopularAuthors />
       </aside>
 
       <section class="space-y-8 flex-1">
