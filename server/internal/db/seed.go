@@ -28,6 +28,17 @@ var writtingContents = []string{
 	"<p>Donec consectetur felis at massa venenatis, et fringilla dui gravida.</p><p>Maecenas posuere odio nec fermentum fringilla.</p><p>Ut dignissim ornare felis. Curabitur et consequat sapien.</p>",
 }
 
+var tagNames = []string{
+	"Health",
+	"Science",
+	"Technology",
+	"Art",
+	"Poetry",
+	"Philosophy",
+	"Politics",
+	"History",
+}
+
 func Seed(store store.Storage, db *sql.DB) {
 	ctx := context.Background()
 
@@ -46,6 +57,15 @@ func Seed(store store.Storage, db *sql.DB) {
 	for _, w := range writings {
 		if err := store.Writings.Create(ctx, w); err != nil {
 			log.Println("Error creating writting:", err)
+			return
+		}
+	}
+
+	tags := generateTags(6)
+
+	for _, t := range tags {
+		if err := store.Tags.Create(ctx, t); err != nil {
+			log.Println("Error creating tag:", err)
 			return
 		}
 	}
@@ -82,6 +102,18 @@ func generateWritings(num int, users []*models.User) []*models.Writing {
 		writings[i] = w
 	}
 	return writings
+}
+
+func generateTags(num int) []*models.Tag {
+	tags := make([]*models.Tag, num)
+
+	for i := 0; i < num; i++ {
+		t := &models.Tag{
+			Name: tagNames[i],
+		}
+		tags[i] = t
+	}
+	return tags
 }
 
 func randomNumber(min, max int) int {
