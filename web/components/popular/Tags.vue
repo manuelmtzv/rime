@@ -9,7 +9,7 @@ const { data } = await useAsyncData("popular-tags", tagRepository().getTags);
     <template v-if="data">
       <div class="inline-flex gap-2 items-center">
         <Icon name="heroicons:arrow-trending-up" />
-        <span>Trending Tags</span>
+        <h3>{{ $t("tag.popular.title") }}</h3>
       </div>
 
       <ul class="space-y-1">

@@ -10,8 +10,8 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
 
 <template>
   <Page class="mt-6 mb-12">
-    <div class="flex gap-8 mx-auto w-full max-w-6xl">
-      <aside class="space-y-8 h-fit w-full max-w-56">
+    <div class="flex gap-8 mx-auto w-full max-w-7xl">
+      <aside class="space-y-8 h-fit w-full max-w-60">
         <PopularTags />
 
         <PopularAuthors />
