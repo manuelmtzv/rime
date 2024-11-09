@@ -46,6 +46,37 @@ func (s UserStore) FindAll(ctx context.Context) ([]*models.User, error) {
 	return users, nil
 }
 
+func (s UserStore) FindPopular(ctx context.Context) ([]*models.PopularUser, error) {
+	query := `
+		SELECT users.id, users.name, users.lastname, users.username, users.email, COUNT(followers.follower_id) AS followers
+		FROM users
+		LEFT JOIN followers ON users.id = followers.follower_id
+		GROUP BY users.id
+		ORDER BY followers DESC
+		LIMIT 5;		
+	`
+
+	rows, err := s.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	popularUsers := []*models.PopularUser{}
+
+	for rows.Next() {
+		user := &models.PopularUser{}
+
+		err := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.Username, &user.Email, &user.Followers)
+		if err != nil {
+			return nil, err
+		}
+
+		popularUsers = append(popularUsers, user)
+	}
+
+	return popularUsers, nil
+}
+
 func (s UserStore) FindOne(ctx context.Context, id string) (*models.User, error) {
 	query := `
 		SELECT id, name, lastname, username, email, created_at, updated_at

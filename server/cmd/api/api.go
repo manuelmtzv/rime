@@ -45,6 +45,7 @@ func (app *application) mount() *chi.Mux {
 		r.Route("/users", func(r chi.Router) {
 			r.Get("/", app.findUsers)
 			r.Get("/{id}", app.findOneUser)
+			r.Get("/popular", app.findPopular)
 		})
 
 		r.Route("/writings", func(r chi.Router) {

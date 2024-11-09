@@ -36,6 +36,20 @@ func (app *application) findUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *application) findPopular(w http.ResponseWriter, r *http.Request) {
+	users, err := app.store.Users.FindPopular(r.Context())
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	err = app.jsonResponse(w, http.StatusOK, users)
+
+	if err != nil {
+		app.internalServerError(w, r, err)
+	}
+}
+
 func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
