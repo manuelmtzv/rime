@@ -11,25 +11,27 @@ const toggleColorMode = () => {
 </script>
 
 <template>
-  <ClientOnly>
-    <button
-      @click="toggleColorMode"
-      class="flex hover:bg-gray-100 dark:hover:bg-gray-900 p-1.5 rounded-md"
-    >
-      <Icon
-        v-show="colorMode.preference == 'dark'"
-        name="heroicons:sun"
-        size="20"
-      />
-      <Icon
-        v-show="colorMode.preference == 'light'"
-        name="heroicons:moon"
-        size="20"
-      />
-    </button>
+  <span class="min-w-8">
+    <ClientOnly>
+      <button
+        @click="toggleColorMode"
+        class="flex hover:bg-gray-100 dark:hover:bg-gray-900 p-1.5 rounded-md"
+      >
+        <Icon
+          v-show="colorMode.preference == 'dark'"
+          name="heroicons:sun"
+          size="20"
+        />
+        <Icon
+          v-show="colorMode.preference == 'light'"
+          name="heroicons:moon"
+          size="20"
+        />
+      </button>
 
-    <template #fallback>
-      <div class="min-w-8 max-w-8 min-h-8 max-h-8 overflow-hidden"></div>
-    </template>
-  </ClientOnly>
+      <template #fallback>
+        <div class="min-w-8 max-w-8 min-h-8 max-h-8 overflow-hidden"></div>
+      </template>
+    </ClientOnly>
+  </span>
 </template>

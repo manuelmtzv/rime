@@ -9,7 +9,7 @@
         <AppLogo />
       </NuxtLink>
 
-      <div class="flex gap-4 items-center min-w-[16.477rem] min-h-8">
+      <div class="flex gap-4 items-center min-h-8">
         <AppNavigation />
         <AppThemeToggle />
       </div>
