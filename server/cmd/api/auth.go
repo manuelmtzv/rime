@@ -24,6 +24,12 @@ type LoginPayload struct {
 	Password string `json:"password" validate:"required"`
 }
 
+type AuthResponse struct {
+	User         *UserResponse `json:"user"`
+	Token        string        `json:"token"`
+	RefreshToken string        `json:"refreshToken"`
+}
+
 func (app *application) validate(w http.ResponseWriter, r *http.Request) {
 	user := app.getUserFromContext(r)
 
@@ -109,13 +115,23 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userResponse := UserResponse{
-		ID:        user.ID,
-		Name:      user.Name,
-		Lastname:  user.Lastname,
-		Username:  user.Username,
-		Email:     user.Email,
-		CreatedAt: user.CreatedAt,
+	accessToken, refreshToken, err := app.composeTokens(user.ID)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	userResponse := &AuthResponse{
+		User: &UserResponse{
+			ID:        user.ID,
+			Name:      user.Name,
+			Lastname:  user.Lastname,
+			Username:  user.Username,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt,
+		},
+		Token:        accessToken,
+		RefreshToken: refreshToken,
 	}
 
 	if err := app.jsonResponse(w, http.StatusCreated, userResponse); err != nil {
@@ -158,7 +174,20 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := app.jsonResponse(w, http.StatusOK, map[string]string{"token": accessToken, "refreshToken": refreshToken}); err != nil {
+	authResponse := &AuthResponse{
+		User: &UserResponse{
+			ID:        user.ID,
+			Name:      user.Name,
+			Lastname:  user.Lastname,
+			Username:  user.Username,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt,
+		},
+		Token:        accessToken,
+		RefreshToken: refreshToken,
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, authResponse); err != nil {
 		app.internalServerError(w, r, err)
 	}
 }
