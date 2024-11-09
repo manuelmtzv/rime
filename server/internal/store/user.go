@@ -53,7 +53,7 @@ func (s UserStore) FindPopular(ctx context.Context) ([]*models.PopularUser, erro
 		LEFT JOIN followers ON users.id = followers.follower_id
 		GROUP BY users.id
 		ORDER BY followers DESC
-		LIMIT 5;		
+		LIMIT 8;		
 	`
 
 	rows, err := s.db.QueryContext(ctx, query)
