@@ -12,10 +12,14 @@ const fullName = `${props.popularUser.name} ${props.popularUser.lastname}`;
 
 <template>
   <div class="flex items-center gap-2">
-    <UAvatar size="sm" :alt="fullName" />
+    <NuxtLink :to="`/author/${popularUser.id}`">
+      <UAvatar size="sm" :alt="fullName" />
+    </NuxtLink>
 
     <div>
-      <h3 class="font-medium text-sm">{{ fullName }}</h3>
+      <NuxtLink :to="`/author/${popularUser.id}`">
+        <h3 class="font-medium text-sm">{{ fullName }}</h3>
+      </NuxtLink>
       <p class="text-xs">{{ popularUser.followers }} followers</p>
     </div>
   </div>
