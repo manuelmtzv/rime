@@ -6,8 +6,18 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+const toast = useToast();
 
 const author = computed(() => props.writing.author);
+
+function shareHandler() {
+  const url = useRequestURL().host + `/writings/${props.writing.id}`;
+  copyToClipboard(url);
+
+  toast.add({
+    title: "Link copied to clipboard",
+  });
+}
 </script>
 
 <template>
@@ -29,7 +39,7 @@ const author = computed(() => props.writing.author);
           <Icon name="heroicons:heart" class="w-6 h-6" />
         </button>
 
-        <button>
+        <button @click="shareHandler">
           <Icon name="heroicons:share" class="w-6 h-6" />
         </button>
       </nav>
