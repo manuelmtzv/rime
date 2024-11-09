@@ -20,7 +20,13 @@ const fullName = `${props.popularUser.name} ${props.popularUser.lastname}`;
       <NuxtLink :to="`/author/${popularUser.id}`">
         <h3 class="font-medium text-sm">{{ fullName }}</h3>
       </NuxtLink>
-      <p class="text-xs">{{ popularUser.followers }} followers</p>
+      <p class="text-xs text-gray-600">
+        <template v-if="popularUser.followers">
+          {{ popularUser.followers }} followers
+        </template>
+
+        <template v-else> New user </template>
+      </p>
     </div>
   </div>
 </template>
