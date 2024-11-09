@@ -7,4 +7,5 @@ export const app = {
   footer: {
     rights: "Todos los derechos reservados",
   },
+  searchbar: "Buscar Escritos...",
 };

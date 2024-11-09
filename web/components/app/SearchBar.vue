@@ -1,3 +1,8 @@
 <template>
-    <UInput size="md" placeholder="Search writings..." icon="i-heroicons-magnifying-glass-solid" trailing />
+  <UInput
+    size="md"
+    :placeholder="$t('app.searchbar')"
+    icon="i-heroicons-magnifying-glass-solid"
+    trailing
+  />
 </template>

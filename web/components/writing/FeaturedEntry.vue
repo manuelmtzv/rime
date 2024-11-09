@@ -14,7 +14,7 @@ const author = computed(() => props.writing.author);
   <article
     class="p-6 mx-auto flex flex-col gap-4 bg-gradient-to-r from-[#8B4513] via-[#6F4E37] to-[#4A3728] rounded-lg shadow-lg text-white"
   >
-    <h1 class="underline">Featured Writing</h1>
+    <h1 class="underline">{{ $t("writing.featured.title") }}</h1>
 
     <NuxtLink :to="`/writings/${writing.id}`">
       <h2 class="text-2xl font-bold font-poetry mb-4">{{ writing.title }}</h2>
