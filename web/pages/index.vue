@@ -11,7 +11,7 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
 <template>
   <Page class="mt-6 mb-12">
     <div class="flex gap-8 mx-auto w-full max-w-6xl">
-      <aside class="space-y-8 h-fit w-full max-w-52">
+      <aside class="space-y-8 h-fit w-full max-w-56">
         <PopularTags />
 
         <PopularAuthors />
@@ -31,7 +31,7 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
         </template>
       </section>
 
-      <aside class="space-y-4 h-fit w-full max-w-52">
+      <aside class="space-y-4 h-fit w-full max-w-56">
         <Card> Hola </Card>
         <Card> Hola </Card>
 

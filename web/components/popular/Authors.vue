@@ -10,7 +10,9 @@ const { data } = await useAsyncData(
 <template>
   <Card class="flex flex-col gap-2">
     <template v-if="data">
-      <div>Popular Writers</div>
+      <div>
+        <h3>{{ $t("user.popular.title") }}</h3>
+      </div>
 
       <ul class="space-y-2">
         <li v-for="user in data.data">

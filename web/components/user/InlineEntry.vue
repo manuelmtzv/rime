@@ -22,10 +22,10 @@ const fullName = `${props.popularUser.name} ${props.popularUser.lastname}`;
       </NuxtLink>
       <p class="text-xs text-gray-600">
         <template v-if="popularUser.followers">
-          {{ popularUser.followers }} followers
+          {{ popularUser.followers }} {{ $t("user.popular.followers") }}
         </template>
 
-        <template v-else> New user </template>
+        <template v-else> {{ $t("user.popular.newUser") }} </template>
       </p>
     </div>
   </div>
