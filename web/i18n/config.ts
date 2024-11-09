@@ -1,9 +1,9 @@
 import { messages } from "./index";
 
 export default defineI18nConfig(() => ({
+  messages,
   legacy: false,
   locale: "en",
-  messages,
   warnHtmlMessage: "off",
   warnHtmlInMessage: "off",
 }));

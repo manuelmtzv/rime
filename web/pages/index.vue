@@ -34,6 +34,8 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
       <aside class="space-y-4 h-fit w-full max-w-52">
         <Card> Hola </Card>
         <Card> Hola </Card>
+
+        <AppLocaleSelect />
       </aside>
     </div>
   </Page>

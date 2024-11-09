@@ -2,7 +2,9 @@
   <nav>
     <ul class="flex gap-2">
       <li>
-        <AppLink to="/feed">Feed</AppLink>
+        <AppLink to="/feed">
+          {{ $t("app.header.feed") }}
+        </AppLink>
       </li>
 
       <li>
