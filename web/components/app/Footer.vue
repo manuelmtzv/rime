@@ -6,7 +6,7 @@ const year = new Date().getFullYear();
   <footer class="py-6">
     <div class="container">
       <p class="text-center text-sm text-gray-500">
-        &copy; {{ year }} Rime. All rights reserved.
+        &copy; {{ year }} Rime. {{ $t("app.footer.rights") }}
       </p>
     </div>
   </footer>
