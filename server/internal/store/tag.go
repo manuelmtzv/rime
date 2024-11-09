@@ -22,7 +22,7 @@ func (s TagStore) Create(ctx context.Context, tag *models.Tag) error {
 
 func (s TagStore) FindAll(ctx context.Context) ([]*models.Tag, error) {
 	query := `
-		SELECT name
+		SELECT id, name
 		FROM tags
 	`
 
@@ -35,7 +35,7 @@ func (s TagStore) FindAll(ctx context.Context) ([]*models.Tag, error) {
 
 	for rows.Next() {
 		tag := &models.Tag{}
-		err := rows.Scan(&tag.Name)
+		err := rows.Scan(&tag.ID, &tag.Name)
 		if err != nil {
 			return nil, err
 		}
@@ -43,6 +43,22 @@ func (s TagStore) FindAll(ctx context.Context) ([]*models.Tag, error) {
 	}
 
 	return tags, nil
+}
+
+func (s TagStore) FindOneByName(ctx context.Context, name string) (*models.Tag, error) {
+	query := `
+		SELECT id, name
+		FROM tags
+		WHERE name = $1
+	`
+
+	tag := &models.Tag{}
+	err := s.db.QueryRowContext(ctx, query, name).Scan(&tag.ID, &tag.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	return tag, nil
 }
 
 func (s TagStore) FindPopular(ctx context.Context) ([]*models.Tag, error) {

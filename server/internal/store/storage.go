@@ -27,6 +27,7 @@ type Storage struct {
 	Tags interface {
 		Create(context.Context, *models.Tag) error
 		FindAll(context.Context) ([]*models.Tag, error)
+		FindOneByName(context.Context, string) (*models.Tag, error)
 		FindPopular(context.Context) ([]*models.Tag, error)
 	}
 }

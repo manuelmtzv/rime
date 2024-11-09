@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"rime-api/internal/models"
 )
@@ -19,6 +20,12 @@ func (app *application) createTag(w http.ResponseWriter, r *http.Request) {
 
 	if err := Validate.Struct(payload); err != nil {
 		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	existingTag, _ := app.store.Tags.FindOneByName(r.Context(), payload.Name)
+	if existingTag != nil {
+		app.conflictResponse(w, r, errors.New("tag already exists"))
 		return
 	}
 
