@@ -1,5 +1,7 @@
 CREATE TABLE
   IF NOT EXISTS tags (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
-    name TEXT NOT NULL
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid (),
+    name TEXT NOT NULL,
+    created_at timestamp NOT NULL DEFAULT now (),
+    updated_at timestamp NOT NULL DEFAULT now ()
   );

@@ -53,6 +53,12 @@ func (app *application) mount() *chi.Mux {
 			r.Get("/{id}", app.findOneWriting)
 			r.With(app.AuthMiddleware).Post("/", app.createWriting)
 		})
+
+		r.Route("/tags", func(r chi.Router) {
+			r.Get("/", app.findTags)
+			r.Get("/popular", app.findPopularTags)
+			r.With(app.AuthMiddleware).Post("/", app.createTag)
+		})
 	})
 
 	return r
