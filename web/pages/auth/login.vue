@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const localePath = useLocalePath();
+
 function handleSubmit() {
   console.log("submit");
 }
@@ -8,25 +10,27 @@ function handleSubmit() {
   <Page class="">
     <form class="auth-form" @submit.prevent="handleSubmit">
       <div class="text-center space-y-2 mb-2">
-        <h2 class="font-semibold text-lg font-poetry">Welcome back!</h2>
-        <p>Enter your credentials to access your writings</p>
+        <h2 class="font-semibold text-lg font-poetry">
+          {{ $t("auth.login.title") }}
+        </h2>
+        <p>{{ $t("auth.login.subtitle") }}</p>
       </div>
 
-      <UInput size="md" placeholder="Your email or username" />
+      <UInput size="md" :placeholder="$t('auth.login.identifier')" />
 
-      <UInput size="md" placeholder="Your password" />
+      <UInput size="md" :placeholder="$t('auth.login.password')" />
 
       <div class="flex justify-between items-center my-1">
-        <span class="text-sm">Don't have an account?</span>
+        <span class="text-sm">{{ $t("auth.login.noAccount") }}</span>
 
-        <NuxtLink to="/auth/register" class="text-sm"
-          >Create an account</NuxtLink
-        >
+        <NuxtLink :to="localePath('/auth/register')" class="text-sm">
+          {{ $t("auth.login.registerLink") }}
+        </NuxtLink>
       </div>
 
-      <UButton type="submit" class="justify-center font-semibold" size="md"
-        >Login</UButton
-      >
+      <UButton type="submit" class="justify-center font-semibold" size="md">{{
+        $t("auth.login.submit")
+      }}</UButton>
     </form>
   </Page>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const showPassword = ref(false);
+const localePath = useLocalePath();
 
 const form = reactive({
   name: "",
@@ -22,20 +23,38 @@ function togglePasswordVisibility() {
   <Page class="">
     <form class="auth-form" @submit.prevent="handleSubmit">
       <div class="text-center space-y-2 mb-2">
-        <h2 class="font-semibold text-lg font-poetry">Join the community!</h2>
-        <p>Create an account to start writing</p>
+        <h2 class="font-semibold text-lg font-poetry">
+          {{ $t("auth.register.title") }}
+        </h2>
+        <p>{{ $t("auth.register.subtitle") }}</p>
       </div>
-      <UInput size="md" placeholder="Name" v-model="form.name" />
-
-      <UInput size="md" placeholder="Username" v-model="form.username" />
-
-      <UInput size="md" placeholder="Email" v-model="form.email" />
-
-      <UInput size="md" placeholder="Password" v-model="form.password" />
+      <UInput
+        size="md"
+        :placeholder="$t('auth.register.name')"
+        v-model="form.name"
+      />
 
       <UInput
         size="md"
-        placeholder="Confirm password"
+        :placeholder="$t('auth.register.username')"
+        v-model="form.username"
+      />
+
+      <UInput
+        size="md"
+        :placeholder="$t('auth.register.email')"
+        v-model="form.email"
+      />
+
+      <UInput
+        size="md"
+        :placeholder="$t('auth.register.password')"
+        v-model="form.password"
+      />
+
+      <UInput
+        size="md"
+        :placeholder="$t('auth.register.confirmPassword')"
         :type="showPassword ? 'text' : 'password'"
         :ui="{ icon: { trailing: { pointer: '' } } }"
         v-model="form.confirmPassword"
@@ -52,14 +71,16 @@ function togglePasswordVisibility() {
       </UInput>
 
       <div class="flex justify-between items-center my-1">
-        <span class="text-sm">Already have an account?</span>
+        <span class="text-sm">{{ $t("auth.register.hasAccount") }}</span>
 
-        <NuxtLink to="/auth/login" class="text-sm">Go to login</NuxtLink>
+        <NuxtLink :to="localePath('/auth/login')" class="text-sm">{{
+          $t("auth.register.loginLink")
+        }}</NuxtLink>
       </div>
 
-      <UButton type="submit" class="justify-center font-semibold" size="md"
-        >Register</UButton
-      >
+      <UButton type="submit" class="justify-center font-semibold" size="md">{{
+        $t("auth.register.submit")
+      }}</UButton>
     </form>
   </Page>
 </template>
