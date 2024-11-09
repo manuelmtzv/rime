@@ -1,13 +1,13 @@
 <script setup lang="ts">
 type Props = {
-    class?: string
-}
+  class?: string;
+};
 
-defineProps<Props>()
+defineProps<Props>();
 </script>
 
 <template>
-    <div :class="cn('border p-6 rounded-md', $props.class)">
-        <slot />
-    </div>
+  <div :class="cn('border p-6 rounded-md shadow-sm', $props.class)">
+    <slot />
+  </div>
 </template>

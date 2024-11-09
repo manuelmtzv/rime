@@ -1,6 +1,6 @@
 export const app = {
   header: {
-    feed: "Home",
+    home: "Home",
     login: "Login",
     register: "Register",
   },

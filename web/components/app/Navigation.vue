@@ -2,16 +2,20 @@
   <nav>
     <ul class="flex gap-2">
       <li>
-        <AppLink to="/feed">
-          {{ $t("app.header.feed") }}
+        <AppLink to="/">
+          {{ $t("app.header.home") }}
         </AppLink>
       </li>
 
       <li>
-        <AppLink to="/auth/login">Login</AppLink>
+        <AppLink to="/auth/login">
+          {{ $t("app.header.login") }}
+        </AppLink>
       </li>
       <li>
-        <AppLink to="/auth/register">Register</AppLink>
+        <AppLink to="/auth/register">
+          {{ $t("app.header.register") }}
+        </AppLink>
       </li>
     </ul>
   </nav>
