@@ -10,26 +10,24 @@ const options = [
   },
 ];
 
-type LocaleSelectProps = {
-  minimal?: boolean;
+type Props = {
+  class?: string;
 };
 
-defineProps<LocaleSelectProps>();
+defineProps<Props>();
 
-const id = useId();
 const { localeProperties, locales, setLocale } = useI18n();
 
-const displayableLocales = computed(() =>
-  locales.value.filter((locale) => locale.code !== localeProperties.value.code)
-);
+const currentCode = computed(() => localeProperties.value.code);
 </script>
 
 <template>
   <USelect
     icon="i-mdi-web"
-    :model-value="localeProperties.code"
+    :value="currentCode"
     :options="options"
     option-attribute="name"
+    :class="cn($props.class)"
     @update:model-value="setLocale"
   />
 </template>

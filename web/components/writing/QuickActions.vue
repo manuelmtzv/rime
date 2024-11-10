@@ -5,20 +5,21 @@ type Props = {
 
 defineProps<Props>();
 const localePath = useLocalePath();
+const { t } = useI18n();
 
 const actions = [
   {
-    title: "Create Writing",
+    title: t("writing.quickActions.create"),
     to: localePath("/writings/create"),
     icon: "i-heroicons-pencil",
   },
   {
-    title: "View Drafts",
+    title: t("writing.quickActions.viewDrafts"),
     to: localePath("/writings/drafts"),
     icon: "i-heroicons-document-duplicate",
   },
   {
-    title: "My Collection",
+    title: t("writing.quickActions.myCollection"),
     to: localePath("/writings/collection"),
     icon: "i-heroicons-folder-open",
   },
@@ -26,8 +27,10 @@ const actions = [
 </script>
 
 <template>
-  <Card class="space-y-2 border-none p-0">
-    <h3 :class="cn('mb-1', mobile && 'mb-2')">Quick Actions</h3>
+  <Card :class="cn('space-y-2', mobile && 'border-none p-0')">
+    <h3 :class="cn('mb-1', mobile && 'mb-2')">
+      {{ $t("writing.quickActions.title") }}
+    </h3>
 
     <nav>
       <ul :class="cn('space-y-2', mobile && 'space-y-4')">
@@ -38,6 +41,13 @@ const actions = [
               class="w-full"
               :size="mobile ? 'lg' : undefined"
               :icon="action.icon"
+              :ui="{
+                variant: {
+                  outline: mobile
+                    ? 'text-black dark:text-white opacity-75 dark:opacity-75'
+                    : '',
+                },
+              }"
             >
               {{ action.title }}
             </UButton>
