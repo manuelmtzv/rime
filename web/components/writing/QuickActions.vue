@@ -22,7 +22,7 @@ const actions = [
 
 <template>
   <Card class="space-y-2">
-    <h3>Quick Actions</h3>
+    <h3 class="mb-1">Quick Actions</h3>
 
     <nav>
       <ul class="space-y-2">

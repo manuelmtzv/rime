@@ -7,7 +7,7 @@ const { data } = await useAsyncData("popular-tags", tagRepository().getTags);
 <template>
   <Card class="flex flex-col gap-2">
     <template v-if="data">
-      <div class="inline-flex gap-2 items-center">
+      <div class="inline-flex gap-2 items-center mb-1">
         <Icon name="heroicons:arrow-trending-up" />
         <h3>{{ $t("tag.popular.title") }}</h3>
       </div>
