@@ -30,6 +30,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@iconify-json/mdi": "^1.2.1",
     "clsx": "^2.1.1",
     "sass-embedded": "^1.80.6"
   }
