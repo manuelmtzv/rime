@@ -4,4 +4,8 @@ export const user = {
     newUser: "New User",
     followers: "followers",
   },
+  card: {
+    profile: "Profile",
+    settings: "Settings",
+  }
 };
