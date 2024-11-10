@@ -1,5 +1,5 @@
 import type { $Fetch, NitroFetchRequest } from "nitropack";
-import type { ListResponse, Writing } from "@/types";
+import type { DataResponse, ListResponse, Writing } from "@/types";
 
 export const writingRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
   if (!fetch) {
@@ -7,8 +7,8 @@ export const writingRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
   }
 
   return {
-    async getWriting(id: string): Promise<Writing> {
-      return fetch<Writing>(`/writings/${id}`);
+    async getWriting(id: string): Promise<DataResponse<Writing>> {
+      return fetch<DataResponse<Writing>>(`/writings/${id}`);
     },
 
     async getWritings(): Promise<ListResponse<Writing>> {

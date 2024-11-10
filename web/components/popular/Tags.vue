@@ -23,6 +23,6 @@ const { data } = await useAsyncData("popular-tags", tagRepository().getTags);
 
 <style scoped>
 .tag {
-  @apply text-sm;
+  @apply text-sm hover:underline;
 }
 </style>
