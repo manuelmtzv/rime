@@ -6,6 +6,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+const localePath = useLocalePath();
 
 const author = computed(() => props.writing.author);
 </script>
@@ -16,7 +17,7 @@ const author = computed(() => props.writing.author);
   >
     <h1 class="underline">{{ $t("writing.featured.title") }}</h1>
 
-    <NuxtLink :to="`/writings/${writing.id}`">
+    <NuxtLink :to="localePath(`/writings/${writing.id}`)">
       <h2 class="text-2xl font-bold font-poetry mb-4">{{ writing.title }}</h2>
 
       <TiptapContent class="font-poetry" :content="writing.text" />

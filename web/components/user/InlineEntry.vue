@@ -6,18 +6,19 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+const localePath = useLocalePath();
 
 const fullName = `${props.popularUser.name} ${props.popularUser.lastname}`;
 </script>
 
 <template>
   <div class="flex items-center gap-2">
-    <NuxtLink :to="`/author/${popularUser.id}`">
+    <NuxtLink :to="localePath(`/author/${popularUser.id}`)">
       <UAvatar size="sm" :alt="fullName" />
     </NuxtLink>
 
     <div>
-      <NuxtLink :to="`/author/${popularUser.id}`">
+      <NuxtLink :to="localePath(`/author/${popularUser.id}`)">
         <h3 class="font-medium text-sm">{{ fullName }}</h3>
       </NuxtLink>
       <p class="text-xs text-gray-600">

@@ -9,6 +9,7 @@ const props = defineProps<Props>();
 const toast = useToast();
 
 const author = computed(() => props.writing.author);
+const localePath = useLocalePath();
 
 function shareHandler() {
   const url = useRequestURL().host + `/writings/${props.writing.id}`;
@@ -22,7 +23,7 @@ function shareHandler() {
 
 <template>
   <article class="px-2 mx-auto py-6 flex flex-col gap-4 border-b">
-    <NuxtLink :to="`/writings/${writing.id}`">
+    <NuxtLink :to="localePath(`/writings/${writing.id}`)">
       <h2 class="text-2xl font-bold font-poetry mb-4">{{ writing.title }}</h2>
 
       <TiptapContent class="font-poetry" :content="writing.text" />
