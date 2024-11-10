@@ -71,12 +71,15 @@ func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 
 func (s WritingStore) FindOne(ctx context.Context, id string) (*models.Writing, error) {
 	query := `
-		SELECT id, type, title, content, author_id, created_at, updated_at 
+		SELECT writings.id, writings.type, writings.title, writings.content, writings.author_id, writings.created_at, writings.updated_at, users.id AS author_id, users.name, users.lastname, users.email
 		FROM writings 
-		WHERE id = $1
+		LEFT JOIN users ON writings.author_id = users.id
+		WHERE writings.id = $1
 	`
 
-	writing := &models.Writing{}
+	writing := &models.Writing{
+		Author: &models.User{},
+	}
 
 	err := s.db.QueryRowContext(ctx, query, id).Scan(
 		&writing.ID,
@@ -86,6 +89,10 @@ func (s WritingStore) FindOne(ctx context.Context, id string) (*models.Writing, 
 		&writing.AuthorID,
 		&writing.CreatedAt,
 		&writing.UpdatedAt,
+		&writing.Author.ID,
+		&writing.Author.Name,
+		&writing.Author.Lastname,
+		&writing.Author.Email,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
