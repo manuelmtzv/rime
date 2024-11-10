@@ -38,7 +38,7 @@ func (app *application) validate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := app.jsonResponse(w, http.StatusOK, user); err != nil {
+	if err := app.jsonResponse(w, http.StatusOK, map[string]*models.User{"user": user}); err != nil {
 		app.internalServerError(w, r, err)
 	}
 }

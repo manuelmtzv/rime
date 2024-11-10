@@ -30,5 +30,14 @@ export const useAuth = () => {
     return response;
   }
 
-  return { login };
+  async function validate() {
+    const fetch = useRequestFetch();
+    const response = await fetch<AuthResponse>("/api/auth/validate");
+
+    setUser(response.data.user);
+
+    return response;
+  }
+
+  return { login, register, validate };
 };
