@@ -4,6 +4,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (import.meta.client || !to.name) return;
 
   const localePath = useLocalePath();
+  const nuxtApp = useNuxtApp();
 
   let path = to.path;
   if (LANG_PATTERN.test(path)) {
@@ -12,8 +13,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   if (WHITELIST.includes(path)) return;
 
-  const { user, setUser } = useUserState();
+  const { setUser } = useUserState();
   const { validate } = useAuth();
+  const { t } = { global: nuxtApp.$i18n }.global;
   const toast = useToast();
 
   try {
@@ -24,7 +26,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
   } catch (error) {
     if (PROTECTED_ROUTES.includes(path)) {
-      console.error("Validation error:", error);
+      toast.add({
+        title: t("auth.middleware.validateError"),
+      });
       return navigateTo(localePath("/auth/login"));
     }
   }

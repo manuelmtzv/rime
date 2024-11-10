@@ -25,4 +25,7 @@ export const auth = {
     success: "Tu cuenta se ha creado correctamente",
     failed: "Ocurrió un error al crear tu cuenta",
   },
+  middleware: {
+    validateError: "Tu sesión ha expirado, por favor inicia sesión nuevamente",
+  },
 };

@@ -25,4 +25,7 @@ export const auth = {
     success: "Your account has been created successfully",
     failed: "An error occurred while creating your account",
   },
+  middleware: {
+    validateError: "Your session has expired, please log in again",
+  },
 };
