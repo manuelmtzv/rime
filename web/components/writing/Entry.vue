@@ -3,10 +3,13 @@ import type { Writing } from "@/types";
 
 type Props = {
   writing: Writing;
+  showCreatedAt?: boolean;
 };
 
 const toast = useToast();
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  showCreatedAt: true,
+});
 const { t } = useI18n();
 
 const author = computed(() => props.writing.author);
@@ -31,9 +34,17 @@ function shareHandler() {
     </NuxtLink>
 
     <div class="flex justify-between items-center gap-4 mt-2">
-      <div v-if="author" class="space-x-2">
-        <UAvatar :alt="`${author.name} ${author?.lastname}`" size="sm" />
-        <span class="text-sm">{{ `${author.name} ${author?.lastname}` }}</span>
+      <div v-if="author" class="flex gap-2">
+        <UAvatar :alt="`${author.name} ${author?.lastname}`" size="md" />
+
+        <div class="flex flex-col">
+          <span class="text-sm">{{
+            `${author.name} ${author?.lastname}`
+          }}</span>
+          <span v-if="showCreatedAt" class="text-sm text-gray-500">
+            {{ $d(new Date(writing.createdAt)) }}
+          </span>
+        </div>
       </div>
 
       <nav class="flex gap-2">
