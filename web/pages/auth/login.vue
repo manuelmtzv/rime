@@ -1,8 +1,40 @@
 <script setup lang="ts">
-const localePath = useLocalePath();
+import { useVuelidate } from "@vuelidate/core";
 
-function handleSubmit() {
-  console.log("submit");
+const { login } = useAuth();
+const localePath = useLocalePath();
+const { required } = useValidation();
+const toast = useToast();
+const { t } = useI18n();
+
+const form = reactive({
+  username: "",
+  password: "",
+});
+
+const rules = {
+  username: { required },
+  password: { required },
+};
+
+const v$ = useVuelidate(rules, form);
+
+async function handleSubmit() {
+  await v$.value.$validate();
+  if (v$.value.$error) {
+    return;
+  }
+
+  try {
+    await login(form);
+    toast.add({
+      title: t("auth.login.success"),
+    });
+
+    await navigateTo(localePath("/"));
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 
@@ -16,9 +48,21 @@ function handleSubmit() {
         <p>{{ $t("auth.login.subtitle") }}</p>
       </div>
 
-      <UInput size="md" :placeholder="$t('auth.login.identifier')" />
+      <UFormGroup :error="toValue(v$.username.$errors[0]?.$message)">
+        <UInput
+          v-model="form.username"
+          size="md"
+          :placeholder="$t('auth.login.username')"
+        />
+      </UFormGroup>
 
-      <UInput size="md" :placeholder="$t('auth.login.password')" />
+      <UFormGroup :error="toValue(v$.password.$errors[0]?.$message)">
+        <UInput
+          v-model="form.password"
+          size="md"
+          :placeholder="$t('auth.login.password')"
+        />
+      </UFormGroup>
 
       <div class="flex justify-between items-center my-1">
         <span class="text-sm">{{ $t("auth.login.noAccount") }}</span>

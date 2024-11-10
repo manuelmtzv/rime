@@ -2,11 +2,13 @@ export const auth = {
   login: {
     title: "Welcome back!",
     subtitle: "Enter your credentials to access your writings",
-    identifier: "Your email or username",
+    username: "Your username",
     password: "Your password",
     noAccount: "Don't have an account?",
     registerLink: "Create an account",
     submit: "Login",
+    success: "You have successfully logged in",
+    failed: "An error occurred while trying to log in",
   },
   register: {
     title: "Join the community!",
@@ -20,5 +22,7 @@ export const auth = {
     hasAccount: "Already have an account?",
     loginLink: "Go to login",
     submit: "Register",
+    success: "Your account has been created successfully",
+    failed: "An error occurred while creating your account",
   },
 };

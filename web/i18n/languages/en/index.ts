@@ -2,6 +2,7 @@ import { app } from "./app.lang";
 import { auth } from "./auth.lang";
 import { tag } from "./tag.lang";
 import { user } from "./user.lang";
+import { validations } from "./validations.lang";
 import { writing } from "./writing.lang";
 
 export const en = {
@@ -10,4 +11,5 @@ export const en = {
   user,
   writing,
   tag,
+  validations,
 };
