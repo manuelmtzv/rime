@@ -1,4 +1,9 @@
 <script setup lang="ts">
+type Props = {
+  mobile?: boolean;
+};
+
+defineProps<Props>();
 const localePath = useLocalePath();
 
 const actions = [
@@ -21,14 +26,19 @@ const actions = [
 </script>
 
 <template>
-  <Card class="space-y-2">
-    <h3 class="mb-1">Quick Actions</h3>
+  <Card class="space-y-2 border-none p-0">
+    <h3 :class="cn('mb-1', mobile && 'mb-2')">Quick Actions</h3>
 
     <nav>
-      <ul class="space-y-2">
+      <ul :class="cn('space-y-2', mobile && 'space-y-4')">
         <li v-for="action in actions">
           <NuxtLink :to="action.to">
-            <UButton variant="link" class="w-full" :icon="action.icon">
+            <UButton
+              :variant="mobile ? 'outline' : 'link'"
+              class="w-full"
+              :size="mobile ? 'lg' : undefined"
+              :icon="action.icon"
+            >
               {{ action.title }}
             </UButton>
           </NuxtLink>

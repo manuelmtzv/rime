@@ -1,4 +1,9 @@
 <script setup lang="ts">
+type Props = {
+  buttonClass?: string;
+};
+
+defineProps<Props>();
 const colorMode = useColorMode();
 
 const toggleColorMode = () => {
@@ -15,7 +20,12 @@ const toggleColorMode = () => {
     <ClientOnly>
       <button
         @click="toggleColorMode"
-        class="flex hover:bg-gray-100 dark:hover:bg-gray-900 p-1.5 rounded-md"
+        :class="
+          cn(
+            'flex hover:bg-gray-100 dark:hover:bg-gray-900 p-1.5 rounded-md',
+            buttonClass
+          )
+        "
       >
         <Icon
           v-show="colorMode.preference == 'dark'"

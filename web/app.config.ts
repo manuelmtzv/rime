@@ -17,6 +17,11 @@ export default defineAppConfig({
         },
       },
     },
-    button: {},
+    slideover: {
+      overlay: {
+        background: "dark:bg-black/70",
+      },
+      background: "dark:bg-grey-900",
+    },
   },
 });

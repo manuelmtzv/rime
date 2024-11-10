@@ -11,10 +11,12 @@ const localePath = useLocalePath();
         <AppLogo />
       </NuxtLink>
 
-      <div class="flex gap-4 items-center min-h-8">
+      <div class="hidden md:flex gap-4 items-center min-h-8">
         <AppNavigation />
         <AppThemeToggle />
       </div>
+
+      <AppMobileNavigation class="block md:hidden" />
     </div>
   </header>
 </template>

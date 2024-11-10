@@ -1,21 +1,42 @@
 <script setup lang="ts">
+type Props = {
+  class?: string;
+  listClass?: string;
+  mobile?: boolean;
+  onLinkClick?: () => void;
+};
+
+type Emits = {
+  (event: "link-click"): void;
+};
+
+defineProps<Props>();
+defineEmits<Emits>();
 const localePath = useLocalePath();
 
 const { user } = useUserState();
 </script>
 
 <template>
-  <nav>
-    <ul class="flex gap-2">
+  <nav :class="cn($props.class)">
+    <ul
+      :class="
+        cn('flex', mobile ? 'flex flex-col gap-4' : 'flex-row gap-2', listClass)
+      "
+    >
       <li>
-        <AppLink :to="localePath('/')">
+        <AppLink :to="localePath('/')" :mobile="mobile" @click="onLinkClick">
           {{ $t("app.header.home") }}
         </AppLink>
       </li>
 
       <template v-if="user">
         <li>
-          <AppLink :to="localePath('/profile')">
+          <AppLink
+            :to="localePath('/profile')"
+            :mobile="mobile"
+            @click="onLinkClick"
+          >
             {{ $t("app.header.profile") }}
           </AppLink>
         </li>
@@ -23,12 +44,20 @@ const { user } = useUserState();
 
       <template v-else>
         <li>
-          <AppLink :to="localePath('/auth/login')">
+          <AppLink
+            :to="localePath('/auth/login')"
+            :mobile="mobile"
+            @click="onLinkClick"
+          >
             {{ $t("app.header.login") }}
           </AppLink>
         </li>
         <li>
-          <AppLink :to="localePath('/auth/register')">
+          <AppLink
+            :to="localePath('/auth/register')"
+            :mobile="mobile"
+            @click="onLinkClick"
+          >
             {{ $t("app.header.register") }}
           </AppLink>
         </li>
