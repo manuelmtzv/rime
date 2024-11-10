@@ -72,3 +72,22 @@ func (app *application) findOneWriting(w http.ResponseWriter, r *http.Request) {
 		app.internalServerError(w, r, err)
 	}
 }
+
+func (app *application) findWritingDetails(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	writtingDetails, err := app.store.Writings.FindDetails(r.Context(), id)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if writtingDetails == nil {
+		app.notFoundResponse(w, r, errors.New("writing not found"))
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, writtingDetails); err != nil {
+		app.internalServerError(w, r, err)
+	}
+}

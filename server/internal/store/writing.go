@@ -94,6 +94,51 @@ func (s WritingStore) FindOne(ctx context.Context, id string) (*models.Writing, 
 		return nil, err
 	}
 
+	details, err := s.FindDetails(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	writing.Tags = details.Tags
+
+	return writing, nil
+}
+
+func (s WritingStore) FindDetails(ctx context.Context, id string) (*models.WritingDetails, error) {
+	query := `
+		SELECT name 
+		FROM tag_writing
+		JOIN tags ON tag_writing.tag_id = tags.id
+		WHERE writing_id = $1		
+	`
+
+	rows, err := s.db.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
+	}
+
+	tags := []*models.Tag{}
+
+	for rows.Next() {
+		tag := &models.Tag{}
+
+		err := rows.Scan(&tag.Name)
+		if err != nil {
+			return nil, err
+		}
+
+		tags = append(tags, tag)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	writing := &models.WritingDetails{
+		ID:   id,
+		Tags: tags,
+	}
+
 	return writing, nil
 }
 
