@@ -37,7 +37,7 @@ function togglePasswordVisibility() {
 
       <UInput
         size="md"
-        :placeholder="$t('auth.register.name')"
+        :placeholder="$t('auth.register.lastname')"
         v-model="form.lastname"
       />
 
