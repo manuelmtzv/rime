@@ -9,7 +9,7 @@ export const useAuth = () => {
   const { setUser } = useUserState();
 
   async function login(loginForm: LoginRequest) {
-    const response = await fetch<AuthResponse>("/auth/login", {
+    const response = await $fetch<AuthResponse>("/api/auth/login", {
       method: "POST",
       body: JSON.stringify(loginForm),
     });
