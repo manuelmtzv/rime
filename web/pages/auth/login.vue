@@ -33,7 +33,9 @@ async function handleSubmit() {
 
     await navigateTo(localePath("/"));
   } catch (error) {
-    console.error(error);
+    toast.add({
+      title: t("auth.login.failed"),
+    });
   }
 }
 </script>
