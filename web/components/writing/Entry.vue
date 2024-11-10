@@ -5,8 +5,9 @@ type Props = {
   writing: Writing;
 };
 
-const props = defineProps<Props>();
 const toast = useToast();
+const props = defineProps<Props>();
+const { t } = useI18n();
 
 const author = computed(() => props.writing.author);
 const localePath = useLocalePath();
@@ -16,7 +17,7 @@ function shareHandler() {
   copyToClipboard(url);
 
   toast.add({
-    title: "Link copied to clipboard",
+    title: t("app.copiedLink"),
   });
 }
 </script>

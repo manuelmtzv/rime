@@ -8,4 +8,5 @@ export const app = {
     rights: "Todos los derechos reservados",
   },
   searchbar: "Buscar Escritos...",
+  copiedLink: "¡Enlace copiado al portapapeles!",
 };

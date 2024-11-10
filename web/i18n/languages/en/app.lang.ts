@@ -8,4 +8,5 @@ export const app = {
     rights: "All rights reserved",
   },
   searchbar: "Search Writings...",
+  copiedLink: "Link copied to clipboard!",
 };
