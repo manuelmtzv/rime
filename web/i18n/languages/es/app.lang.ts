@@ -3,6 +3,7 @@ export const app = {
     home: "Inicio",
     login: "Ingresar",
     register: "Registrarse",
+    profile: "Perfil",
   },
   footer: {
     rights: "Todos los derechos reservados",
