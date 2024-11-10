@@ -71,21 +71,30 @@ func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 
 func (s WritingStore) FindOne(ctx context.Context, id string) (*models.Writing, error) {
 	query := `
-		SELECT id, type, title, content, author_id, created_at, updated_at FROM writings
+		SELECT id, type, title, content, author_id, created_at, updated_at 
+		FROM writings 
+		WHERE id = $1
 	`
 
-	row, err := s.db.QueryContext(ctx, query)
+	writing := &models.Writing{}
+
+	err := s.db.QueryRowContext(ctx, query, id).Scan(
+		&writing.ID,
+		&writing.Type,
+		&writing.Title,
+		&writing.Content,
+		&writing.AuthorID,
+		&writing.CreatedAt,
+		&writing.UpdatedAt,
+	)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
 
-	writting := &models.Writing{}
-
-	if err = row.Scan(&writting.ID, &writting.Title, &writting.Type, &writting.Content, &writting.AuthorID, &writting.CreatedAt, &writting.UpdatedAt); err != nil {
-		return nil, err
-	}
-
-	return writting, nil
+	return writing, nil
 }
 
 func (s WritingStore) ComposeFeed(ctx context.Context, userID *string) ([]*models.Writing, error) {
