@@ -38,7 +38,7 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
 
         <WritingQuickActions />
 
-        <AppLocaleSelect />
+        <AppLocaleSelect class="hidden lg:block" />
       </aside>
     </div>
   </Page>
