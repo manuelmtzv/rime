@@ -12,6 +12,7 @@ export const auth = {
     title: "Join the community!",
     subtitle: "Create an account to start writing",
     name: "Name",
+    lastname: "Lastname",
     username: "Username",
     email: "Email",
     password: "Password",

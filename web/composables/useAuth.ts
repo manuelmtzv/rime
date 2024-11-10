@@ -1,4 +1,8 @@
-import type { AuthResponse, LoginRequest } from "@/types/auth.type";
+import type {
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+} from "@/types/auth.type";
 
 export const useAuth = () => {
   const fetch = useNuxtApp().$api;
@@ -11,6 +15,20 @@ export const useAuth = () => {
       {
         method: "POST",
         body: JSON.stringify(loginForm),
+      }
+    );
+
+    setUser(response.data.user);
+
+    return response;
+  }
+
+  async function register(registerForm: RegisterRequest) {
+    const response = await fetch<AuthResponse>(
+      `${runtimeConfig.public.API_BASE_URL}/auth/register`,
+      {
+        method: "POST",
+        body: JSON.stringify(registerForm),
       }
     );
 

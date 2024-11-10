@@ -4,6 +4,7 @@ const localePath = useLocalePath();
 
 const form = reactive({
   name: "",
+  lastname: "",
   email: "",
   username: "",
   password: "",
@@ -32,6 +33,12 @@ function togglePasswordVisibility() {
         size="md"
         :placeholder="$t('auth.register.name')"
         v-model="form.name"
+      />
+
+      <UInput
+        size="md"
+        :placeholder="$t('auth.register.name')"
+        v-model="form.lastname"
       />
 
       <UInput
