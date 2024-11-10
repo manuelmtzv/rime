@@ -13,7 +13,7 @@ const author = computed(() => props.writing.author);
 
 <template>
   <article
-    class="p-6 mx-auto flex flex-col gap-4 bg-gradient-to-r from-[#8B4513] via-[#6F4E37] to-[#4A3728] rounded-lg shadow-lg text-white"
+    class="p-6 mx-auto flex flex-col gap-4 bg-gradient-to-r from-[#8B4513] via-[#6F4E37] to-[#4A3728] dark:from-[#3F4E4F] dark:via-[#364245] dark:to-[#2C3639] rounded-lg shadow-lg text-white"
   >
     <h1 class="underline">{{ $t("writing.featured.title") }}</h1>
 
