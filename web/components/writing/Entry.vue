@@ -49,7 +49,9 @@ function shareHandler() {
             `${author.name} ${author?.lastname}`
           }}</span>
           <span v-if="showCreatedAt" class="text-sm text-gray-500">
-            {{ $d(new Date(writing.createdAt)) }}
+            <ClientOnly fallback="...">
+              {{ $d(new Date(writing.createdAt)) }}
+            </ClientOnly>
           </span>
         </div>
       </div>
