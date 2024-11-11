@@ -1,5 +1,5 @@
 export const tag = {
   popular: {
-    title: "Etiquetas populares",
+    title: "Etiquetas Populares",
   },
 };
