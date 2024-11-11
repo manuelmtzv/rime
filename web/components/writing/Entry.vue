@@ -11,9 +11,16 @@ const props = withDefaults(defineProps<Props>(), {
   showCreatedAt: true,
 });
 const { t } = useI18n();
+const authAction = useAuthAction();
 
 const author = computed(() => props.writing.author);
 const localePath = useLocalePath();
+
+async function likeHandler() {
+  authAction.run(() => {
+    console.log("Like");
+  });
+}
 
 function shareHandler() {
   const url = useRequestURL().host + `/writings/${props.writing.id}`;
@@ -48,7 +55,7 @@ function shareHandler() {
       </div>
 
       <nav class="flex gap-2">
-        <button>
+        <button @click="likeHandler">
           <Icon name="heroicons:heart" class="w-6 h-6" />
         </button>
 

@@ -5,5 +5,6 @@
     </NuxtLayout>
 
     <UNotifications />
+    <AuthRequiredModal />
   </div>
 </template>
