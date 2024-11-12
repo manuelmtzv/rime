@@ -32,7 +32,7 @@ seed:
 
 .PHONY: seed-reset
 seed-reset:
-	@echo "Resetting database"
+	@echo "Resetting and seeding database"
 	@$(MIGRATE_COMMAND) drop
 	@$(MIGRATE_COMMAND) up
 	@go run cmd/migrate/seed/main.go
