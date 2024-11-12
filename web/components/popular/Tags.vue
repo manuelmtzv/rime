@@ -19,14 +19,8 @@ const { data, status, error } = await useAsyncData("popular-tags", tagRepository
       </template>
 
       <template v-if="status == 'pending'">
-        <li>
-          <Skeleton class="w-20 h-4" />
-        </li>
-        <li>
-          <Skeleton class="w-20 h-4" />
-        </li>
-        <li>
-          <Skeleton class="w-20 h-4" />
+        <li v-for="i in 6">
+          <USkeleton class="w-20 h-4" />
         </li>
       </template>
     </ul>
