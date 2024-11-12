@@ -3,12 +3,14 @@ import type { Writing } from "@/types";
 
 type Props = {
   writing: Writing;
+  link?: boolean;
   showCreatedAt?: boolean;
 };
 
 const toast = useToast();
 const props = withDefaults(defineProps<Props>(), {
   showCreatedAt: true,
+  link: true,
 });
 const { t } = useI18n();
 const authAction = useAuthAction();
@@ -30,11 +32,14 @@ function shareHandler() {
     title: t("app.copiedLink"),
   });
 }
+
+const to = localePath(`/writings/${props.writing.id}`);
 </script>
 
 <template>
   <article class="px-2 mx-auto py-6 flex flex-col gap-4 border-b">
-    <NuxtLink :to="localePath(`/writings/${writing.id}`)">
+
+    <NuxtLink :to="link ? to : undefined">
       <h2 class="text-2xl font-bold font-poetry mb-4">{{ writing.title }}</h2>
 
       <TiptapContent class="font-poetry" :content="writing.text" />
@@ -47,7 +52,7 @@ function shareHandler() {
         <div class="flex flex-col">
           <span class="text-sm">{{
             `${author.name} ${author?.lastname}`
-          }}</span>
+            }}</span>
           <span v-if="showCreatedAt" class="text-sm text-gray-500">
             <ClientOnly fallback="...">
               {{ $d(new Date(writing.createdAt)) }}
