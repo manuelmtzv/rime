@@ -2,7 +2,7 @@
 import { writingRepository } from "@/repositories/writing.repository";
 import type { ListResponse, Writing } from "@/types";
 
-const { data } = await useAsyncData<ListResponse<Writing>>(
+const { data, status, error } = await useAsyncData<ListResponse<Writing>>(
   "writings",
   writingRepository().getWritings
 );
@@ -23,17 +23,19 @@ const { data } = await useAsyncData<ListResponse<Writing>>(
         <template v-if="data">
           <WritingFeaturedEntry :writing="data.data[0]" />
 
-          <WritingEntry
-            v-for="writing in data.data"
-            :key="writing.id"
-            :writing="writing"
-          />
+          <WritingEntry v-for="writing in data.data" :key="writing.id" :writing="writing" />
         </template>
+
+        <template v-if="status == 'pending'">
+          <WritingEntryPlaceholder v-for="i in 8" :key="i" />
+        </template>
+
+        <div v-else-if="status == 'error'">
+          <pre>{{ error }}</pre>
+        </div>
       </section>
 
-      <aside
-        class="hidden md:block space-y-8 h-fit w-full max-w-60 sticky lg:static top-8"
-      >
+      <aside class="hidden md:block space-y-8 h-fit w-full max-w-60 sticky lg:static top-8">
         <UserCard />
 
         <WritingQuickActions />
