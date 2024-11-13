@@ -7,14 +7,16 @@ import (
 )
 
 func (app *application) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-
-	lang := r.FormValue("lang")
-	accept := r.Header.Get("Accept-Language")
+	localizer := app.getLocalizerFromContext(r)
 
 	localizeConfigWelcome := i18n.LocalizeConfig{
-		MessageID: "health.ok",
+		MessageID: "Health.Ok",
 	}
-	message, _ := app.i18n.localizer.Localize(&localizeConfigWelcome)
+	message, _ := localizer.Localize(&localizeConfigWelcome)
 
-	w.Write([]byte(message))
+	app.logger.Info(message)
+
+	if err := app.jsonResponse(w, http.StatusOK, map[string]interface{}{"message": message}); err != nil {
+		app.internalServerError(w, r, err)
+	}
 }

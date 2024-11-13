@@ -1,0 +1,13 @@
+{
+  "Error.InternalServerError": "Error interno del servidor",
+  "Error.NotFound": "No encontrado",
+  "Error.Unauthorized": "No autorizado",
+  "Error.Forbidden": "Acción no permitida",
+  "Error.BadRequest": "Solicitud incorrecta",
+  "Error.ValidationError": "Error de validación",
+  "Error.InvalidToken": "Token inválido",
+  "Error.InvalidCredentials": "Credenciales inválidas",
+  "Error.InvalidEmail": "Email inválido",
+  "Error.InvalidPassword": "Contraseña inválida",
+  "Health.Ok": "El servicio está en funcionamiento"
+}

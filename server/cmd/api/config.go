@@ -50,6 +50,5 @@ type redisConfig struct {
 }
 
 type i18nConfig struct {
-	bundle    *i18n.Bundle
-	localizer *i18n.Localizer
+	bundle *i18n.Bundle
 }

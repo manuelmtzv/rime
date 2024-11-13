@@ -8,7 +8,18 @@ import (
 	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
+
+func (app *application) LocalizerMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		lang := r.FormValue("lang")
+		accept := r.Header.Get("Accept-Language")
+		localizer := i18n.NewLocalizer(app.i18n.bundle, lang, accept)
+		ctx := context.WithValue(r.Context(), localizerCtx, localizer)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
 
 func (app *application) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

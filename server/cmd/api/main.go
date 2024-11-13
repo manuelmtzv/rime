@@ -14,11 +14,10 @@ import (
 )
 
 func main() {
-	bundle, localizer := initI18n()
+	bundle := initI18n()
 
 	i18n := &i18nConfig{
-		bundle:    bundle,
-		localizer: localizer,
+		bundle: bundle,
 	}
 
 	logger := zap.Must(zap.NewProduction()).Sugar()
