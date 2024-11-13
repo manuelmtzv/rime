@@ -1,6 +1,10 @@
 package main
 
-import "time"
+import (
+	"time"
+
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+)
 
 type config struct {
 	addr       string
@@ -43,4 +47,9 @@ type redisConfig struct {
 	pw      string
 	db      int
 	enabled bool
+}
+
+type i18nConfig struct {
+	bundle    *i18n.Bundle
+	localizer *i18n.Localizer
 }

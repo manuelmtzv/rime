@@ -14,6 +14,13 @@ import (
 )
 
 func main() {
+	bundle, localizer := initI18n()
+
+	i18n := &i18nConfig{
+		bundle:    bundle,
+		localizer: localizer,
+	}
+
 	logger := zap.Must(zap.NewProduction()).Sugar()
 
 	err := env.Load()
@@ -82,6 +89,7 @@ func main() {
 
 	app := &application{
 		config:        cfg,
+		i18n:          i18n,
 		store:         store,
 		cacheStore:    cacheStorage,
 		logger:        logger,

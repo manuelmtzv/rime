@@ -15,6 +15,7 @@ import (
 
 type application struct {
 	config        config
+	i18n          *i18nConfig
 	store         store.Storage
 	cacheStore    cache.Storage
 	logger        *zap.SugaredLogger
