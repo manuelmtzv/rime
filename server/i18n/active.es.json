@@ -12,7 +12,6 @@
   "Error.InvalidPassword": "Contraseña inválida",
   "Error.RateLimitExeeded": "Límite de tasa excedido. Inténtalo de nuevo después de {{.RetryAfter}}",
   "Error.InvalidUUID": "El identificador debe ser un UUID válido",
-  
 
   "Auth.Registered": "Te has registrado correctamente",
   "Auth.LoggedIn": "Te has logueado correctamente", 
@@ -21,6 +20,9 @@
   "Auth.UserNotFound": "Usuario no encontrado", 
   "Auth.TokenExpired": "Token expirado", 
   "Auth.TokenInvalid": "Token inválido", 
+  "Auth.CannotRetrieveSession": "Tu sesión no pudo ser validada",
+  "Auth.TokenCreationFailed": "No se pudo crear el token",
+  "Auth.CannotCreateUser": "Ocurrió un error al crear el usuario",
 
   "User.Updated": "Usuario actualizado correctamente",
   "User.Followed": "Ahora sigues a {{.Username}}", 

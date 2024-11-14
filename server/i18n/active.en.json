@@ -20,6 +20,8 @@
   "Auth.UserNotFound": "User not found",
   "Auth.TokenExpired": "Token expired",
   "Auth.TokenInvalid": "Invalid token",
+  "Auth.CannotRetrieveSession": "Your session could not be validated",
+  "Auth.CannotCreateUser": "An error occurred while creating the user",
   
   "User.Updated": "User updated successfully",
   "User.Followed": "Now you follow {{.Username}}",

@@ -1,13 +1,16 @@
 package constants
 
 const (
-	AuthRegistered       = "Auth.Registered"
-	AuthLoggedIn         = "Auth.LoggedIn"
-	AuthWrongCredentials = "Auth.WrongCredentials"
-	AuthUserExists       = "Auth.UserExists"
-	AuthUserNotFound     = "Auth.UserNotFound"
-	AuthTokenExpired     = "Auth.TokenExpired"
-	AuthTokenInvalid     = "Auth.TokenInvalid"
+	AuthRegistered            = "Auth.Registered"
+	AuthLoggedIn              = "Auth.LoggedIn"
+	AuthWrongCredentials      = "Auth.WrongCredentials"
+	AuthUserExists            = "Auth.UserExists"
+	AuthUserNotFound          = "Auth.UserNotFound"
+	AuthTokenExpired          = "Auth.TokenExpired"
+	AuthTokenInvalid          = "Auth.TokenInvalid"
+	AuthCannotRetrieveSession = "Auth.CannotRetrieveSession"
+	AuthTokenCreationFailed   = "Auth.TokenCreationFailed"
+	AuthCannotCreateUser      = "Auth.CannotCreateUser"
 
 	UserUpdated  = "User.Updated"
 	UserFollowed = "User.Followed"

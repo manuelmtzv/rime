@@ -11,6 +11,6 @@ func (app *application) healthCheckHandler(w http.ResponseWriter, r *http.Reques
 	app.logger.Info(msg)
 
 	if err := app.jsonResponse(w, http.StatusOK, map[string]interface{}{"message": msg}); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }

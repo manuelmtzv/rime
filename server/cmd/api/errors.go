@@ -7,10 +7,15 @@ import (
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
-func (app *application) internalServerError(w http.ResponseWriter, r *http.Request, err error) {
+func (app *application) internalServerError(w http.ResponseWriter, r *http.Request, err error, messageID string) {
 	app.logger.Errorw("internal error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
+	msg := app.getMessageOrDefault(r, messageID, "internal server error", nil)
 
-	writeJSONError(w, http.StatusInternalServerError, app.getMessageOrDefault(r, constants.ErrorInternalServerError, "internal server error", nil))
+	writeJSONError(w, http.StatusInternalServerError, msg)
+}
+
+func (app *application) internalServerErrorBasic(w http.ResponseWriter, r *http.Request, err error) {
+	app.internalServerError(w, r, err, constants.ErrorInternalServerError)
 }
 
 func (app *application) forbiddenResponse(w http.ResponseWriter, r *http.Request) {

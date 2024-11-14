@@ -25,28 +25,28 @@ type UserResponse struct {
 func (app *application) findUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := app.store.Users.FindAll(r.Context())
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
 	err = app.jsonResponse(w, http.StatusOK, users)
 
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
 func (app *application) findPopular(w http.ResponseWriter, r *http.Request) {
 	users, err := app.store.Users.FindPopular(r.Context())
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
 	err = app.jsonResponse(w, http.StatusOK, users)
 
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
@@ -60,7 +60,7 @@ func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 
 	user, err := app.store.Users.FindOne(r.Context(), id)
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
@@ -70,7 +70,7 @@ func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, user); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 

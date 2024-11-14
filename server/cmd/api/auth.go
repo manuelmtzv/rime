@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"rime-api/internal/constants"
 	"rime-api/internal/hash"
 	"rime-api/internal/models"
 	"time"
@@ -34,12 +35,12 @@ func (app *application) validate(w http.ResponseWriter, r *http.Request) {
 	user := app.getUserFromContext(r)
 
 	if user == nil {
-		app.unauthorizedErrorResponse(w, r, errors.New("your session could not be validated"))
+		app.unauthorizedErrorResponse(w, r, app.getLocaleError(r, constants.AuthCannotRetrieveSession, nil))
 		return
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, map[string]*models.User{"user": user}); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
@@ -69,12 +70,12 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 
 	accessToken, err := app.composeToken(user.ID, "access")
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerError(w, r, err, constants.AuthTokenCreationFailed)
 		return
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, map[string]string{"token": accessToken, "refreshToken": refreshToken.Raw}); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
@@ -98,7 +99,7 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 
 	hashedPassword, err := hash.HashPassword(payload.Password)
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerError(w, r, err, constants.AuthCannotCreateUser)
 		return
 	}
 
@@ -111,13 +112,13 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := app.store.Users.Create(r.Context(), user); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerError(w, r, err, constants.AuthCannotCreateUser)
 		return
 	}
 
 	accessToken, refreshToken, err := app.composeTokens(user.ID)
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerError(w, r, err, constants.AuthTokenCreationFailed)
 		return
 	}
 
@@ -135,7 +136,7 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := app.jsonResponse(w, http.StatusCreated, userResponse); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
@@ -154,23 +155,23 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 
 	user, err := app.store.Users.FindByIdentifier(r.Context(), payload.Username)
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
 	if user == nil {
-		app.notFoundResponse(w, r, errors.New("user not found"))
+		app.notFoundResponse(w, r, app.getLocaleError(r, constants.AuthUserNotFound, nil))
 		return
 	}
 
 	if valid, _ := hash.VerifyPassword(payload.Password, user.Password); !valid {
-		app.badRequestResponse(w, r, errors.New("invalid password"))
+		app.badRequestResponse(w, r, app.getLocaleError(r, constants.AuthWrongCredentials, nil))
 		return
 	}
 
 	accessToken, refreshToken, err := app.composeTokens(user.ID)
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerError(w, r, err, constants.AuthTokenCreationFailed)
 		return
 	}
 
@@ -188,7 +189,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, authResponse); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 

@@ -34,24 +34,24 @@ func (app *application) createWriting(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := app.store.Writings.Create(r.Context(), writting); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
 	if err := app.jsonResponse(w, http.StatusCreated, writting); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
 func (app *application) findWritings(w http.ResponseWriter, r *http.Request) {
 	writings, err := app.store.Writings.FindAll(r.Context())
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, writings); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
@@ -59,7 +59,7 @@ func (app *application) findOneWriting(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	writting, err := app.store.Writings.FindOne(r.Context(), id)
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
@@ -69,7 +69,7 @@ func (app *application) findOneWriting(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, writting); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
 
@@ -78,7 +78,7 @@ func (app *application) findWritingDetails(w http.ResponseWriter, r *http.Reques
 
 	writtingDetails, err := app.store.Writings.FindDetails(r.Context(), id)
 	if err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 		return
 	}
 
@@ -88,6 +88,6 @@ func (app *application) findWritingDetails(w http.ResponseWriter, r *http.Reques
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, writtingDetails); err != nil {
-		app.internalServerError(w, r, err)
+		app.internalServerErrorBasic(w, r, err)
 	}
 }
