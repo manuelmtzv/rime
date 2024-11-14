@@ -9,5 +9,26 @@
   "Error.InvalidCredentials": "Credenciales inválidas",
   "Error.InvalidEmail": "Email inválido",
   "Error.InvalidPassword": "Contraseña inválida",
-  "Health.Ok": "El servicio está en funcionamiento"
+  "Health.Ok": "El servicio está en funcionamiento", 
+
+  "Auth.Registered": "Te has registrado correctamente",
+  "Auth.LoggedIn": "Te has logueado correctamente", 
+  "Auth.WrongCredentials": "Credenciales incorrectas. Por favor, inténtalo de nuevo",
+  "Auth.UserExists": "El usuario ya existe", 
+  "Auth.UserNotFound": "Usuario no encontrado", 
+  "Auth.TokenExpired": "Token expirado", 
+  "Auth.TokenInvalid": "Token inválido", 
+
+  "User.Updated": "Usuario actualizado correctamente",
+  "User.Followed": "Ahora sigues a {{.Username}}", 
+  "User.NotFound": "Usuario no encontrado",
+
+  "Writing.Created": "Escritura creada correctamente",
+  "Writing.Published": "Escritura publicada correctamente", 
+  "Writing.NotFound": "Escritura no encontrada",
+
+  "Tag.Created": "Etiqueta creada correctamente",
+  "Tag.Updated": "Etiqueta actualizada correctamente",
+  "Tag.Deleted": "Etiqueta eliminada correctamente", 
+  "Tag.NotFound": "Etiqueta no encontrada"
 }

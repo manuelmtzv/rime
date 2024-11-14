@@ -9,5 +9,26 @@
   "Error.InvalidCredentials": "Invalid credentials",
   "Error.InvalidEmail": "Invalid email",
   "Error.InvalidPassword": "Invalid password",
-  "Health.Ok": "The service is running"
+  "Health.Ok": "The service is running",
+
+  "Auth.Registered": "You have registered successfully",
+  "Auth.LoggedIn": "You have logged in successfully", 
+  "Auth.WrongCredentials": "Incorrect credentials. Please try again",
+  "Auth.UserExists": "User already exists",
+  "Auth.UserNotFound": "User not found",
+  "Auth.TokenExpired": "Token expired",
+  "Auth.TokenInvalid": "Invalid token",
+
+  "User.Updated": "User updated successfully",
+  "User.Followed": "Now you follow {{.Username}}",
+  "User.NotFound": "User not found",
+
+  "Writing.Created": "Writing created successfully", 
+  "Writing.Published": "Writing published successfully", 
+  "Writing.NotFound": "Writing not found",
+
+  "Tag.Created": "Tag created successfully",
+  "Tag.Updated": "Tag updated successfully",
+  "Tag.Deleted": "Tag deleted successfully", 
+  "Tag.NotFound": "Tag not found"
 }
