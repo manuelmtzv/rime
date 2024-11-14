@@ -1,12 +1,12 @@
 package main
 
 import (
-	"errors"
 	"net/http"
 	"rime-api/internal/models"
 	"rime-api/internal/validations"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 type userKey string
@@ -54,7 +54,10 @@ func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	if !validations.IsValidUUID(id) {
-		app.badRequestResponse(w, r, errors.New("user id must be a valid UUID"))
+
+		app.badRequestResponse(w, r, app.getLocaleError(r, &i18n.LocalizeConfig{
+			MessageID: "Error.InvalidUUID",
+		}))
 		return
 	}
 
@@ -65,7 +68,9 @@ func (app *application) findOneUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user == nil {
-		app.notFoundResponse(w, r, errors.New("user not found"))
+		app.notFoundResponse(w, r, app.getLocaleError(r, &i18n.LocalizeConfig{
+			MessageID: "Error.UserNotFound",
+		}))
 		return
 	}
 

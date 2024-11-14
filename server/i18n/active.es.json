@@ -11,8 +11,8 @@
   "Error.InvalidEmail": "Email inválido",
   "Error.InvalidPassword": "Contraseña inválida",
   "Error.RateLimitExeeded": "Límite de tasa excedido. Inténtalo de nuevo después de {{.RetryAfter}}",
-
-  "Health.Ok": "El servicio está en funcionamiento", 
+  "Error.InvalidUUID": "El identificador debe ser un UUID válido",
+  
 
   "Auth.Registered": "Te has registrado correctamente",
   "Auth.LoggedIn": "Te has logueado correctamente", 
@@ -33,5 +33,7 @@
   "Tag.Created": "Etiqueta creada correctamente",
   "Tag.Updated": "Etiqueta actualizada correctamente",
   "Tag.Deleted": "Etiqueta eliminada correctamente", 
-  "Tag.NotFound": "Etiqueta no encontrada"
+  "Tag.NotFound": "Etiqueta no encontrada", 
+
+  "Health.Ok": "El servicio está en funcionamiento"
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
@@ -35,4 +36,9 @@ func (app *application) getLocalizerFromContext(r *http.Request) *i18n.Localizer
 func (app *application) getLocaleMessage(r *http.Request, cfg *i18n.LocalizeConfig) string {
 	localizer := app.getLocalizerFromContext(r)
 	return localizer.MustLocalize(cfg)
+}
+
+func (app *application) getLocaleError(r *http.Request, cfg *i18n.LocalizeConfig) error {
+	msg := app.getLocaleMessage(r, cfg)
+	return errors.New(msg)
 }

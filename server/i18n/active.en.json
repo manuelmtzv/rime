@@ -11,9 +11,8 @@
   "Error.InvalidEmail": "Invalid email",
   "Error.InvalidPassword": "Invalid password",
   "Error.RateLimitExeeded": "Rate limit exceeded. Retry after {{.RetryAfter}}",
-
-  "Health.Ok": "The service is running",
-
+  "Error.InvalidUUID": "The identifier must be a valid UUID",
+  
   "Auth.Registered": "You have registered successfully",
   "Auth.LoggedIn": "You have logged in successfully", 
   "Auth.WrongCredentials": "Incorrect credentials. Please try again",
@@ -21,17 +20,19 @@
   "Auth.UserNotFound": "User not found",
   "Auth.TokenExpired": "Token expired",
   "Auth.TokenInvalid": "Invalid token",
-
+  
   "User.Updated": "User updated successfully",
   "User.Followed": "Now you follow {{.Username}}",
   "User.NotFound": "User not found",
-
+  
   "Writing.Created": "Writing created successfully", 
   "Writing.Published": "Writing published successfully", 
   "Writing.NotFound": "Writing not found",
-
+  
   "Tag.Created": "Tag created successfully",
   "Tag.Updated": "Tag updated successfully",
   "Tag.Deleted": "Tag deleted successfully", 
-  "Tag.NotFound": "Tag not found"
+  "Tag.NotFound": "Tag not found",
+
+  "Health.Ok": "The service is running"
 }
