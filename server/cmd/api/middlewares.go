@@ -13,9 +13,8 @@ import (
 
 func (app *application) LocalizerMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		lang := r.FormValue("lang")
 		accept := r.Header.Get("Accept-Language")
-		localizer := i18n.NewLocalizer(app.i18n.bundle, lang, accept)
+		localizer := i18n.NewLocalizer(app.i18n.bundle, accept)
 		ctx := context.WithValue(r.Context(), localizerCtx, localizer)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

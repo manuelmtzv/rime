@@ -11,7 +11,10 @@ import (
 
 type localizerKey string
 
-const localizerCtx localizerKey = "localizer"
+const (
+	localizerCtx      localizerKey = "localizer"
+	ErrorUserNotFound              = "Error.UserNotFound"
+)
 
 func initI18n() *i18n.Bundle {
 	bundle := i18n.NewBundle(language.English)
@@ -23,22 +26,37 @@ func initI18n() *i18n.Bundle {
 	return bundle
 }
 
-func (app *application) getLocalizerFromContext(r *http.Request) *i18n.Localizer {
-	localizer, _ := r.Context().Value(localizerCtx).(*i18n.Localizer)
-
-	if localizer == nil {
-		localizer = i18n.NewLocalizer(app.i18n.bundle, r.Header.Get("Accept-Language"))
+func (app *application) getLocalizerFromContext(r *http.Request) (*i18n.Localizer, error) {
+	localizer, ok := r.Context().Value(localizerCtx).(*i18n.Localizer)
+	if !ok {
+		return nil, errors.New("localizer not found in context")
 	}
-
-	return localizer
+	return localizer, nil
 }
 
-func (app *application) getLocaleMessage(r *http.Request, cfg *i18n.LocalizeConfig) string {
-	localizer := app.getLocalizerFromContext(r)
-	return localizer.MustLocalize(cfg)
+func (app *application) getLocaleMessage(r *http.Request, messageID string, templateData map[string]interface{}) (string, error) {
+	localizer, err := app.getLocalizerFromContext(r)
+	if err != nil {
+		return "", err
+	}
+	return localizer.Localize(&i18n.LocalizeConfig{
+		MessageID:    messageID,
+		TemplateData: templateData,
+	})
 }
 
-func (app *application) getLocaleError(r *http.Request, cfg *i18n.LocalizeConfig) error {
-	msg := app.getLocaleMessage(r, cfg)
+func (app *application) getMessageOrDefault(r *http.Request, messageID, defaultMessage string, templateData map[string]interface{}) string {
+	msg, err := app.getLocaleMessage(r, messageID, templateData)
+	if err != nil {
+		return defaultMessage
+	}
+	return msg
+}
+
+func (app *application) getLocaleError(r *http.Request, messageID string, templateData map[string]interface{}) error {
+	msg, err := app.getLocaleMessage(r, messageID, templateData)
+	if err != nil {
+		return err
+	}
 	return errors.New(msg)
 }

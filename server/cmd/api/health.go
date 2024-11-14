@@ -2,21 +2,15 @@ package main
 
 import (
 	"net/http"
-
-	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"rime-api/internal/constants"
 )
 
 func (app *application) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	localizer := app.getLocalizerFromContext(r)
+	msg := app.getMessageOrDefault(r, constants.HealthOk, "Ok", nil)
 
-	localizeConfigWelcome := i18n.LocalizeConfig{
-		MessageID: "Health.Ok",
-	}
-	message, _ := localizer.Localize(&localizeConfigWelcome)
+	app.logger.Info(msg)
 
-	app.logger.Info(message)
-
-	if err := app.jsonResponse(w, http.StatusOK, map[string]interface{}{"message": message}); err != nil {
+	if err := app.jsonResponse(w, http.StatusOK, map[string]interface{}{"message": msg}); err != nil {
 		app.internalServerError(w, r, err)
 	}
 }
