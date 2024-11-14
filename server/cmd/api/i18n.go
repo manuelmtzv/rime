@@ -31,3 +31,8 @@ func (app *application) getLocalizerFromContext(r *http.Request) *i18n.Localizer
 
 	return localizer
 }
+
+func (app *application) getLocaleMessage(r *http.Request, cfg *i18n.LocalizeConfig) string {
+	localizer := app.getLocalizerFromContext(r)
+	return localizer.MustLocalize(cfg)
+}

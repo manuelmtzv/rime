@@ -4,11 +4,14 @@
   "Error.Unauthorized": "Unauthorized",
   "Error.Forbidden": "Action not allowed",
   "Error.BadRequest": "Bad request",
+  "Error.Conflict": "Conflict during request",
   "Error.ValidationError": "Validation error",
   "Error.InvalidToken": "Invalid token",
   "Error.InvalidCredentials": "Invalid credentials",
   "Error.InvalidEmail": "Invalid email",
   "Error.InvalidPassword": "Invalid password",
+  "Error.RateLimitExeeded": "Rate limit exceeded. Retry after {{.RetryAfter}}",
+
   "Health.Ok": "The service is running",
 
   "Auth.Registered": "You have registered successfully",
