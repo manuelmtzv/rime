@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { tagRepository } from "@/repositories/tag.repository";
 
-const { data, status, error } = await useAsyncData("popular-tags", tagRepository().getTags);
+const { data, status, error } = await useLazyAsyncData(
+  "popular-tags",
+  tagRepository().getTags
+);
 </script>
 
 <template>
@@ -18,7 +21,7 @@ const { data, status, error } = await useAsyncData("popular-tags", tagRepository
         </li>
       </template>
 
-      <template v-if="status == 'pending'">
+      <template v-else-if="status == 'pending'">
         <li v-for="i in 6">
           <USkeleton class="w-20 h-4" />
         </li>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { userRepository } from "@/repositories/user.repository";
 
-const { data, status, error } = await useAsyncData(
+const { data, status, error } = await useLazyAsyncData(
   "popular-authors",
   userRepository().getPopularUsers
 );
@@ -20,8 +20,8 @@ const { data, status, error } = await useAsyncData(
         </li>
       </template>
 
-      <template v-if="status == 'pending'">
-        <UserInlineEntryPlaceholder v-for="i in 6" :key="i" />
+      <template v-else-if="status == 'pending'">
+        <UserInlineEntryPlaceholder v-for="i in 8" :key="i" />
       </template>
     </ul>
 
