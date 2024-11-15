@@ -7,7 +7,7 @@ defineProps<Props>();
 const localePath = useLocalePath();
 const { t } = useI18n();
 
-const actions = [
+const actions = computed(() => [
   {
     title: t("writing.quickActions.create"),
     to: localePath("/writings/create"),
@@ -23,7 +23,7 @@ const actions = [
     to: localePath("/writings/collection"),
     icon: "i-heroicons-folder-open",
   },
-];
+])
 </script>
 
 <template>
