@@ -30,7 +30,7 @@ func (app *application) mount() *chi.Mux {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	// r.Use(app.LocalizerMiddleware)
+	r.Use(app.LocalizerMiddleware)
 
 	r.Use(middleware.Timeout(60 * time.Second))
 
