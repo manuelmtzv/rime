@@ -1,4 +1,4 @@
-CREATE TABLE IF EXISTS comments (
+CREATE TABLE IF NOT EXISTS comments (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     content text NOT NULL,
     author_id uuid NOT NULL REFERENCES users (id),
