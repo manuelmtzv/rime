@@ -9,14 +9,18 @@ export const useAuth = () => {
   const { setUser } = useUserState();
 
   async function login(loginForm: LoginRequest) {
-    const response = await $fetch<AuthResponse>("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify(loginForm),
-    });
+    try {
+      const response = await fetch<AuthResponse>("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(loginForm),
+      });
 
-    setUser(response.data.user);
+      setUser(response.data.user);
 
-    return response;
+      return response;
+    } catch (error) {
+      return error;
+    }
   }
 
   async function register(registerForm: RegisterRequest) {

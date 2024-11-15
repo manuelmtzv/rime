@@ -1,7 +1,7 @@
 export default defineNuxtPlugin({
   name: "FishkeepersHub Api Plugin",
   setup() {
-    // const { $i18n } = useNuxtApp();
+    const { $i18n } = useNuxtApp();
     const { serverUrl } = useRuntimeConfig().public;
 
     const api = $fetch.create({
@@ -12,7 +12,7 @@ export default defineNuxtPlugin({
           getHeader(headers, "Authorization") ??
           `Bearer ${useCookie("access_token").value}`;
 
-        // addHeader(headers, "Accept-Language", $i18n.locale);
+        addHeader(headers, "Accept-Language", $i18n.locale.value);
         addHeader(headers, "Authorization", authToken);
       },
     });

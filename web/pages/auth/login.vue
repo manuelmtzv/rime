@@ -6,6 +6,7 @@ const localePath = useLocalePath();
 const { required } = useValidation();
 const toast = useToast();
 const { t } = useI18n();
+const authError = ref<string>();
 
 const form = reactive({
   username: "",
@@ -33,6 +34,7 @@ async function handleSubmit() {
 
     await navigateTo(localePath("/"));
   } catch (error) {
+    authError.value = getError(error);
     toast.add({
       title: t("auth.login.failed"),
     });
@@ -65,6 +67,8 @@ async function handleSubmit() {
           :placeholder="$t('auth.login.password')"
         />
       </UFormGroup>
+
+      <div v-if="authError" class="text-red-500 text-sm">{{ authError }}</div>
 
       <div class="flex justify-between items-center my-1">
         <span class="text-sm">{{ $t("auth.login.noAccount") }}</span>

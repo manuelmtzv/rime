@@ -160,7 +160,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user == nil {
-		app.notFoundResponse(w, r, app.getLocaleError(r, constants.AuthUserNotFound, nil))
+		app.notFoundResponse(w, r, app.getLocaleError(r, constants.AuthWrongCredentials, nil))
 		return
 	}
 
