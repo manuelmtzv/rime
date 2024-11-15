@@ -9,18 +9,13 @@ export const useAuth = () => {
   const { setUser } = useUserState();
 
   async function login(loginForm: LoginRequest) {
-    try {
-      const response = await fetch<AuthResponse>("/auth/login", {
-        method: "POST",
-        body: JSON.stringify(loginForm),
-      });
-
-      setUser(response.data.user);
-
-      return response;
-    } catch (error) {
-      return error;
-    }
+    const response = await fetch<AuthResponse>("/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginForm),
+    });
+    setUser(response.data.user);
+    return response;
   }
 
   async function register(registerForm: RegisterRequest) {

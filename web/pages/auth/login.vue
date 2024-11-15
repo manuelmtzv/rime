@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
+import { getErrorMessage } from "@/utils/get-error";
 
 const { login } = useAuth();
 const localePath = useLocalePath();
@@ -22,22 +23,16 @@ const v$ = useVuelidate(rules, form);
 
 async function handleSubmit() {
   await v$.value.$validate();
-  if (v$.value.$error) {
-    return;
-  }
+  if (v$.value.$error) return;
 
   try {
     await login(form);
-    toast.add({
-      title: t("auth.login.success"),
-    });
-
+    toast.add({ title: t("auth.login.success") });
     await navigateTo(localePath("/"));
   } catch (error) {
-    authError.value = getError(error);
-    toast.add({
-      title: t("auth.login.failed"),
-    });
+    authError.value = getErrorMessage(error);
+    console.error("Login error:", error);
+    toast.add({ title: t("auth.login.failed") });
   }
 }
 </script>
@@ -53,19 +48,11 @@ async function handleSubmit() {
       </div>
 
       <UFormGroup :error="toValue(v$.username.$errors[0]?.$message)">
-        <UInput
-          v-model="form.username"
-          size="md"
-          :placeholder="$t('auth.login.username')"
-        />
+        <UInput v-model="form.username" size="md" :placeholder="$t('auth.login.username')" />
       </UFormGroup>
 
       <UFormGroup :error="toValue(v$.password.$errors[0]?.$message)">
-        <UInput
-          v-model="form.password"
-          size="md"
-          :placeholder="$t('auth.login.password')"
-        />
+        <UInput v-model="form.password" size="md" :placeholder="$t('auth.login.password')" />
       </UFormGroup>
 
       <div v-if="authError" class="text-red-500 text-sm">{{ authError }}</div>
@@ -80,7 +67,7 @@ async function handleSubmit() {
 
       <UButton type="submit" class="justify-center font-semibold" size="md">{{
         $t("auth.login.submit")
-      }}</UButton>
+        }}</UButton>
     </form>
   </Page>
 </template>

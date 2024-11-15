@@ -1,5 +1,6 @@
 import { loginSchema } from "@/schemas/login.schema";
 import { AuthResponse } from "@/types";
+import { mapH3Error } from "~/utils/get-error";
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, loginSchema.parse);
@@ -31,6 +32,6 @@ export default defineEventHandler(async (event) => {
 
     return response;
   } catch (err) {
-    throw err;
+    sendError(event, mapH3Error(err));
   }
 });
