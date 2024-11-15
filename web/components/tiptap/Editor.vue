@@ -105,7 +105,7 @@ const editor = useEditor({
     </nav>
 
     <EditorContent v-if="!showPreview" :editor="editor" v-model="value"
-      class="font-poetry border border-gray-100 dark:border-gray-500 rounded-md" />
+      class="h-96 font-poetry border border-gray-100 dark:border-gray-500 rounded-md" />
 
     <TiptapContent v-else :content="value" :title="title" class=" gap-2"
       content-class="block w-full rounded-md focus:outline-none text-sm dark:bg-dark-900 dark:border-dark-700 rounded-t-none min-h-96 max-h-96 border border-gray-100 dark:border-gray-500 p-4" />
