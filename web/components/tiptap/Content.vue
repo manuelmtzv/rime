@@ -17,13 +17,10 @@ const previewContent = computed(() =>
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-2 overflow-y-auto', $props.class)">
+  <div :class="cn('flex flex-col gap-2 overflow-y-auto border border-gray-100 dark:border-gray-500', $props.class)">
     <h1 v-if="title" class="font-medium text-lg">{{ title }}</h1>
 
-    <div
-      :class="cn('tiptap tiptap-content space-y-2', contentClass)"
-      v-html="previewContent"
-    ></div>
+    <div :class="cn('tiptap tiptap-content space-y-1 font-poetry', contentClass)" v-html="previewContent"></div>
   </div>
 </template>
 
@@ -31,7 +28,7 @@ const previewContent = computed(() =>
 .tiptap-content {
   br {
     display: block;
-    margin: 0.75rem 0 !important;
+    margin: 1.25rem 0 !important;
     content: "";
   }
 }
