@@ -14,6 +14,10 @@ const form = reactive({
         <TiptapEditor v-model="form.content" :tiptap-props="{ minHeight: '24rem' }" />
       </ClientOnly>
 
+      <SimpleAlert
+        message="Los saltos de línea múltiples de convertiran en uno sólo, esto para garantizar la consistencia de los escritos."
+        class="my-2" />
+
       <nav class="flex items-center justify-between">
         <UButton type="button" class="btn-secondary" variant="ghost" color="black">Cancelar</UButton>
 
