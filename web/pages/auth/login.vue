@@ -39,7 +39,7 @@ async function handleSubmit() {
 
 <template>
   <Page class="">
-    <form class="auth-form" @submit.prevent="handleSubmit">
+    <form class="form" @submit.prevent="handleSubmit">
       <div class="text-center space-y-2 mb-2">
         <h2 class="font-semibold text-lg font-poetry">
           {{ $t("auth.login.title") }}
@@ -67,7 +67,7 @@ async function handleSubmit() {
 
       <UButton type="submit" class="justify-center font-semibold" size="md">{{
         $t("auth.login.submit")
-        }}</UButton>
+      }}</UButton>
     </form>
   </Page>
 </template>

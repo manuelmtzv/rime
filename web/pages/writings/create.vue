@@ -1,5 +1,8 @@
 <template>
   <Page>
-    <span> Create </span>
+    <form action="" class="form">
+
+
+    </form>
   </Page>
 </template>
