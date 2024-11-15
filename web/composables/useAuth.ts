@@ -5,14 +5,14 @@ import type {
 } from "@/types/auth.type";
 
 export const useAuth = () => {
-  const fetch = useNuxtApp().$api;
+  const fetch = useNuxtApp().$serverApi;
   const { setUser } = useUserState();
 
   async function login(loginForm: LoginRequest) {
     const response = await fetch<AuthResponse>("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(loginForm),
+      body: JSON.stringify(loginForm),      
     });
     setUser(response.data.user);
     return response;

@@ -3,7 +3,7 @@ import type { ListResponse, Tag } from "@/types";
 
 export const tagRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
   if (!fetch) {
-    fetch = useNuxtApp().$api;
+    fetch = useNuxtApp().$serverApi;
   }
 
   return {

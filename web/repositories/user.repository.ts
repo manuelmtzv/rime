@@ -3,7 +3,7 @@ import type { ListResponse, PopularUser, User } from "@/types";
 
 export const userRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
   if (!fetch) {
-    fetch = useNuxtApp().$api;
+    fetch = useNuxtApp().$serverApi;
   }
 
   return {

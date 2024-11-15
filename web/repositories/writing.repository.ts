@@ -3,7 +3,7 @@ import type { DataResponse, ListResponse, Writing } from "@/types";
 
 export const writingRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
   if (!fetch) {
-    fetch = useNuxtApp().$api;
+    fetch = useNuxtApp().$serverApi;
   }
 
   return {
