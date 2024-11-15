@@ -76,7 +76,7 @@ const editor = useEditor({
         <Icon name="heroicons:strikethrough" size="16" />
       </TiptapButtonWrapper>
 
-      <TiptapButtonWrapper :is-active="editor.isActive('heading', { level: 2 })" @click.prevent="
+      <!-- <TiptapButtonWrapper :is-active="editor.isActive('heading', { level: 2 })" @click.prevent="
         editor?.chain().focus().toggleHeading({ level: 2 }).run()
         ">
         <Icon name="heroicons:h2" size="16" />
@@ -96,7 +96,7 @@ const editor = useEditor({
       <TiptapButtonWrapper :is-active="editor.isActive('orderedList')"
         @click.prevent="editor?.chain().focus().toggleOrderedList().run()">
         <Icon name="heroicons:numbered-list" size="16" />
-      </TiptapButtonWrapper>
+      </TiptapButtonWrapper> -->
 
       <TiptapButtonWrapper :is-active="showPreview" @click.prevent="showPreview = !showPreview"
         class="ml-auto rounded-lg px-2">
@@ -107,8 +107,8 @@ const editor = useEditor({
     <EditorContent v-if="!showPreview" :editor="editor" v-model="value"
       class="font-poetry border border-gray-100 dark:border-gray-500 rounded-md" />
 
-    <TiptapContent v-else :content="value" :title="title" class="p-4 gap-2"
-      content-class="block w-full rounded-md focus:outline-none text-sm  dark:bg-dark-900 dark:border-dark-700 rounded-t-none min-h-96 max-h-96" />
+    <TiptapContent v-else :content="value" :title="title" class=" gap-2"
+      content-class="block w-full rounded-md focus:outline-none text-sm dark:bg-dark-900 dark:border-dark-700 rounded-t-none min-h-96 max-h-96 border border-gray-100 dark:border-gray-500 p-4" />
   </div>
 </template>
 
