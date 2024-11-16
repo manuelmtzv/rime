@@ -10,14 +10,14 @@ type LikeStore struct {
 	db *sql.DB
 }
 
-func (s LikeStore) Create(ctx context.Context, like *models.Like, writingId string) error {
+func (s LikeStore) Create(ctx context.Context, like *models.Like) error {
 	query := `
 		INSERT INTO likes (user_id, writing_id)
 		VALUES ($1, $2)
 		RETURNING id, created_at
 	`
 
-	return s.db.QueryRowContext(ctx, query, like.UserID, writingId).Scan(&like.ID, &like.CreatedAt)
+	return s.db.QueryRowContext(ctx, query, like.UserID, like.WritingID).Scan(&like.ID, &like.CreatedAt)
 }
 
 func (s LikeStore) Delete(ctx context.Context, likeID string, writingID string) error {
