@@ -31,6 +31,10 @@ type Storage struct {
 		FindOneByName(context.Context, string) (*models.Tag, error)
 		FindPopular(context.Context) ([]*models.Tag, error)
 	}
+	Likes interface {
+		Create(context.Context, *models.Like, string) error
+		Delete(context.Context, string, string) error
+	}
 }
 
 func NewStorage(db *sql.DB) Storage {
@@ -38,5 +42,6 @@ func NewStorage(db *sql.DB) Storage {
 		Users:    &UserStore{db},
 		Writings: &WritingStore{db},
 		Tags:     &TagStore{db},
+		Likes:    &LikeStore{db},
 	}
 }
