@@ -20,16 +20,22 @@ const previewContent = computed(() =>
   <div :class="cn('flex flex-col gap-2 overflow-y-auto', $props.class)">
     <h1 v-if="title" class="font-medium text-lg">{{ title }}</h1>
 
-    <div :class="cn('tiptap tiptap-content space-y-1 font-poetry', contentClass)" v-html="previewContent"></div>
+    <div
+      :class="cn('tiptap tiptap-content font-poetry space-y-1.5', contentClass)"
+      v-html="previewContent"
+    ></div>
   </div>
 </template>
 
-<style lang="postcss">
+<style lang="scss">
 .tiptap-content {
-  br {
-    display: block;
-    margin: 1.25rem 0 !important;
-    content: "";
+  // br {
+  //   display: block;
+  //   margin: 0.62rem 0 !important;
+  //   content: "";
+  // }
+  p {
+    font-size: 0.9rem;
   }
 }
 </style>
