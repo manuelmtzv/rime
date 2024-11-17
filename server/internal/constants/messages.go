@@ -25,5 +25,7 @@ const (
 	TagDeleted  = "Tag.Deleted"
 	TagNotFound = "Tag.NotFound"
 
+	CommentNotFound = "Comment.NotFound"
+
 	HealthOk = "Health.Ok"
 )

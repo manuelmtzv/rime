@@ -39,6 +39,7 @@ type Storage struct {
 	Comments interface {
 		Create(context.Context, *models.Comment) error
 		FindAll(context.Context, string) ([]*models.Comment, error)
+		FindOne(context.Context, string) (*models.Comment, error)
 		Update(context.Context, *models.Comment) error
 		Delete(context.Context, string) error
 	}

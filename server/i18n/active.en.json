@@ -36,5 +36,7 @@
   "Tag.Deleted": "Tag deleted successfully", 
   "Tag.NotFound": "Tag not found",
 
+  "Comment.NotFound": "Comment not found",
+
   "Health.Ok": "The service is running"
 }

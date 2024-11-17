@@ -37,5 +37,7 @@
   "Tag.Deleted": "Etiqueta eliminada correctamente", 
   "Tag.NotFound": "Etiqueta no encontrada", 
 
+  "Comment.NotFound": "Comentario no encontrado",
+
   "Health.Ok": "El servicio está en funcionamiento"
 }

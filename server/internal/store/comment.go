@@ -46,6 +46,22 @@ func (s CommentStore) FindAll(ctx context.Context, writingID string) ([]*models.
 	return comments, nil
 }
 
+func (s CommentStore) FindOne(ctx context.Context, commentID string) (*models.Comment, error) {
+	query := `
+		SELECT id, user_id, writing_id, content, created_at
+		FROM comments
+		WHERE id = $1
+	`
+
+	comment := &models.Comment{}
+	err := s.db.QueryRowContext(ctx, query, commentID).Scan(&comment.ID, &comment.UserID, &comment.WritingID, &comment.Content, &comment.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return comment, nil
+}
+
 func (s CommentStore) Update(ctx context.Context, comment *models.Comment) error {
 	query := `
 		UPDATE comments

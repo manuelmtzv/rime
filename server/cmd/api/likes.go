@@ -39,5 +39,31 @@ func (app *application) likeWriting(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) likeComment(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
 
+	comment, err := app.store.Comments.FindOne(r.Context(), id)
+	if err != nil {
+		app.internalServerErrorBasic(w, r, err)
+		return
+	}
+
+	if comment == nil {
+		app.notFoundResponse(w, r, app.getLocaleError(r, constants.CommentNotFound, nil))
+		return
+	}
+
+	user := app.getUserFromContext(r)
+
+	like := &models.Like{
+		UserID: user.ID,
+	}
+
+	if err := app.store.Likes.LikeComment(r.Context(), like, comment.ID); err != nil {
+		app.internalServerErrorBasic(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusCreated, like); err != nil {
+		app.internalServerErrorBasic(w, r, err)
+	}
 }
