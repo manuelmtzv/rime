@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 	"database/sql"
-	"fmt"
+	"errors"
 	"rime-api/internal/models"
 )
 
@@ -11,114 +11,137 @@ type LikeStore struct {
 	db *sql.DB
 }
 
-func (s LikeStore) LikeWriting(ctx context.Context, like *models.Like, writingID string) error {
+var ErrLikeAlreadyExists = errors.New("like already exists")
+
+func (s *LikeStore) CreateWritingLike(ctx context.Context, like *models.Like, writingID string) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback()
+		}
+	}()
 
-	existingLike, err := s.FindOneWritingLikeByUser(ctx, like.UserID)
-	if err != nil && err != sql.ErrNoRows {
+	exists, err := s.checkWritingLikeExists(ctx, tx, like.AuthorID, writingID)
+	if err != nil {
 		return err
 	}
-
-	if existingLike != nil {
-		like.ID = existingLike.ID
-		like.CreatedAt = existingLike.CreatedAt
-		return nil
+	if exists {
+		return ErrLikeAlreadyExists
 	}
 
-	query := `
-		INSERT INTO likes (author_id)
-		VALUES ($1)
-		RETURNING id, created_at
-	`
-	if err := tx.QueryRowContext(ctx, query, like.UserID).Scan(&like.ID, &like.CreatedAt); err != nil {
-		tx.Rollback()
+	if err = s.createLikeTx(ctx, tx, like); err != nil {
 		return err
 	}
-
-	query = `
-		INSERT INTO like_writing (like_id, writing_id)
-		VALUES ($1, $2)
-	`
-	if _, err := tx.ExecContext(ctx, query, like.ID, writingID); err != nil {
-		tx.Rollback()
+	if err = s.attachWritingLikeTx(ctx, tx, like.ID, writingID); err != nil {
 		return err
 	}
 
 	return tx.Commit()
 }
 
-func (s LikeStore) LikeComment(ctx context.Context, like *models.Like, commentID string) error {
+func (s *LikeStore) CreateCommentLike(ctx context.Context, like *models.Like, commentID string) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback()
+		}
+	}()
 
-	existingLike, err := s.FindOneCommentLikeByUser(ctx, like.UserID)
-	if err != nil && err != sql.ErrNoRows {
+	exists, err := s.checkCommentLikeExists(ctx, tx, like.AuthorID, commentID)
+	if err != nil {
 		return err
 	}
-
-	if existingLike != nil {
-		like.ID = existingLike.ID
-		like.CreatedAt = existingLike.CreatedAt
-		return nil
+	if exists {
+		return ErrLikeAlreadyExists
 	}
 
-	query := `
-		INSERT INTO likes (author_id)
-		VALUES ($1)
-		RETURNING id, created_at
-	`
-	if err := tx.QueryRowContext(ctx, query, like.UserID).Scan(&like.ID, &like.CreatedAt); err != nil {
-		tx.Rollback()
+	// Create like and attach to comment
+	if err = s.createLikeTx(ctx, tx, like); err != nil {
 		return err
 	}
-
-	query = `
-		INSERT INTO like_comment (like_id, comment_id)
-		VALUES ($1, $2)
-	`
-	if _, err := tx.ExecContext(ctx, query, like.ID, commentID); err != nil {
-		tx.Rollback()
+	if err = s.attachCommentLikeTx(ctx, tx, like.ID, commentID); err != nil {
 		return err
 	}
 
 	return tx.Commit()
 }
 
-func (s LikeStore) findOneLikeByUser(ctx context.Context, userID, joinTable string) (*models.Like, error) {
-	query := fmt.Sprintf(`
-        SELECT l.id, l.created_at
-        FROM likes l
-        JOIN %s ON l.id = %s.like_id
-        WHERE l.author_id = $1
-    `, joinTable, joinTable)
-
-	var like models.Like
-	if err := s.db.QueryRowContext(ctx, query, userID).Scan(&like.ID, &like.CreatedAt); err != nil {
-		return nil, err
-	}
-
-	return &like, nil
-}
-
-func (s LikeStore) FindOneWritingLikeByUser(ctx context.Context, userID string) (*models.Like, error) {
-	return s.findOneLikeByUser(ctx, userID, "like_writing")
-}
-
-func (s LikeStore) FindOneCommentLikeByUser(ctx context.Context, userID string) (*models.Like, error) {
-	return s.findOneLikeByUser(ctx, userID, "like_comment")
-}
-
-func (s LikeStore) Delete(ctx context.Context, likeID string) error {
+func (s *LikeStore) createLikeTx(ctx context.Context, tx *sql.Tx, like *models.Like) error {
 	query := `
-		DELETE FROM likes
-		WHERE id = $1 
+		INSERT INTO likes (author_id)
+		VALUES ($1)
+		RETURNING id
 	`
+	return tx.QueryRowContext(ctx, query, like.AuthorID).Scan(&like.ID)
+}
 
-	_, err := s.db.ExecContext(ctx, query, likeID)
+func (s *LikeStore) DeleteWritingLike(ctx context.Context, authorID, writingID string) error {
+	query := `
+		DELETE FROM writing_likes wl
+		USING likes l
+		WHERE l.author_id = $1 AND wl.like_id = l.id AND wl.writing_id = $2
+	`
+	_, err := s.db.ExecContext(ctx, query, authorID, writingID)
 	return err
+}
+
+func (s *LikeStore) DeleteCommentLike(ctx context.Context, authorID, commentID string) error {
+	query := `
+		
+		DELETE FROM comment_likes cl
+		USING likes l
+		WHERE l.author_id = $1 AND cl.like_id = l.id AND cl.comment_id = $2
+	`
+	_, err := s.db.ExecContext(ctx, query, authorID, commentID)
+	return err
+}
+
+func (s *LikeStore) attachWritingLikeTx(ctx context.Context, tx *sql.Tx, likeID, writingID string) error {
+	query := `
+		INSERT INTO writing_likes (like_id, writing_id)
+		VALUES ($1, $2)
+	`
+	_, err := tx.ExecContext(ctx, query, likeID, writingID)
+	return err
+}
+
+func (s *LikeStore) attachCommentLikeTx(ctx context.Context, tx *sql.Tx, likeID, commentID string) error {
+	query := `
+		INSERT INTO comment_likes (like_id, comment_id)
+		VALUES ($1, $2)
+	`
+	_, err := tx.ExecContext(ctx, query, likeID, commentID)
+	return err
+}
+
+func (s *LikeStore) checkWritingLikeExists(ctx context.Context, tx *sql.Tx, authorID, writingID string) (bool, error) {
+	query := `
+		SELECT EXISTS (
+			SELECT 1 FROM writing_likes wl
+			JOIN likes l ON wl.like_id = l.id
+			WHERE l.author_id = $1 AND wl.writing_id = $2
+		)
+	`
+	var exists bool
+	err := tx.QueryRowContext(ctx, query, authorID, writingID).Scan(&exists)
+	return exists, err
+}
+
+func (s *LikeStore) checkCommentLikeExists(ctx context.Context, tx *sql.Tx, authorID, commentID string) (bool, error) {
+	query := `
+		SELECT EXISTS (
+			SELECT 1 FROM comment_likes cl
+			JOIN likes l ON cl.like_id = l.id
+			WHERE l.author_id = $1 AND cl.comment_id = $2
+		)
+	`
+	var exists bool
+	err := tx.QueryRowContext(ctx, query, authorID, commentID).Scan(&exists)
+	return exists, err
 }

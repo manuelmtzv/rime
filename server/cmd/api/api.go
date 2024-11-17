@@ -75,7 +75,9 @@ func (app *application) mount() *chi.Mux {
 
 		r.Route("/likes", func(r chi.Router) {
 			r.With(app.AuthMiddleware).Post("/writings/{id}", app.likeWriting)
+			r.With(app.AuthMiddleware).Delete("/writings/{id}", app.unlikeWriting)
 			r.With(app.AuthMiddleware).Post("/comments/{id}", app.likeComment)
+			r.With(app.AuthMiddleware).Delete("/comments/{id}", app.unlikeComment)
 		})
 	})
 
