@@ -12,7 +12,7 @@ type CommentStore struct {
 
 func (s CommentStore) Create(ctx context.Context, comment *models.Comment) error {
 	query := `
-		INSERT INTO comments (user_id, writing_id, content)
+		INSERT INTO comments (author_id, writing_id, content)
 		VALUES ($1, $2, $3)
 		RETURNING id, created_at
 	`
@@ -22,7 +22,7 @@ func (s CommentStore) Create(ctx context.Context, comment *models.Comment) error
 
 func (s CommentStore) FindAll(ctx context.Context, writingID string) ([]*models.Comment, error) {
 	query := `
-		SELECT id, user_id, writing_id, content, created_at
+		SELECT id, author_id, writing_id, content, created_at
 		FROM comments
 		WHERE writing_id = $1
 		ORDER BY created_at DESC
@@ -48,7 +48,7 @@ func (s CommentStore) FindAll(ctx context.Context, writingID string) ([]*models.
 
 func (s CommentStore) FindOne(ctx context.Context, commentID string) (*models.Comment, error) {
 	query := `
-		SELECT id, user_id, writing_id, content, created_at
+		SELECT id, author_id, writing_id, content, created_at
 		FROM comments
 		WHERE id = $1
 	`

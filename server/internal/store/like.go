@@ -17,7 +17,7 @@ func (s LikeStore) LikeWriting(ctx context.Context, like *models.Like, writingID
 	}
 
 	query := `
-		INSERT INTO likes (user_id)
+		INSERT INTO likes (author_id)
 		VALUES ($1)
 		RETURNING id, created_at
 	`
@@ -27,7 +27,7 @@ func (s LikeStore) LikeWriting(ctx context.Context, like *models.Like, writingID
 	}
 
 	query = `
-		INSERT INTO writing_likes (like_id, writing_id)
+		INSERT INTO like_writing (like_id, writing_id)
 		VALUES ($1, $2)
 	`
 	if _, err := tx.ExecContext(ctx, query, like.ID, writingID); err != nil {
@@ -45,7 +45,7 @@ func (s LikeStore) LikeComment(ctx context.Context, like *models.Like, commentID
 	}
 
 	query := `
-		INSERT INTO likes (user_id)
+		INSERT INTO likes (author_id)
 		VALUES ($1)
 		RETURNING id, created_at
 	`
@@ -55,7 +55,7 @@ func (s LikeStore) LikeComment(ctx context.Context, like *models.Like, commentID
 	}
 
 	query = `
-		INSERT INTO comment_likes (like_id, comment_id)
+		INSERT INTO like_comment (like_id, comment_id)
 		VALUES ($1, $2)
 	`
 	if _, err := tx.ExecContext(ctx, query, like.ID, commentID); err != nil {
