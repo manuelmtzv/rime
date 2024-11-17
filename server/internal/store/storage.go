@@ -35,6 +35,12 @@ type Storage struct {
 		Create(context.Context, *models.Like) error
 		Delete(context.Context, string, string) error
 	}
+	Comments interface {
+		Create(context.Context, *models.Comment) error
+		FindAll(context.Context, string) ([]*models.Comment, error)
+		Update(context.Context, *models.Comment) error
+		Delete(context.Context, string) error
+	}
 }
 
 func NewStorage(db *sql.DB) Storage {
@@ -43,5 +49,6 @@ func NewStorage(db *sql.DB) Storage {
 		Writings: &WritingStore{db},
 		Tags:     &TagStore{db},
 		Likes:    &LikeStore{db},
+		Comments: &CommentStore{db},
 	}
 }
