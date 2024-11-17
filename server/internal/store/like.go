@@ -10,7 +10,7 @@ type LikeStore struct {
 	db *sql.DB
 }
 
-func (s LikeStore) CreateWritingLike(ctx context.Context, like *models.Like, writingID string) error {
+func (s LikeStore) LikeWriting(ctx context.Context, like *models.Like, writingID string) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func (s LikeStore) CreateWritingLike(ctx context.Context, like *models.Like, wri
 	return tx.Commit()
 }
 
-func (s LikeStore) CreateCommentLike(ctx context.Context, like *models.Like, commentID string) error {
+func (s LikeStore) LikeComment(ctx context.Context, like *models.Like, commentID string) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
