@@ -10,22 +10,68 @@ type LikeStore struct {
 	db *sql.DB
 }
 
-func (s LikeStore) Create(ctx context.Context, like *models.Like) error {
+func (s LikeStore) CreateWritingLike(ctx context.Context, like *models.Like, writingID string) error {
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
 	query := `
-		INSERT INTO likes (user_id, writing_id)
-		VALUES ($1, $2)
+		INSERT INTO likes (user_id)
+		VALUES ($1)
 		RETURNING id, created_at
 	`
+	if err := tx.QueryRowContext(ctx, query, like.UserID).Scan(&like.ID, &like.CreatedAt); err != nil {
+		tx.Rollback()
+		return err
+	}
 
-	return s.db.QueryRowContext(ctx, query, like.UserID, like.WritingID).Scan(&like.ID, &like.CreatedAt)
+	query = `
+		INSERT INTO writing_likes (like_id, writing_id)
+		VALUES ($1, $2)
+	`
+	if _, err := tx.ExecContext(ctx, query, like.ID, writingID); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }
 
-func (s LikeStore) Delete(ctx context.Context, likeID string, writingID string) error {
+func (s LikeStore) CreateCommentLike(ctx context.Context, like *models.Like, commentID string) error {
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	query := `
+		INSERT INTO likes (user_id)
+		VALUES ($1)
+		RETURNING id, created_at
+	`
+	if err := tx.QueryRowContext(ctx, query, like.UserID).Scan(&like.ID, &like.CreatedAt); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	query = `
+		INSERT INTO comment_likes (like_id, comment_id)
+		VALUES ($1, $2)
+	`
+	if _, err := tx.ExecContext(ctx, query, like.ID, commentID); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
+}
+
+func (s LikeStore) Delete(ctx context.Context, likeID string) error {
 	query := `
 		DELETE FROM likes
-		WHERE id = $1 AND writing_id = $2
+		WHERE id = $1 
 	`
 
-	_, err := s.db.ExecContext(ctx, query, likeID, writingID)
+	_, err := s.db.ExecContext(ctx, query, likeID)
 	return err
 }

@@ -32,8 +32,9 @@ type Storage struct {
 		FindPopular(context.Context) ([]*models.Tag, error)
 	}
 	Likes interface {
-		Create(context.Context, *models.Like) error
-		Delete(context.Context, string, string) error
+		CreateWritingLike(context.Context, *models.Like, string) error
+		CreateCommentLike(context.Context, *models.Like, string) error
+		Delete(context.Context, string) error
 	}
 	Comments interface {
 		Create(context.Context, *models.Comment) error
