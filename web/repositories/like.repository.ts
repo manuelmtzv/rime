@@ -1,7 +1,7 @@
 import type { $Fetch, NitroFetchRequest } from "nitropack";
 import {  type DataResponse, type LikeEntity, type WritingLike } from "@/types";
 
-export const writingRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
+export const likeRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
   if (!fetch) {
     fetch = useNuxtApp().$serverApi;
   }
