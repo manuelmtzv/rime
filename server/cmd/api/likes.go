@@ -24,11 +24,12 @@ func (app *application) likeWriting(w http.ResponseWriter, r *http.Request) {
 
 	user := app.getUserFromContext(r)
 
-	like := &models.Like{
-		AuthorID: user.ID,
+	like := &models.WritingLike{
+		AuthorID:  user.ID,
+		WritingID: writing.ID,
 	}
 
-	if err := app.store.Likes.CreateWritingLike(r.Context(), like, writing.ID); err != nil {
+	if err := app.store.Likes.CreateWritingLike(r.Context(), like); err != nil {
 		app.internalServerErrorBasic(w, r, err)
 		return
 	}
@@ -79,11 +80,12 @@ func (app *application) likeComment(w http.ResponseWriter, r *http.Request) {
 
 	user := app.getUserFromContext(r)
 
-	like := &models.Like{
-		AuthorID: user.ID,
+	like := &models.CommentLike{
+		AuthorID:  user.ID,
+		CommentID: comment.ID,
 	}
 
-	if err := app.store.Likes.CreateCommentLike(r.Context(), like, comment.ID); err != nil {
+	if err := app.store.Likes.CreateCommentLike(r.Context(), like); err != nil {
 		app.internalServerErrorBasic(w, r, err)
 		return
 	}
