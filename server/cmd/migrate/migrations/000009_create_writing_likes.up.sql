@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS comment_likes (
+CREATE TABLE IF NOT EXISTS writing_likes (
     author_id uuid NOT NULL,
     writing_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT now(),
