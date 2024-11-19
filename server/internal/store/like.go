@@ -12,23 +12,27 @@ type LikeStore struct {
 }
 
 func (app *LikeStore) checkLikeExists(ctx context.Context, table string, authorID, targetID string, targetColumn string) (string, error) {
-	query := fmt.Sprintf(`SELECT id FROM %s WHERE author_id = $1 AND %s = $2`, table, targetColumn)
-	var id string
-	err := app.db.QueryRowContext(ctx, query, authorID, targetID).Scan(&id)
-	return id, err
+	query := fmt.Sprintf(`SELECT created_at FROM %s WHERE author_id = $1 AND %s = $2`, table, targetColumn)
+
+	fmt.Println(query, authorID, targetID)
+
+	var createdAt string
+	err := app.db.QueryRowContext(ctx, query, authorID, targetID).Scan(&createdAt)
+
+	return createdAt, err
 }
 
-func (app *LikeStore) insertLike(ctx context.Context, table string, likeID, authorID, targetID string, createdAt string, targetColumn string) (string, error) {
+func (app *LikeStore) insertLike(ctx context.Context, table string, authorID, targetID string, targetColumn string) (string, error) {
 	query := fmt.Sprintf(`
 		INSERT INTO %s 
-		(id, author_id, %s, created_at) 
-		VALUES ($1, $2, $3, $4)
-		RETURNING id
+		(author_id, %s) 
+		VALUES ($1, $2)
+		RETURNING created_at
 	`, table, targetColumn)
 
-	var id string
-	err := app.db.QueryRowContext(ctx, query, likeID, authorID, targetID, createdAt).Scan(&id)
-	return id, err
+	var createdAt string
+	err := app.db.QueryRowContext(ctx, query, authorID, targetID).Scan(&createdAt)
+	return createdAt, err
 }
 
 func (app *LikeStore) deleteLike(ctx context.Context, table string, authorID, targetID string, targetColumn string) error {
@@ -38,22 +42,23 @@ func (app *LikeStore) deleteLike(ctx context.Context, table string, authorID, ta
 }
 
 func (app *LikeStore) CreateWritingLike(ctx context.Context, like *models.WritingLike) error {
-	id, err := app.checkLikeExists(ctx, "writing_likes", like.AuthorID, like.WritingID, "writing_id")
-	if err == nil && id != "" {
-		like.ID = id
+	createdAt, err := app.checkLikeExists(ctx, "writing_likes", like.AuthorID, like.WritingID, "writing_id")
+	if err == nil && createdAt != "" {
+		like.CreatedAt = createdAt
 		return nil
 	}
-	like.ID, err = app.insertLike(ctx, "writing_likes", like.ID, like.AuthorID, like.WritingID, like.CreatedAt, "writing_id")
+
+	like.CreatedAt, err = app.insertLike(ctx, "writing_likes", like.AuthorID, like.WritingID, "writing_id")
 	return err
 }
 
 func (app *LikeStore) CreateCommentLike(ctx context.Context, like *models.CommentLike) error {
-	id, err := app.checkLikeExists(ctx, "comment_likes", like.AuthorID, like.CommentID, "comment_id")
-	if err == nil && id != "" {
-		like.ID = id
+	createdAt, err := app.checkLikeExists(ctx, "comment_likes", like.AuthorID, like.CommentID, "comment_id")
+	if err == nil && createdAt != "" {
+		like.CreatedAt = createdAt
 		return nil
 	}
-	like.ID, err = app.insertLike(ctx, "comment_likes", like.ID, like.AuthorID, like.CommentID, like.CreatedAt, "comment_id")
+	like.CreatedAt, err = app.insertLike(ctx, "comment_likes", like.AuthorID, like.CommentID, "comment_id")
 	return err
 }
 
