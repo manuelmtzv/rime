@@ -1,7 +1,8 @@
-CREATE TABLE IF NOT EXISTS writing_likes (
-    like_id uuid NOT NULL,
+CREATE TABLE IF NOT EXISTS comment_likes (
+    author_id uuid NOT NULL,
     writing_id uuid NOT NULL,
-    PRIMARY KEY (like_id, writing_id),
-    FOREIGN KEY (like_id) REFERENCES likes (id) ON DELETE CASCADE,
-    FOREIGN KEY (writing_id) REFERENCES writings (id) ON DELETE CASCADE
-)
+    created_at timestamp NOT NULL DEFAULT now(),
+    PRIMARY KEY (author_id, writing_id),
+    FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (writing_id) REFERENCES comments (id) ON DELETE CASCADE
+);
