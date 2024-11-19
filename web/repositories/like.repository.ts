@@ -8,12 +8,12 @@ export const likeRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
 
   return {
     async likeEntity(entity: LikeEntity, id: string): Promise<DataResponse<WritingLike>> {;
-        return fetch<DataResponse<WritingLike>>(`/${entity}/${id}/like`, {
+        return fetch<DataResponse<WritingLike>>(`/likes/${entity}/${id}`, {
             method: "POST",
         });
     },
     async unlikeEntity(entity: LikeEntity, id: string): Promise<DataResponse<WritingLike>> {
-        return fetch<DataResponse<WritingLike>>(`/${entity}/${id}/unlike`, {
+        return fetch<DataResponse<WritingLike>>(`/likes/${entity}/${id}`, {
             method: "DELETE",
         });
     }

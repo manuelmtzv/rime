@@ -13,16 +13,9 @@ const props = withDefaults(defineProps<Props>(), {
   link: true,
 });
 const { t } = useI18n();
-const authAction = useAuthAction();
 
 const author = computed(() => props.writing.author);
 const localePath = useLocalePath();
-
-async function likeHandler() {
-  authAction.run(() => {
-    console.log("Like");
-  });
-}
 
 function shareHandler() {
   const url = useRequestURL().host + `/writings/${props.writing.id}`;
@@ -62,9 +55,7 @@ const to = localePath(`/writings/${props.writing.id}`);
       </div>
 
       <nav class="flex gap-2">
-        <button @click="likeHandler">
-          <Icon name="heroicons:heart" class="w-6 h-6" />
-        </button>
+        <LikeButton entity="writings" :entity-id="writing.id" />
 
         <button @click="shareHandler">
           <Icon name="heroicons:share" class="w-6 h-6" />
