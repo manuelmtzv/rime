@@ -3,7 +3,7 @@ import { writingRepository } from "@/repositories/writing.repository";
 import type { ListResponse, Writing } from "@/types";
 
 const { data, status, error } = await useLazyAsyncData<ListResponse<Writing>>(
-  "writings",
+  "feed-writings",
   writingRepository().getWritings
 );
 </script>

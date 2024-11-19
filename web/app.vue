@@ -9,13 +9,11 @@ const onBeforeEnter = async () => {
 <template>
   <div>
     <NuxtLayout>
-      <NuxtPage
-        :transition="{
-          name: 'page',
-          mode: 'out-in',
-          onBeforeEnter,
-        }"
-      />
+      <NuxtPage :transition="{
+        name: 'page',
+        mode: 'out-in',
+        onBeforeEnter,
+      }" />
     </NuxtLayout>
 
     <UNotifications />
@@ -28,6 +26,7 @@ const onBeforeEnter = async () => {
 .page-leave-active {
   transition: all 350ms;
 }
+
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
