@@ -30,7 +30,4 @@ const currentCode = computed(() => localeProperties.value.code);
     :class="cn($props.class)"
     @update:model-value="setLocale"
   />
-
-  <button @click="setLocale('en')">En</button>
-  <button @click="setLocale('es')">Es</button>
 </template>
