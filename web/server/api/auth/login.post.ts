@@ -20,13 +20,13 @@ export default defineEventHandler(async (event) => {
 
     setCookie(event, "token", response.data.token, {
       maxAge: 60 * 60, // TODO: change this for a value from the server
-      httpOnly: true,
+      // httpOnly: true,
       sameSite: "strict",
     });
 
     setCookie(event, "refresh-token", response.data.user.id, {
       maxAge: 60 * 60 * 24 * 14, // TODO: change this for a value from the server
-      httpOnly: true,
+      // httpOnly: true,
       sameSite: "strict",
     });
 
