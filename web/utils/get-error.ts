@@ -29,6 +29,13 @@ export function getErrorMessage(
   { internal = false, defaultErrorMessage = "An error occurred" }: config = {}
 ): string {
   if (isH3Error(error)) {
+    if (internal) {
+      return (
+        (error.data as H3Error<H3ErrorPayload>).data?.error ||
+        defaultErrorMessage
+      );
+    }
+
     return (
       (error as H3Error<H3ErrorPayload>).data?.error || defaultErrorMessage
     );

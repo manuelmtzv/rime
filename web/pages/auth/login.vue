@@ -30,7 +30,7 @@ async function handleSubmit() {
     toast.add({ title: t("auth.login.success") });
     await navigateTo(localePath("/"));
   } catch (error) {
-    authError.value = getErrorMessage(error);
+    authError.value = getErrorMessage(error, { internal: true });
     console.error("Login error:", error);
     toast.add({ title: t("auth.login.failed") });
   }
@@ -48,11 +48,19 @@ async function handleSubmit() {
       </div>
 
       <UFormGroup :error="toValue(v$.username.$errors[0]?.$message)">
-        <UInput v-model="form.username" size="md" :placeholder="$t('auth.login.username')" />
+        <UInput
+          v-model="form.username"
+          size="md"
+          :placeholder="$t('auth.login.username')"
+        />
       </UFormGroup>
 
       <UFormGroup :error="toValue(v$.password.$errors[0]?.$message)">
-        <UInput v-model="form.password" size="md" :placeholder="$t('auth.login.password')" />
+        <UInput
+          v-model="form.password"
+          size="md"
+          :placeholder="$t('auth.login.password')"
+        />
       </UFormGroup>
 
       <div v-if="authError" class="text-red-500 text-sm">{{ authError }}</div>

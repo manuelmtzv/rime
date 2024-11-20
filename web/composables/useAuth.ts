@@ -5,21 +5,21 @@ import type {
 } from "@/types/auth.type";
 
 export const useAuth = () => {
-  const fetch = useNuxtApp().$serverApi;
+  const serverApi = useNuxtApp().$serverApi;
+  const internalApi = useNuxtApp().$internalApi;
   const { setUser } = useUserState();
 
   async function login(loginForm: LoginRequest) {
-    const response = await fetch<AuthResponse>("/auth/login", {
+    const response = await internalApi<AuthResponse>("/auth/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(loginForm),      
+      body: JSON.stringify(loginForm),
     });
     setUser(response.data.user);
     return response;
   }
 
   async function register(registerForm: RegisterRequest) {
-    const response = await fetch<AuthResponse>("/auth/register", {
+    const response = await serverApi<AuthResponse>("/auth/register", {
       method: "POST",
       body: JSON.stringify(registerForm),
     });
