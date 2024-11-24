@@ -1,11 +1,6 @@
-import type { $Fetch, NitroFetchRequest } from "nitropack";
 import { type DataResponse, type LikeEntity, type WritingLike } from "@/types";
 
-export const likeRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
-  if (!fetch) {
-    fetch = useNuxtApp().$serverApi;
-  }
-
+export const likeRepository = <T>() => {
   const ifetch = useNuxtApp().$internalApi;
 
   return {
@@ -13,7 +8,7 @@ export const likeRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
       entity: LikeEntity,
       id: string
     ): Promise<DataResponse<WritingLike>> {
-      return ifetch<DataResponse<WritingLike>>(`/likes`, {
+      return ifetch<DataResponse<WritingLike>>("/likes", {
         method: "POST",
         body: JSON.stringify({ entity, id }),
       });
@@ -22,8 +17,9 @@ export const likeRepository = <T>(fetch?: $Fetch<T, NitroFetchRequest>) => {
       entity: LikeEntity,
       id: string
     ): Promise<DataResponse<WritingLike>> {
-      return fetch<DataResponse<WritingLike>>(`/likes/${entity}/${id}`, {
+      return ifetch<DataResponse<WritingLike>>("/likes", {
         method: "DELETE",
+        body: JSON.stringify({ entity, id }),
       });
     },
   };

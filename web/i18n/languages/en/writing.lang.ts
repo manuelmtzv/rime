@@ -16,4 +16,8 @@ export const writing = {
     save: "Save",
     saveAndPublish: "Save and Publish",
   },
+  likes: {
+    likeFailed: "Failed to like the writing.",
+    unlikeFailed: "Failed to unlike the writing.",
+  },
 };

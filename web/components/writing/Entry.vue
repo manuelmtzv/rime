@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Writing } from "@/types";
+import { useUserState } from "../../composables/useUserState";
 
 type Props = {
   writing: Writing;
@@ -13,9 +14,10 @@ const props = withDefaults(defineProps<Props>(), {
   link: true,
 });
 const { t } = useI18n();
+const { user } = useUserState();
 
-const author = computed(() => props.writing.author);
 const localePath = useLocalePath();
+const author = computed(() => props.writing.author);
 
 function shareHandler() {
   const url = useRequestURL().host + `/writings/${props.writing.id}`;
@@ -27,11 +29,16 @@ function shareHandler() {
 }
 
 const to = localePath(`/writings/${props.writing.id}`);
+
+const likedWriting = computed(() => {
+  return Boolean(
+    props.writing.likes?.some((like) => like.author?.id === user.value?.id)
+  );
+});
 </script>
 
 <template>
   <article class="px-2 mx-auto py-6 flex flex-col gap-4 border-b">
-
     <NuxtLink :to="link ? to : undefined">
       <h2 class="text-2xl font-bold font-poetry mb-4">{{ writing.title }}</h2>
 
@@ -45,7 +52,7 @@ const to = localePath(`/writings/${props.writing.id}`);
         <div class="flex flex-col">
           <span class="text-sm">{{
             `${author.name} ${author?.lastname}`
-            }}</span>
+          }}</span>
           <span v-if="showCreatedAt" class="text-sm text-gray-500">
             <ClientOnly fallback="...">
               {{ $d(new Date(writing.createdAt)) }}
@@ -55,7 +62,11 @@ const to = localePath(`/writings/${props.writing.id}`);
       </div>
 
       <nav class="flex gap-2">
-        <LikeButton entity="writings" :entity-id="writing.id" />
+        <LikeButton
+          :liked="likedWriting"
+          entity="writings"
+          :entity-id="writing.id"
+        />
 
         <button @click="shareHandler">
           <Icon name="heroicons:share" class="w-6 h-6" />
