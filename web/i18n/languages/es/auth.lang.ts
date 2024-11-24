@@ -28,4 +28,10 @@ export const auth = {
   middleware: {
     validateError: "Tu sesión ha expirado, por favor inicia sesión nuevamente",
   },
+  authAction: {
+    title: "Inicia sesión o regístrate",
+    subtitle: "Necesitas una cuenta para continuar con esta acción",
+    login: "Iniciar sesión",
+    register: "Registrarse",
+  },
 };
