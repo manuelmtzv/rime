@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"rime-api/internal/models"
+
+	"github.com/lib/pq"
 )
 
 type WritingStore struct {
@@ -34,8 +36,10 @@ func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	writings := []*models.Writing{}
+	writingsIDs := []string{}
 
 	for rows.Next() {
 		writing := &models.Writing{}
@@ -60,10 +64,20 @@ func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 
 		writing.Author = author
 		writings = append(writings, writing)
+		writingsIDs = append(writingsIDs, writing.ID)
 	}
 
 	if err = rows.Err(); err != nil {
 		return nil, err
+	}
+
+	likesMap, err := s.fetchLikesForWritings(ctx, writingsIDs)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, writing := range writings {
+		writing.Likes = likesMap[writing.ID]
 	}
 
 	return writings, nil
@@ -180,4 +194,42 @@ func (s WritingStore) Delete(ctx context.Context, id string) error {
 	_, err := s.db.ExecContext(ctx, query, id)
 
 	return err
+}
+
+func (s WritingStore) fetchLikesForWritings(ctx context.Context, writingsIDs []string) (map[string][]*models.WritingLike, error) {
+	likesQuery := `
+		SELECT writing_likes.writing_id, writing_likes.author_id, writing_likes.created_at, 
+       users.id AS user_id, users.name, users.lastname
+		FROM writing_likes
+		LEFT JOIN users ON writing_likes.author_id = users.id
+		WHERE writing_id = ANY($1)
+	`
+
+	likesRows, err := s.db.QueryContext(ctx, likesQuery, pq.Array(writingsIDs))
+	if err != nil {
+		return nil, err
+	}
+	defer likesRows.Close()
+
+	likesMap := map[string][]*models.WritingLike{}
+
+	for likesRows.Next() {
+		like := &models.WritingLike{}
+		author := &models.User{}
+		var writingID string
+
+		err := likesRows.Scan(&writingID, &like.AuthorID, &like.CreatedAt, &author.ID, &author.Name, &author.Lastname)
+		if err != nil {
+			return nil, err
+		}
+
+		like.Author = author
+		likesMap[writingID] = append(likesMap[writingID], like)
+	}
+
+	if err = likesRows.Err(); err != nil {
+		return nil, err
+	}
+
+	return likesMap, nil
 }
