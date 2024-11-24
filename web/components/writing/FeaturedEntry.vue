@@ -7,8 +7,15 @@ type Props = {
 
 const props = defineProps<Props>();
 const localePath = useLocalePath();
+const { user } = useUserState();
 
 const author = computed(() => props.writing.author);
+
+const likedWriting = computed(() => {
+  return Boolean(
+    props.writing.likes?.some((like) => like.author?.id === user.value?.id)
+  );
+});
 </script>
 
 <template>
@@ -30,9 +37,11 @@ const author = computed(() => props.writing.author);
       </div>
 
       <nav class="flex gap-2">
-        <button>
-          <Icon name="heroicons:heart" class="w-6 h-6" />
-        </button>
+        <LikeButton
+          :liked="likedWriting"
+          entity="writings"
+          :entity-id="writing.id"
+        />
 
         <button>
           <Icon name="heroicons:share" class="w-6 h-6" />
