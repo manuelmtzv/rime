@@ -14,8 +14,6 @@ export function defineApi({ internal = false }: options = {}) {
         getHeader(headers, "Authorization") ??
         `Bearer ${useCookie("token").value}`;
 
-      console.log(authToken);
-
       addHeader(headers, "Accept-Language", $i18n.locale.value);
       addHeader(headers, "Authorization", authToken);
     },
