@@ -40,7 +40,7 @@ const { data, status, error } = await useLazyAsyncData<ListResponse<Writing>>(
       </section>
 
       <aside
-        class="hidden md:block space-y-8 h-fit w-full max-w-60 sticky lg:static top-8"
+        class="hidden md:block space-y-8 h-fit w-full max-w-60 sticky top-8"
       >
         <UserCard />
 
