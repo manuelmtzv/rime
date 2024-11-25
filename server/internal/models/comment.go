@@ -3,11 +3,11 @@ package models
 type Comment struct {
 	ID        string   `json:"id"`
 	Content   string   `json:"content"`
-	UserID    string   `json:"userId"`
-	User      *User    `json:"user"`
+	AuthorID  string   `json:"authorId"`
+	Author    *User    `json:"author,omitempty"`
 	WritingID string   `json:"postId"`
-	Writing   *Writing `json:"post"`
+	Writing   *Writing `json:"post,omitempty"`
 	ReplyTo   string   `json:"replyTo"`
-	Comment   *Comment `json:"comment"`
+	Comment   *Comment `json:"comment,omitempty"`
 	CreatedAt string   `json:"createdAt"`
 }

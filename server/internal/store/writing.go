@@ -26,9 +26,11 @@ func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 		SELECT 
 			writings.id, writings.type, writings.title, writings.content, 
 			writings.author_id, writings.created_at, writings.updated_at,
-			users.id, users.name, users.lastname, users.email
+			users.id, users.name, users.lastname, users.email, count(writing_likes.author_id) as like_count
 		FROM writings
 		LEFT JOIN users ON writings.author_id = users.id
+		LEFT JOIN writing_likes ON writings.id = writing_likes.writing_id
+		GROUP BY writings.id, users.id
 		ORDER BY writings.created_at DESC
 	`
 
@@ -57,6 +59,7 @@ func (s WritingStore) FindAll(ctx context.Context) ([]*models.Writing, error) {
 			&author.Name,
 			&author.Lastname,
 			&author.Email,
+			&writing.LikeCount,
 		)
 		if err != nil {
 			return nil, err
@@ -232,4 +235,42 @@ func (s WritingStore) fetchLikesForWritings(ctx context.Context, writingsIDs []s
 	}
 
 	return likesMap, nil
+}
+
+func (s WritingStore) fetchCommentsForWritings(ctx context.Context, writingsIDs []string) (map[string][]*models.Comment, error) {
+	commentsQuery := `
+		SELECT comments.id, comments.content, comments.user_id, comments.created_at, 
+			 users.id AS user_id, users.name, users.lastname
+		FROM comments
+		LEFT JOIN users ON comments.user_id = users.id
+		WHERE writing_id = ANY($1)
+	`
+
+	commentsRows, err := s.db.QueryContext(ctx, commentsQuery, pq.Array(writingsIDs))
+	if err != nil {
+		return nil, err
+	}
+	defer commentsRows.Close()
+
+	commentsMap := map[string][]*models.Comment{}
+
+	for commentsRows.Next() {
+		comment := &models.Comment{}
+		author := &models.User{}
+		var writingID string
+
+		err := commentsRows.Scan(&comment.ID, &comment.Content, &comment.AuthorID, &comment.CreatedAt, &author.ID, &author.Name, &author.Lastname)
+		if err != nil {
+			return nil, err
+		}
+
+		comment.Author = author
+		commentsMap[writingID] = append(commentsMap[writingID], comment)
+	}
+
+	if err = commentsRows.Err(); err != nil {
+		return nil, err
+	}
+
+	return commentsMap, nil
 }

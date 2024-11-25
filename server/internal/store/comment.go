@@ -17,7 +17,7 @@ func (s CommentStore) Create(ctx context.Context, comment *models.Comment) error
 		RETURNING id, created_at
 	`
 
-	return s.db.QueryRowContext(ctx, query, comment.UserID, comment.WritingID, comment.Content).Scan(&comment.ID, &comment.CreatedAt)
+	return s.db.QueryRowContext(ctx, query, comment.AuthorID, comment.WritingID, comment.Content).Scan(&comment.ID, &comment.CreatedAt)
 }
 
 func (s CommentStore) FindAll(ctx context.Context, writingID string) ([]*models.Comment, error) {
@@ -37,7 +37,7 @@ func (s CommentStore) FindAll(ctx context.Context, writingID string) ([]*models.
 	comments := []*models.Comment{}
 	for rows.Next() {
 		comment := &models.Comment{}
-		if err := rows.Scan(&comment.ID, &comment.UserID, &comment.WritingID, &comment.Content, &comment.CreatedAt); err != nil {
+		if err := rows.Scan(&comment.ID, &comment.AuthorID, &comment.WritingID, &comment.Content, &comment.CreatedAt); err != nil {
 			return nil, err
 		}
 		comments = append(comments, comment)
@@ -54,7 +54,7 @@ func (s CommentStore) FindOne(ctx context.Context, commentID string) (*models.Co
 	`
 
 	comment := &models.Comment{}
-	err := s.db.QueryRowContext(ctx, query, commentID).Scan(&comment.ID, &comment.UserID, &comment.WritingID, &comment.Content, &comment.CreatedAt)
+	err := s.db.QueryRowContext(ctx, query, commentID).Scan(&comment.ID, &comment.AuthorID, &comment.WritingID, &comment.Content, &comment.CreatedAt)
 	if err != nil {
 		return nil, err
 	}

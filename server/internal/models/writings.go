@@ -8,6 +8,7 @@ type Writing struct {
 	Author    *User          `json:"author,omitempty"`
 	AuthorID  string         `json:"authorId,omitempty"`
 	Tags      []*Tag         `json:"tags,omitempty"`
+	LikeCount int            `json:"likeCount"`
 	Likes     []*WritingLike `json:"likes,omitempty"`
 	CreatedAt string         `json:"createdAt,omitempty"`
 	UpdatedAt string         `json:"updatedAt,omitempty"`
