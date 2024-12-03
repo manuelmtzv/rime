@@ -96,7 +96,5 @@ func main() {
 		authenticator: authenticator,
 	}
 
-	mux := app.mount()
-
-	logger.Fatal(app.run(mux))
+	logger.Fatal(app.serveHttp())
 }
