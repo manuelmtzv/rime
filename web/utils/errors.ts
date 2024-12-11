@@ -1,9 +1,15 @@
 import { H3Error } from "h3";
-import type { H3ErrorPayload } from "@/types/api.type";
+import type { ApiErrorPayload, H3ErrorPayload } from "@/types/api.type";
+import { map } from "zod";
 
 type config = {
   defaultErrorMessage?: string;
   internal?: boolean;
+};
+
+type ServerError = {
+  error: string;
+  status: number;
 };
 
 export function mapError(error: unknown): Error {
@@ -24,21 +30,32 @@ export function mapH3Error(error: unknown): H3Error {
   });
 }
 
+export function getApiErrorPayload(error: any): ApiErrorPayload {
+  if (isH3Error(error)) {
+    return (error as H3Error).data as ApiErrorPayload;
+  }
+
+  return {
+    error: getErrorMessage(error),
+  };
+}
+
+export function composeError(error: any): ServerError {
+  const { error: errorMessage } = getApiErrorPayload(error);
+  const { statusCode = 500 } = mapH3Error(error);
+
+  return {
+    error: errorMessage,
+    status: statusCode,
+  };
+}
+
 export function getErrorMessage(
   error: any,
-  { internal = false, defaultErrorMessage = "An error occurred" }: config = {}
+  { defaultErrorMessage = "An error occurred" }: config = {}
 ): string {
   if (isH3Error(error)) {
-    if (internal) {
-      return (
-        (error.data as H3Error<H3ErrorPayload>).data?.error ||
-        defaultErrorMessage
-      );
-    }
-
-    return (
-      (error as H3Error<H3ErrorPayload>).data?.error || defaultErrorMessage
-    );
+    return (error as H3Error<Error>).data?.message || defaultErrorMessage;
   }
 
   if (error instanceof Error) {
