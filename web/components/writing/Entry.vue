@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Writing } from "@/types";
-import { useUserState } from "../../composables/useUserState";
+import { useUserState } from "@/composables/useUserState";
 
 type Props = {
   writing: Writing;
@@ -62,11 +62,7 @@ const likedWriting = computed(() => {
       </div>
 
       <nav class="flex gap-2">
-        <LikeButton
-          :liked="likedWriting"
-          entity="writings"
-          :entity-id="writing.id"
-        />
+        <LikeButton :liked="likedWriting" entity="writings" :entity-id="writing.id" />
 
         <button @click="shareHandler">
           <Icon name="heroicons:share" class="w-6 h-6" />
