@@ -46,7 +46,7 @@ const newWriting = computed(() => ({
         </TiptapEditor>
       </ClientOnly>
 
-      <WritingPreviewEntry v-if="showPreview && user" :writing="newWriting" class="w-full border-b px-6" />
+      <WritingPreviewEntry v-if="showPreview" :writing="newWriting" class="w-full border-b px-6" />
 
       <SimpleAlert :message="$t('writing.editor.lineBreaksAdvice')" class="my-2" />
 

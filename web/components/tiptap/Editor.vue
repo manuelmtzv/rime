@@ -79,28 +79,6 @@ const editor = useEditor({
         <Icon name="heroicons:strikethrough" size="16" />
       </TiptapButtonWrapper>
 
-      <!-- <TiptapButtonWrapper :is-active="editor.isActive('heading', { level: 2 })" @click.prevent="
-        editor?.chain().focus().toggleHeading({ level: 2 }).run()
-        ">
-        <Icon name="heroicons:h2" size="16" />
-      </TiptapButtonWrapper>
-
-      <TiptapButtonWrapper :is-active="editor.isActive('heading', { level: 3 })" @click.prevent="
-        editor?.chain().focus().toggleHeading({ level: 3 }).run()
-        ">
-        <Icon name="heroicons:h3" size="16" />
-      </TiptapButtonWrapper>
-
-      <TiptapButtonWrapper :is-active="editor.isActive('bulletList')"
-        @click.prevent="editor?.chain().focus().toggleBulletList().run()">
-        <Icon name="heroicons:list-bullet" size="16" />
-      </TiptapButtonWrapper>
-
-      <TiptapButtonWrapper :is-active="editor.isActive('orderedList')"
-        @click.prevent="editor?.chain().focus().toggleOrderedList().run()">
-        <Icon name="heroicons:numbered-list" size="16" />
-      </TiptapButtonWrapper> -->
-
       <template v-if="preview">
         <TiptapButtonWrapper :is-active="showPreview" @click.prevent="showPreview = !showPreview"
           class="ml-auto rounded-lg px-2">
@@ -114,10 +92,10 @@ const editor = useEditor({
     <slot name="before-editor" />
 
     <EditorContent v-if="!showPreview" v-show="!hideEditor" :editor="editor" v-model="value"
-      class="h-96 font-poetry border border-gray-100 dark:border-gray-500 rounded-md" />
+      class="min-h-96 font-poetry border border-gray-100 dark:border-gray-500 rounded-md" />
 
     <TiptapContent v-else :content="value" :title="title" class="gap-2"
-      content-class="block w-full rounded-md focus:outline-none text-sm dark:bg-dark-900 dark:border-dark-700 rounded-t-none min-h-96 max-h-96 border border-gray-100 dark:border-gray-500 p-4" />
+      content-class="block w-full rounded-md focus:outline-none text-sm dark:bg-dark-900 dark:border-dark-700 rounded-t-none min-h-96 border border-gray-100 dark:border-gray-500 p-4" />
 
     <slot name="after-editor" />
   </div>
@@ -133,6 +111,7 @@ const editor = useEditor({
 .tiptap {
   min-height: v-bind("props.tiptapProps?.minHeight");
   box-shadow: none;
+  resize: vertical;
 
   :first-child {
     margin-top: 0;

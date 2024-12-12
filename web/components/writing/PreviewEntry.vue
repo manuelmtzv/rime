@@ -33,14 +33,9 @@ const author = computed(() => props.writing.author);
                 </div>
             </div>
 
-            <nav class="flex gap-2">
-                <button @click.prevent="">
-                    <Icon name=" heroicons:heart" class="w-6 h-6" />
-                </button>
-
-                <button @click.prevent="">
-                    <Icon name="heroicons:share" class="w-6 h-6" />
-                </button>
+            <nav class="flex gap-2 ml-auto">
+                <Icon name="heroicons:heart" class="w-6 h-6" />
+                <Icon name="heroicons:share" class="w-6 h-6" />
             </nav>
         </div>
     </article>

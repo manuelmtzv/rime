@@ -6,6 +6,8 @@ type Props = {
 defineProps<Props>();
 const localePath = useLocalePath();
 const { t } = useI18n();
+const { user } = useUserState();
+const { requireAuthAndRun } = useAuthAction();
 
 const actions = computed(() => [
   {
@@ -35,7 +37,7 @@ const actions = computed(() => [
     <nav>
       <ul :class="cn('space-y-2', mobile && 'space-y-4')">
         <li v-for="action in actions">
-          <NuxtLink :to="action.to">
+          <NuxtLink :to="user ? action.to : undefined">
             <UButton :variant="mobile ? 'outline' : 'link'" class="w-full" :size="mobile ? 'lg' : undefined"
               :icon="action.icon" color="black" :ui="{
                 variant: {
@@ -43,7 +45,7 @@ const actions = computed(() => [
                     ? 'text-black dark:text-white opacity-75 dark:opacity-75'
                     : '',
                 },
-              }">
+              }" @click="requireAuthAndRun()">
               {{ action.title }}
             </UButton>
           </NuxtLink>
