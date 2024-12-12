@@ -28,14 +28,14 @@ const newWriting = computed(() => ({
 
 <template>
   <Page>
-    <form class="form max-w-4xl mt-8 border-none shadow-none padding-0">
+    <form class="form max-w-4xl mt-8 border-none shadow-none p-0">
       <ClientOnly class="rounded-md min-h-[30.5rem]">
         <TiptapEditor v-model="form.content" :preview="false" :tiptap-props="{ minHeight: '24rem' }"
           :hide-editor="showPreview">
           <template #actions>
             <TiptapButtonWrapper :is-active="showPreview" @click.prevent="togglePreview"
               class="ml-auto rounded-lg px-2">
-              <span class="text-xs"> Preview </span>
+              <span class="text-xs"> {{ $t('writing.editor.preview') }} </span>
             </TiptapButtonWrapper>
           </template>
 

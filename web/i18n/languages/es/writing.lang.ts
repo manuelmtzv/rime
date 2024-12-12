@@ -9,12 +9,13 @@ export const writing = {
     myCollection: "Mi Colección",
   },
   editor: {
-    newTitle: "Nueva Escritura",
+    newTitle: "Nuevo escrito",
     lineBreaksAdvice:
       "Los saltos de línea múltiples de convertiran en uno sólo, esto para garantizar la consistencia de los escritos.",
     cancel: "Cancelar",
     save: "Guardar",
     saveAndPublish: "Guardar y Publicar",
+    preview: "Vista Previa",
   },
   likes: {
     likeFailed: "Ocurrió un error al dar me gusta a la escritura.",

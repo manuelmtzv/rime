@@ -44,7 +44,7 @@ const editor = useEditor({
   editorProps: {
     attributes: {
       class: cn(
-        "block w-full px-4 py-4 rounded-md shadow-sm focus:outline-none text-sm  dark:bg-dark-800 dark:border-dark-700 rounded-t-none min-h-44 max-h-96 overflow-y-auto"
+        "block w-full px-4 py-4 rounded-md shadow-sm focus:outline-none text-sm  dark:bg-dark-800 dark:border-dark-700 rounded-t-none min-h-44 overflow-y-auto"
       ),
     },
   },
