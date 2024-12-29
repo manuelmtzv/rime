@@ -16,6 +16,8 @@ export const writing = {
     save: "Guardar",
     saveAndPublish: "Guardar y Publicar",
     preview: "Vista Previa",
+    title: "Título",
+    titlePlaceholder: "Un título increíble",
   },
   likes: {
     likeFailed: "Ocurrió un error al dar me gusta a la escritura.",

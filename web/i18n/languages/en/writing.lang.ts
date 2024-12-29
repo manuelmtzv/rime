@@ -16,6 +16,8 @@ export const writing = {
     save: "Save",
     saveAndPublish: "Save and Publish",
     preview: "Preview",
+    title: "Title",
+    titlePlaceholder: "An amazing title",
   },
   likes: {
     likeFailed: "Failed to like the writing.",
