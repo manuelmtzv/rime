@@ -11,6 +11,10 @@
   }
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   @apply font-general bg-white dark:bg-grey-900 text-black dark:text-white;
 }

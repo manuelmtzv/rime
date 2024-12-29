@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useVuelidate } from "@vuelidate/core";
-import { getErrorMessage } from "@/utils/get-error";
+import { getErrorMessage } from "~/utils/errors";
 
 const { login } = useAuth();
 const localePath = useLocalePath();
@@ -30,8 +30,7 @@ async function handleSubmit() {
     toast.add({ title: t("auth.login.success") });
     await navigateTo(localePath("/"));
   } catch (error) {
-    authError.value = getErrorMessage(error, { internal: true });
-    console.error("Login error:", error);
+    authError.value = getErrorMessage(error);
     toast.add({ title: t("auth.login.failed") });
   }
 }
@@ -48,19 +47,11 @@ async function handleSubmit() {
       </div>
 
       <UFormGroup :error="toValue(v$.username.$errors[0]?.$message)">
-        <UInput
-          v-model="form.username"
-          size="md"
-          :placeholder="$t('auth.login.username')"
-        />
+        <UInput v-model="form.username" size="md" :placeholder="$t('auth.login.username')" />
       </UFormGroup>
 
       <UFormGroup :error="toValue(v$.password.$errors[0]?.$message)">
-        <UInput
-          v-model="form.password"
-          size="md"
-          :placeholder="$t('auth.login.password')"
-        />
+        <UInput v-model="form.password" size="md" :placeholder="$t('auth.login.password')" />
       </UFormGroup>
 
       <div v-if="authError" class="text-red-500 text-sm">{{ authError }}</div>
@@ -75,7 +66,7 @@ async function handleSubmit() {
 
       <UButton type="submit" class="justify-center font-semibold" size="md">{{
         $t("auth.login.submit")
-      }}</UButton>
+        }}</UButton>
     </form>
   </Page>
 </template>

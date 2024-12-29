@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.1",
+    "@iconify/icons-heroicons": "^1.2.9",
     "clsx": "^2.1.1",
     "sass-embedded": "^1.80.6"
   }

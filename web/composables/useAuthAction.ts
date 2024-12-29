@@ -4,13 +4,16 @@ export const useAuthAction = () => {
   const { user } = useUserState();
   const { setShowAuthRequiredModal } = useAppState();
 
-  async function run(callback: AuthAction) {
+  async function requireAuthAndRun(callback?: AuthAction) {
     if (!user.value) {
       setShowAuthRequiredModal(true);
       return;
     }
-    await callback();
+
+    if (callback) {
+      await callback();
+    }
   }
 
-  return { run };
+  return { requireAuthAndRun };
 };

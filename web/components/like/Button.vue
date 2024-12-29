@@ -18,7 +18,7 @@ const loading = ref(false);
 const optimisticLike = ref(props.liked);
 
 async function likeHandler() {
-  authAction.run(async () => {
+  authAction.requireAuthAndRun(async () => {
     if (loading.value) return;
     loading.value = true;
 
@@ -52,10 +52,6 @@ const liked = computed(() => optimisticLike.value);
 <template>
   <button @click="likeHandler" aria-label="Toggle like" :disabled="loading">
     <Icon v-show="liked" name="heroicons:heart-solid" class="w-6 h-6" />
-    <Icon
-      v-show="!liked"
-      name="heroicons:heart"
-      class="w-6 h-6 hover:text-gray-600 hover:dark:text-gray-400"
-    />
+    <Icon v-show="!liked" name="heroicons:heart" class="w-6 h-6 hover:text-gray-600 hover:dark:text-gray-400" />
   </button>
 </template>

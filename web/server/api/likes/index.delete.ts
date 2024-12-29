@@ -1,5 +1,5 @@
 import { likeEntitySchema } from "@/schemas/like.schemas";
-import { mapH3Error } from "@/utils/get-error";
+import { composeError } from "@/utils/errors";
 import { DataResponse, WritingLike } from "@/types";
 
 export default defineEventHandler(async (event) => {
@@ -23,6 +23,10 @@ export default defineEventHandler(async (event) => {
 
     return response;
   } catch (err) {
-    sendError(event, mapH3Error(err));
+    const { error, status } = composeError(err);
+    throw createError({
+      message: error,
+      status,
+    });
   }
 });

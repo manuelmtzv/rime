@@ -9,12 +9,13 @@ export const writing = {
     myCollection: "My Collection",
   },
   editor: {
-    newTitle: "New Writing",
+    newTitle: "New writing",
     lineBreaksAdvice:
       "Multiple line breaks will be converted into one, this is to ensure the consistency of the writings.",
     cancel: "Cancel",
     save: "Save",
     saveAndPublish: "Save and Publish",
+    preview: "Preview",
   },
   likes: {
     likeFailed: "Failed to like the writing.",
