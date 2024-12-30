@@ -1,23 +1,25 @@
-import { likeEntitySchema } from "@/schemas/like.schemas";
+import { writingSchema } from "@/schemas";
 import { mapH3Error } from "@/utils/errors";
-import { DataResponse, WritingLike } from "@/types";
+import { DataResponse, Writing } from "@/types";
 
 export default defineEventHandler(async (event) => {
   const serverUrl = useRuntimeConfig().public.serverUrl;
 
   const validBody = await readValidatedBody(event, (body) =>
-    likeEntitySchema.safeParse(body)
+    writingSchema.safeParse(body)
   );
 
   if (!validBody.success) {
+    console.log(validBody.error.issues);
     throw validBody.error.issues;
   }
 
   try {
-    const response = await event.$fetch<DataResponse<WritingLike>>(
-      `${serverUrl}/likes/${validBody.data.entity}/${validBody.data.id}`,
+    const response = await event.$fetch<DataResponse<Writing>>(
+      `${serverUrl}/writings`,
       {
         method: "POST",
+        body: JSON.stringify(validBody.data),
       }
     );
 

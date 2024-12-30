@@ -1,8 +1,49 @@
 <script setup lang="ts">
+import { writingRepository } from "@/repositories";
+import useVuelidate from "@vuelidate/core";
+
+const { required } = useValidation();
+const { loading } = useFormState();
+const { createWriting } = writingRepository();
+const { user } = useUserState();
+const toast = useToast();
+const localePath = useLocalePath();
+
 const form = reactive({
   title: "",
   content: "",
 });
+
+const rules = {
+  title: { required },
+  content: { required },
+};
+
+const v$ = useVuelidate(rules, form);
+
+async function submitHandler() {
+  await v$.value.$validate();
+  if (v$.value.$error) return;
+
+  try {
+    loading.value = true;
+    const response = await createWriting({
+      ...form,
+      type: "poetry",
+    });
+
+    await navigateTo(localePath(`/writings/${response.data.id}`));
+  } catch (err) {
+    toast.add({
+      color: "yellow",
+      title: getErrorMessage(err),
+    });
+  } finally {
+    loading.value = false;
+  }
+}
+
+const emptyContent = computed(() => getHtmlText(form.content).length === 0);
 </script>
 
 <template>
@@ -15,12 +56,25 @@ const form = reactive({
           :tiptap-props="{ minHeight: '24rem' }"
         >
           <template #before-editor>
-            <InputWrapper :label="$t('writing.editor.title')">
+            <InputWrapper
+              :label="$t('writing.editor.title')"
+              :error="toValue(v$.title.$errors[0]?.$message)"
+              class="mb-4"
+            >
               <UInput
                 v-model="form.title"
                 :placeholder="$t('writing.editor.titlePlaceholder')"
-                :class="['w-full mb-4']"
+                :class="['w-full']"
             /></InputWrapper>
+          </template>
+
+          <template #after-editor>
+            <span
+              class="text-sm text-red-500 mt-1"
+              v-if="emptyContent && v$.content.$dirty"
+            >
+              {{ $t("writing.editor.emptyContent") }}
+            </span>
           </template>
         </TiptapEditor>
 
@@ -51,17 +105,18 @@ const form = reactive({
 
         <div class="flex gap-4">
           <UButton
-            type="submit"
             class="btn-primary"
             variant="soft"
+            :disabled="loading"
             @click.prevent=""
             >{{ $t("writing.editor.save") }}
           </UButton>
+
           <UButton
-            type="submit"
             class="btn-primary"
             color="black"
-            @click.prevent=""
+            :disabled="loading"
+            @click.prevent="submitHandler"
             >{{ $t("writing.editor.saveAndPublish") }}</UButton
           >
         </div>

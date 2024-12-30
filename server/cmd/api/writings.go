@@ -9,7 +9,7 @@ import (
 )
 
 type CreateWritingPayload struct {
-	Type    string `json:"type" validate:"oneof=poem"`
+	Type    string `json:"type" validate:"oneof=poetry"`
 	Title   string `json:"title" validate:"required"`
 	Content string `json:"content" validate:"required"`
 }
@@ -27,10 +27,13 @@ func (app *application) createWriting(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user := app.getUserFromContext(r)
+
 	writting := &models.Writing{
-		Type:    payload.Type,
-		Title:   payload.Title,
-		Content: payload.Content,
+		Type:     payload.Type,
+		Title:    payload.Title,
+		Content:  payload.Content,
+		AuthorID: user.ID,
 	}
 
 	if err := app.store.Writings.Create(r.Context(), writting); err != nil {

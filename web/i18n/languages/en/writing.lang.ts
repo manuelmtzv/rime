@@ -18,6 +18,7 @@ export const writing = {
     preview: "Preview",
     title: "Title",
     titlePlaceholder: "An amazing title",
+    emptyContent: "The content of the writing cannot be empty.",
   },
   likes: {
     likeFailed: "Failed to like the writing.",
